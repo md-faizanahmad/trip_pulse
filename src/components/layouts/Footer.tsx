@@ -1,0 +1,47 @@
+import Link from "next/link";
+
+const navigation = [
+  { label: "Explore", href: "/explore" },
+  { label: "Trips", href: "/trips" },
+  { label: "About", href: "/about" },
+];
+
+export default function Footer() {
+  return (
+    <footer className="border-t border-zinc-200 bg-white">
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <Link
+            href="/"
+            className="text-lg font-semibold tracking-tight text-zinc-900"
+          >
+            TripPulse
+          </Link>
+
+          <p className="mt-1 text-sm text-zinc-500">
+            Plan better trips, one journey at a time.
+          </p>
+        </div>
+
+        <nav aria-label="Footer navigation">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            {navigation.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="text-sm text-zinc-600 transition-colors hover:text-zinc-900"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <p className="text-sm text-zinc-500">
+          © {new Date().getFullYear()} TripPulse
+        </p>
+      </div>
+    </footer>
+  );
+}
