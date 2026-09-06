@@ -3,6 +3,8 @@ import type { Destination } from "@/types/destination";
 
 type NominatimResult = {
   place_id: number;
+  osm_type: "node" | "way" | "relation";
+  osm_id: number;
   lat: string;
   lon: string;
   name: string;
@@ -11,7 +13,6 @@ type NominatimResult = {
     country?: string;
   };
 };
-
 type DestinationRouteProps = {
   params: Promise<{
     destination: string;
@@ -32,10 +33,22 @@ export async function GET(
     );
   }
 
-  const url = new URL("https://nominatim.openstreetmap.org/search");
-  url.searchParams.set("q", query);
+  const osmType = request.nextUrl.searchParams.get("osmType");
+  const osmId = request.nextUrl.searchParams.get("osmId");
+
+  if (!osmType || !osmId) {
+    return NextResponse.json(
+      { error: "OSM type and OSM ID are required." },
+      { status: 400 },
+    );
+  }
+
+  const url = new URL("https://nominatim.openstreetmap.org/lookup");
+
+  const osmPrefix = osmType.charAt(0).toUpperCase();
+
+  url.searchParams.set("osm_ids", `${osmPrefix}${osmId}`);
   url.searchParams.set("format", "json");
-  url.searchParams.set("limit", "1");
   url.searchParams.set("addressdetails", "1");
 
   try {
@@ -65,6 +78,8 @@ export async function GET(
 
     const destination: Destination = {
       placeId: result.place_id,
+      osmType: result.osm_type,
+      osmId: result.osm_id,
       name: result.name,
       latitude: Number(result.lat),
       longitude: Number(result.lon),

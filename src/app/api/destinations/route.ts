@@ -1,3 +1,4 @@
+import { Destination } from "@/types/destination";
 import { NextRequest, NextResponse } from "next/server";
 
 type NominatimResult = {
@@ -9,6 +10,8 @@ type NominatimResult = {
   address?: {
     country?: string;
   };
+  osm_type: "node" | "way" | "relation";
+  osm_id: number;
 };
 
 export async function GET(request: NextRequest) {
@@ -44,8 +47,10 @@ export async function GET(request: NextRequest) {
 
     const results: NominatimResult[] = await response.json();
 
-    const destinations = results.map((result) => ({
+    const destinations: Destination[] = results.map((result) => ({
       placeId: result.place_id,
+      osmType: result.osm_type,
+      osmId: result.osm_id,
       name: result.name,
       latitude: Number(result.lat),
       longitude: Number(result.lon),

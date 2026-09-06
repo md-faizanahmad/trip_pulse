@@ -5,6 +5,8 @@ export type Destination = {
   longitude: number;
   displayName: string;
   country: string | null;
+  osmType: "node" | "way" | "relation";
+  osmId: number;
 };
 
 export type SearchResponse = {
