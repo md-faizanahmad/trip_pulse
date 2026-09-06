@@ -1,51 +1,119 @@
-import { Destination, SearchResponse } from "@/types/destination";
-import { useState } from "react";
+import { useEffect, useReducer } from "react";
+import type { Destination, SearchResponse } from "@/types/destination";
 
-export function useDestinationSearch() {
-  const [destinations, setDestinations] = useState<Destination[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+type SearchStatus = "idle" | "loading" | "success" | "error";
 
-  async function searchDestinations(query: string) {
+type SearchState = {
+  destinations: Destination[];
+  status: SearchStatus;
+  error: string;
+};
+
+type SearchAction =
+  | { type: "SEARCH_STARTED" }
+  | { type: "SEARCH_SUCCESS"; destinations: Destination[] }
+  | { type: "SEARCH_ERROR"; error: string }
+  | { type: "SEARCH_RESET" };
+
+const initialState: SearchState = {
+  destinations: [],
+  status: "idle",
+  error: "",
+};
+
+function searchReducer(state: SearchState, action: SearchAction): SearchState {
+  switch (action.type) {
+    case "SEARCH_STARTED":
+      return {
+        destinations: [],
+        status: "loading",
+        error: "",
+      };
+
+    case "SEARCH_SUCCESS":
+      return {
+        destinations: action.destinations,
+        status: "success",
+        error: "",
+      };
+
+    case "SEARCH_ERROR":
+      return {
+        destinations: [],
+        status: "error",
+        error: action.error,
+      };
+
+    case "SEARCH_RESET":
+      return initialState;
+
+    default:
+      return state;
+  }
+}
+
+export function useDestinationSearch(query: string) {
+  const [state, dispatch] = useReducer(searchReducer, initialState);
+
+  useEffect(() => {
     const searchQuery = query.trim();
 
     if (!searchQuery) {
-      setDestinations([]);
-      setError("Please enter a destination.");
+      dispatch({ type: "SEARCH_RESET" });
       return;
     }
 
-    setIsLoading(true);
-    setError("");
-    setDestinations([]);
+    console.log("Typing:", searchQuery);
 
-    try {
-      const response = await fetch(
-        `/api/destinations?q=${encodeURIComponent(searchQuery)}`,
-      );
+    const controller = new AbortController();
 
-      const data: SearchResponse = await response.json();
+    const timeoutId = setTimeout(async () => {
+      console.log("Search API called:", searchQuery);
 
-      if (!response.ok) {
-        throw new Error(data.error ?? "Failed to search destinations.");
+      dispatch({ type: "SEARCH_STARTED" });
+
+      try {
+        const response = await fetch(
+          `/api/destinations?q=${encodeURIComponent(searchQuery)}`,
+          {
+            signal: controller.signal,
+          },
+        );
+
+        const data: SearchResponse = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error ?? "Failed to search destinations.");
+        }
+
+        dispatch({
+          type: "SEARCH_SUCCESS",
+          destinations: data.destinations ?? [],
+        });
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+
+        dispatch({
+          type: "SEARCH_ERROR",
+          error:
+            error instanceof Error
+              ? error.message
+              : "Failed to search destinations.",
+        });
       }
+    }, 500);
 
-      setDestinations(data.destinations ?? []);
-    } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Failed to search destinations.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }
+    return () => {
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [query]);
 
   return {
-    destinations,
-    isLoading,
-    error,
-    searchDestinations,
+    destinations: state.destinations,
+    status: state.status,
+    error: state.error,
   };
 }
