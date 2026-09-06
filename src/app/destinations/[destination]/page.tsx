@@ -13,6 +13,23 @@ type DestinationPageProps = {
   }>;
 };
 
+type DestinationErrorProps = {
+  destination: string;
+  message: string;
+};
+
+function DestinationError({ destination, message }: DestinationErrorProps) {
+  return (
+    <main className="flex-1">
+      <div className="mx-auto max-w-7xl px-6 py-12">
+        <Breadcrumb destination={destination} />
+
+        <p className="text-sm text-red-600">{message}</p>
+      </div>
+    </main>
+  );
+}
+
 export default async function DestinationPage({
   params,
   searchParams,
@@ -24,19 +41,23 @@ export default async function DestinationPage({
 
   if (!osmType || !osmId) {
     return (
-      <main className="flex-1">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <Breadcrumb destination={name} />
-
-          <p className="text-sm text-red-600">
-            Destination information is unavailable.
-          </p>
-        </div>
-      </main>
+      <DestinationError
+        destination={name}
+        message="Destination information is unavailable."
+      />
     );
   }
 
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+  if (!baseUrl) {
+    return (
+      <DestinationError
+        destination={name}
+        message="Application configuration is unavailable."
+      />
+    );
+  }
 
   const response = await fetch(
     `${baseUrl}/api/destinations/${encodeURIComponent(
@@ -51,15 +72,10 @@ export default async function DestinationPage({
 
   if (!response.ok) {
     return (
-      <main className="flex-1">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <Breadcrumb destination={name} />
-
-          <p className="text-sm text-red-600">
-            Unable to load destination information right now.
-          </p>
-        </div>
-      </main>
+      <DestinationError
+        destination={name}
+        message="Unable to load destination information right now."
+      />
     );
   }
 
@@ -67,15 +83,10 @@ export default async function DestinationPage({
 
   if (!data.destination) {
     return (
-      <main className="flex-1">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <Breadcrumb destination={name} />
-
-          <p className="text-sm text-red-600">
-            Destination information is unavailable.
-          </p>
-        </div>
-      </main>
+      <DestinationError
+        destination={name}
+        message="Destination information is unavailable."
+      />
     );
   }
 
