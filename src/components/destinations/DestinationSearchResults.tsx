@@ -20,16 +20,19 @@ export default function DestinationSearchResults({
     <div className="mt-3 max-h-80 overflow-y-auto overscroll-contain rounded-2xl bg-white shadow-lg shadow-zinc-900/5">
       <ul className="divide-y divide-zinc-100">
         {destinations.map((destination) => (
-          <li key={destination.placeId}>
-            <Link
-              href={`/destinations/${encodeURIComponent(
-                destination.name,
-              )}?osmType=${encodeURIComponent(
-                destination.osmType,
-              )}&osmId=${encodeURIComponent(destination.osmId)}`}
-              className="group flex min-h-16 items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-zinc-50 active:bg-zinc-100"
-            >
-              <div className="min-w-0">
+          <li
+            key={`${destination.osmType}-${destination.osmId}`}
+            className="group"
+          >
+            <div className="flex items-center gap-4 px-4 py-3 transition-colors hover:bg-zinc-50">
+              <Link
+                href={`/destinations/${encodeURIComponent(
+                  destination.name.toLowerCase(),
+                )}?osmType=${encodeURIComponent(
+                  destination.osmType,
+                )}&osmId=${destination.osmId}`}
+                className="min-w-0 flex-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-300"
+              >
                 <p className="truncate text-sm font-medium text-zinc-900">
                   {destination.name}
                 </p>
@@ -37,15 +40,8 @@ export default function DestinationSearchResults({
                 <p className="mt-1 truncate text-xs text-zinc-500">
                   {destination.displayName}
                 </p>
-              </div>
-
-              <span
-                aria-hidden="true"
-                className="shrink-0 text-zinc-300 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-zinc-500"
-              >
-                →
-              </span>
-            </Link>
+              </Link>
+            </div>
           </li>
         ))}
       </ul>

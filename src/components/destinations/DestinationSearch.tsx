@@ -28,7 +28,7 @@ export default function DestinationSearch() {
   }
 
   return (
-    <section className="border-b border-zinc-200 bg-zinc-50">
+    <section className=" bg-zinc-50">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
         <div className="text-center">
           <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
