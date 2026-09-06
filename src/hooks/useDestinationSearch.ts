@@ -1,5 +1,5 @@
+import { Destination, SearchResponse } from "@/types/destination";
 import { useState } from "react";
-import { Destination, SearchResponse } from "../types/destination";
 
 export function useDestinationSearch() {
   const [destinations, setDestinations] = useState<Destination[]>([]);
