@@ -9,8 +9,8 @@ export function validateDestinationQuery(query: string) {
     return "Enter a valid destination name.";
   }
 
-  if (!/^[a-zA-ZÀ-ÿ0-9\s.'-]+$/.test(value)) {
-    return "Use letters, numbers, spaces, hyphens, apostrophes, or periods.";
+  if (!/^[a-zA-ZÀ-ÿ\s.'-]+$/.test(value)) {
+    return "Destination names can only contain letters, spaces, hyphens, apostrophes, or periods.";
   }
 
   return null;
