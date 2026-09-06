@@ -50,6 +50,7 @@ export async function GET(
   url.searchParams.set("osm_ids", `${osmPrefix}${osmId}`);
   url.searchParams.set("format", "json");
   url.searchParams.set("addressdetails", "1");
+  url.searchParams.set("accept-language", "en");
 
   try {
     const response = await fetch(url, {
