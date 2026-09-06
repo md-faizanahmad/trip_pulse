@@ -1,6 +1,7 @@
 "use client";
 
 import { useDestinationSearch } from "@/hooks/useDestinationSearch";
+import Link from "next/link";
 import { FormEvent, useState } from "react";
 
 export default function DestinationSearch() {
@@ -68,9 +69,12 @@ export default function DestinationSearch() {
         {destinations.length > 0 && (
           <div className="mt-6 space-y-3">
             {destinations.map((destination) => (
-              <article
+              <Link
                 key={`${destination.latitude}-${destination.longitude}`}
-                className="rounded-md border border-zinc-200 bg-white p-4"
+                href={`/destinations/${encodeURIComponent(
+                  destination.name.toLowerCase(),
+                )}`}
+                className="block rounded-md border border-zinc-200 bg-white p-4 transition-colors hover:border-zinc-400"
               >
                 <h3 className="font-medium text-zinc-900">
                   {destination.name}
@@ -84,7 +88,7 @@ export default function DestinationSearch() {
                   {destination.latitude.toFixed(4)},{" "}
                   {destination.longitude.toFixed(4)}
                 </p>
-              </article>
+              </Link>
             ))}
           </div>
         )}
