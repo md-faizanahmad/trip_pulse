@@ -73,7 +73,7 @@ export default function DestinationSearch() {
                 key={`${destination.latitude}-${destination.longitude}`}
                 href={`/destinations/${encodeURIComponent(
                   destination.name.toLowerCase(),
-                )}`}
+                )}?placeId=${destination.placeId}`}
                 className="block rounded-md border border-zinc-200 bg-white p-4 transition-colors hover:border-zinc-400"
               >
                 <h3 className="font-medium text-zinc-900">
