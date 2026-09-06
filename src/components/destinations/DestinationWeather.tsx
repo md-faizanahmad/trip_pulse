@@ -1,7 +1,7 @@
 "use client";
 
 import { useWeather } from "@/hooks/useWeather";
-import { getWeatherCondition } from "@/utils/weather";
+import { formatWeatherDate, getWeatherCondition } from "@/utils/weather";
 
 type DestinationWeatherProps = {
   latitude: number;
@@ -93,7 +93,9 @@ export default function DestinationWeather({
                 key={day.date}
                 className="rounded-md border border-zinc-200 p-4"
               >
-                <p className="text-sm font-medium text-zinc-900">{day.date}</p>
+                <p className="text-sm font-medium text-zinc-900">
+                  {formatWeatherDate(day.date)}
+                </p>
 
                 <p className="mt-2 text-sm text-zinc-600">
                   {getWeatherCondition(day.weatherCode)}
