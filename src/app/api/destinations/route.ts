@@ -9,6 +9,7 @@ type NominatimResult = {
   display_name: string;
   address?: {
     country?: string;
+    country_code?: string;
   };
   osm_type: "node" | "way" | "relation";
   osm_id: number;
@@ -57,6 +58,7 @@ export async function GET(request: NextRequest) {
       longitude: Number(result.lon),
       displayName: result.display_name,
       country: result.address?.country ?? null,
+      countryCode: result.address?.country_code?.toUpperCase() ?? null,
     }));
 
     return NextResponse.json({ destinations });
