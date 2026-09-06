@@ -1,4 +1,4 @@
-import DestinationSearch from "../components/destinations/DestinationSearch";
+import DestinationSearch from "@/components/destinations/DestinationSearch";
 
 export default function Home() {
   return (
