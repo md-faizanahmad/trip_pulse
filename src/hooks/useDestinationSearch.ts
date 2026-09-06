@@ -58,7 +58,7 @@ export function useDestinationSearch(query: string) {
   useEffect(() => {
     const searchQuery = query.trim();
 
-    if (!searchQuery) {
+    if (searchQuery.length < 3) {
       dispatch({ type: "SEARCH_RESET" });
       return;
     }
