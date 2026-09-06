@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import type { Destination } from "@/types/destination";
 
 type NominatimResult = {
   place_id: number;
@@ -11,21 +12,30 @@ type NominatimResult = {
   };
 };
 
-export async function GET(request: NextRequest) {
-  const query = request.nextUrl.searchParams.get("q")?.trim();
+type DestinationRouteProps = {
+  params: Promise<{
+    destination: string;
+  }>;
+};
+
+export async function GET(
+  request: NextRequest,
+  { params }: DestinationRouteProps,
+) {
+  const { destination } = await params;
+  const query = decodeURIComponent(destination).trim();
 
   if (!query) {
     return NextResponse.json(
-      { error: "Search query is required." },
+      { error: "Destination is required." },
       { status: 400 },
     );
   }
 
   const url = new URL("https://nominatim.openstreetmap.org/search");
-
   url.searchParams.set("q", query);
   url.searchParams.set("format", "json");
-  url.searchParams.set("limit", "5");
+  url.searchParams.set("limit", "1");
   url.searchParams.set("addressdetails", "1");
 
   try {
@@ -44,19 +54,28 @@ export async function GET(request: NextRequest) {
 
     const results: NominatimResult[] = await response.json();
 
-    const destinations = results.map((result) => ({
+    if (results.length === 0) {
+      return NextResponse.json(
+        { error: "Destination not found." },
+        { status: 404 },
+      );
+    }
+
+    const result = results[0];
+
+    const destination: Destination = {
       placeId: result.place_id,
       name: result.name,
       latitude: Number(result.lat),
       longitude: Number(result.lon),
       displayName: result.display_name,
       country: result.address?.country ?? null,
-    }));
+    };
 
-    return NextResponse.json({ destinations });
+    return NextResponse.json({ destination });
   } catch {
     return NextResponse.json(
-      { error: "Failed to search locations." },
+      { error: "Failed to fetch destination." },
       { status: 502 },
     );
   }

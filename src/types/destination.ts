@@ -1,4 +1,5 @@
 export type Destination = {
+  placeId: number;
   name: string;
   latitude: number;
   longitude: number;
