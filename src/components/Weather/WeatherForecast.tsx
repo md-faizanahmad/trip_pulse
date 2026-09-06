@@ -26,11 +26,11 @@ export default function WeatherForecast({ forecast }: WeatherForecastProps) {
         </p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
+      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4 xl:grid-cols-7">
         {forecast.map((day, index) => (
           <div
             key={day.date}
-            className="group rounded-2xl bg-zinc-50/80 p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-zinc-100/80"
+            className="group w-[160px] shrink-0 snap-start rounded-2xl bg-zinc-50/80 p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-zinc-100/80 sm:w-auto sm:shrink"
             style={{
               animationDelay: `${index * 60}ms`,
             }}
