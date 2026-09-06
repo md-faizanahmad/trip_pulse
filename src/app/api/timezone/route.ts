@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-type GeoNamesTimezoneResponse = {
+export type GeoNamesTimezoneResponse = {
   timezoneId?: string;
   timezone?: string;
   gmtOffset?: number;

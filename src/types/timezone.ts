@@ -1,7 +1,10 @@
-export type GeoNamesTimezoneResponse = {
-  timezoneId?: string;
-  gmtOffset?: number;
-  dstOffset?: number;
-  rawOffset?: number;
-  time?: string;
+export type Timezone = {
+  timezone: string;
+  gmtOffset: number | null;
+  dstOffset: number | null;
+};
+
+export type TimezoneResponse = {
+  timezone?: Timezone;
+  error?: string;
 };
