@@ -1,6 +1,6 @@
 "use client";
 
-import { useDestinationSearch } from "@/src/hooks/useDestinationSearch";
+import { useDestinationSearch } from "@/hooks/useDestinationSearch";
 import { FormEvent, useState } from "react";
 
 export default function DestinationSearch() {
