@@ -83,9 +83,11 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      timezone,
-      gmtOffset: data.gmtOffset ?? null,
-      dstOffset: data.dstOffset ?? null,
+      timezone: {
+        timezone,
+        gmtOffset: data.gmtOffset ?? null,
+        dstOffset: data.dstOffset ?? null,
+      },
     });
   } catch (error) {
     console.error("GeoNames timezone request error:", error);
