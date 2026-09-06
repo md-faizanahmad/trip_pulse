@@ -21,6 +21,12 @@ export default function DestinationSearch() {
     validationError === null &&
     destinations.length === 0;
 
+  function handleQueryChange(value: string) {
+    const sanitizedValue = value.replace(/[^a-zA-ZÀ-ÿ\s.'-]/g, "");
+
+    setQuery(sanitizedValue);
+  }
+
   return (
     <section className="border-b border-zinc-200 bg-zinc-50">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
@@ -44,7 +50,7 @@ export default function DestinationSearch() {
               id="destination-search"
               type="search"
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => handleQueryChange(event.target.value)}
               placeholder="Search a destination"
               autoComplete="off"
               className="min-w-0 flex-1 rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
