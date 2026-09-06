@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useReducer } from "react";
 import type { Destination, SearchResponse } from "@/types/destination";
+import { validateDestinationQuery } from "@/validation/validation";
 
 type SearchStatus = "idle" | "loading" | "success" | "error";
 
@@ -57,19 +60,16 @@ export function useDestinationSearch(query: string) {
 
   useEffect(() => {
     const searchQuery = query.trim();
+    const validationError = validateDestinationQuery(searchQuery);
 
-    if (searchQuery.length < 3) {
+    if (validationError) {
       dispatch({ type: "SEARCH_RESET" });
       return;
     }
 
-    console.log("Typing:", searchQuery);
-
     const controller = new AbortController();
 
     const timeoutId = setTimeout(async () => {
-      console.log("Search API called:", searchQuery);
-
       dispatch({ type: "SEARCH_STARTED" });
 
       try {
