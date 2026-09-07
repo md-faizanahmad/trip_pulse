@@ -1,7 +1,9 @@
+import Currency from "@/components/currency/Currency";
 import DestinationPlace from "@/components/destinations/DestinationPlace";
 import DestinationWeather from "@/components/destinations/DestinationWeather";
 import Breadcrumb from "@/shared/Breadcrumb";
 import type { Destination } from "@/types/destination";
+import { getCurrencyByCountryCode } from "@/utils/currency";
 
 type DestinationPageProps = {
   params: Promise<{
@@ -92,6 +94,10 @@ export default async function DestinationPage({
 
   const selectedDestination = data.destination;
 
+  const destinationCurrency = getCurrencyByCountryCode(
+    selectedDestination.countryCode,
+  );
+
   return (
     <main className="flex-1">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-8">
@@ -105,6 +111,17 @@ export default async function DestinationPage({
           latitude={selectedDestination.latitude}
           longitude={selectedDestination.longitude}
         />
+
+        {destinationCurrency && (
+          <div className="mt-8 sm:mt-10">
+            <Currency
+              currencyName={destinationCurrency.name}
+              currencyCode={destinationCurrency.code}
+              currencySymbol={destinationCurrency.symbol}
+              baseCurrency="USD"
+            />
+          </div>
+        )}
       </div>
     </main>
   );
