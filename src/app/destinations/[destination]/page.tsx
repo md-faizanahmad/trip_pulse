@@ -2,6 +2,7 @@ import Currency from "@/components/currency/Currency";
 import DestinationPlace from "@/components/destinations/DestinationPlace";
 import DestinationWeather from "@/components/destinations/DestinationWeather";
 import Places from "@/components/place/Places";
+import Safety from "@/components/Safety/Safety";
 import Transport from "@/components/transport/Transport";
 import Breadcrumb from "@/shared/Breadcrumb";
 import type { Destination } from "@/types/destination";
@@ -133,6 +134,7 @@ export default async function DestinationPage({
           latitude={selectedDestination.latitude}
           longitude={selectedDestination.longitude}
         />
+        <Safety countryCode={selectedDestination.countryCode} />
       </div>
     </main>
   );
