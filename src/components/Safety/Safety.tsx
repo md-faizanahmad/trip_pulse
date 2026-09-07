@@ -1,7 +1,7 @@
 "use client";
 
-import { Ambulance, Flame, Phone, ShieldAlert, Siren } from "lucide-react";
 import { useSafety } from "@/hooks/useSafety";
+import { Ambulance, Flame, Phone, ShieldAlert, Siren } from "lucide-react";
 
 type SafetyProps = {
   countryCode: string | null;
