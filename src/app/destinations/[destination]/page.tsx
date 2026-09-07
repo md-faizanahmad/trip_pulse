@@ -95,16 +95,16 @@ export default async function DestinationPage({
 
   return (
     <main className="flex-1">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-8">
         <Breadcrumb destination={selectedDestination.name} />
 
         <div className="mt-6 sm:mt-8">
           <DestinationPlace destination={selectedDestination} />
         </div>
-        <DestinationTimezone
+        {/* <DestinationTimezone
           latitude={selectedDestination.latitude}
           longitude={selectedDestination.longitude}
-        />
+        /> */}
         <DestinationWeather
           latitude={selectedDestination.latitude}
           longitude={selectedDestination.longitude}

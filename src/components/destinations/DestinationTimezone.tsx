@@ -8,15 +8,6 @@ type DestinationTimezoneProps = {
   longitude: number;
 };
 
-function formatLocalTime(timezone: string) {
-  return new Intl.DateTimeFormat("en-US", {
-    timeZone: timezone,
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  }).format(new Date());
-}
-
 function formatUtcOffset(offset: number | null) {
   if (offset === null) {
     return "—";
@@ -50,11 +41,11 @@ export default function DestinationTimezone({
 
   if (status === "loading") {
     return (
-      <section className="mt-10">
-        <div className="animate-pulse space-y-4">
-          <div className="h-5 w-28 rounded bg-zinc-200" />
-          <div className="h-8 w-32 rounded bg-zinc-200" />
-          <div className="h-4 w-40 rounded bg-zinc-100" />
+      <section className="mt-8">
+        <div className="animate-pulse space-y-3">
+          <div className="h-4 w-20 rounded bg-zinc-200" />
+          <div className="h-6 w-28 rounded bg-zinc-200" />
+          <div className="h-3 w-36 rounded bg-zinc-100" />
         </div>
       </section>
     );
@@ -62,13 +53,12 @@ export default function DestinationTimezone({
 
   if (status === "error") {
     return (
-      <section className="mt-10">
+      <section className="mt-8">
         <p className="text-sm text-red-600">{error}</p>
       </section>
     );
   }
 
-  console.log("Timezone data:", timezone);
   if (!timezone) {
     return null;
   }
@@ -81,19 +71,17 @@ export default function DestinationTimezone({
   }).format(currentTime);
 
   return (
-    <section className="mt-10">
+    <section className="mt-8 ms-5">
       <div>
         <p className="text-sm font-medium text-zinc-500">Local Time</p>
 
-        <p className="mt-2 text-3xl font-semibold tracking-tight text-zinc-900">
+        <p className="mt-1 text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl">
           {localTime}
         </p>
 
-        <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm text-zinc-500">
-          <span>{timezone.timezone}</span>
-
-          <span>{formatUtcOffset(timezone.gmtOffset)}</span>
-        </div>
+        <p className="mt-1 text-xs text-zinc-500">
+          {timezone.timezone} · {formatUtcOffset(timezone.gmtOffset)}
+        </p>
       </div>
     </section>
   );

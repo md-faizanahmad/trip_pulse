@@ -1,13 +1,29 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useTimezone } from "@/hooks/useTimezone";
 import { useWeather } from "@/hooks/useWeather";
 import WeatherForecast from "@/components/Weather/WeatherForecast";
 import { getWeatherCondition, getWeatherIcon } from "@/utils/weather";
+import WeatherSkeleton from "@/skeletons/weatherSkeleton";
 
 type DestinationWeatherProps = {
   latitude: number;
   longitude: number;
 };
+
+function formatUtcOffset(offset: number | null) {
+  if (offset === null) {
+    return "—";
+  }
+
+  const sign = offset >= 0 ? "+" : "-";
+  const absoluteOffset = Math.abs(offset);
+  const hours = Math.floor(absoluteOffset);
+  const minutes = Math.round((absoluteOffset - hours) * 60);
+
+  return `UTC${sign}${hours}:${String(minutes).padStart(2, "0")}`;
+}
 
 export default function DestinationWeather({
   latitude,
@@ -15,23 +31,26 @@ export default function DestinationWeather({
 }: DestinationWeatherProps) {
   const { weather, status, error } = useWeather(latitude, longitude);
 
+  const {
+    timezone,
+    status: timezoneStatus,
+    error: timezoneError,
+  } = useTimezone(latitude, longitude);
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60_000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, []);
+
   if (status === "loading") {
-    return (
-      <section className="mt-10">
-        <div className="rounded-2xl bg-zinc-50/80 p-6 sm:p-8">
-          <div className="animate-pulse">
-            <div className="h-5 w-32 rounded bg-zinc-200" />
-            <div className="mt-6 flex items-center gap-5">
-              <div className="h-16 w-16 rounded-full bg-zinc-200" />
-              <div className="space-y-2">
-                <div className="h-8 w-24 rounded bg-zinc-200" />
-                <div className="h-4 w-28 rounded bg-zinc-200" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
+    <WeatherSkeleton />;
   }
 
   if (status === "error") {
@@ -54,72 +73,106 @@ export default function DestinationWeather({
 
   const { current, forecast = [] } = weather;
 
+  const localTime = timezone?.timezone
+    ? new Intl.DateTimeFormat("en-US", {
+        timeZone: timezone.timezone,
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      }).format(currentTime)
+    : null;
+
   return (
     <section className="mt-10 space-y-10">
-      <div className="rounded-2xl bg-zinc-50/80 p-6 sm:p-8">
-        <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-medium text-zinc-500">Current Weather</p>
+      <div className="w-full   p-5  sm:p-6 lg:p-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Local Time */}
+          <div className="flex flex-col items-start gap-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+              Local Time
+            </h2>
 
-            <div className="mt-4 flex items-center gap-4">
+            {timezoneStatus === "loading" && (
+              <div
+                className="flex w-full flex-col gap-2 animate-pulse"
+                aria-label="Loading local time"
+                aria-busy="true"
+              >
+                <div className="h-8 w-24 rounded-md bg-zinc-200" />
+                <div className="h-4 w-32 rounded-md bg-zinc-100" />
+              </div>
+            )}
+
+            {timezone && localTime && (
+              <div className="flex flex-col items-start">
+                <span className="text-3xl font-semibold tracking-tight text-zinc-900">
+                  {localTime}
+                </span>
+                <span className="text-sm font-medium text-zinc-600">
+                  {timezone.timezone} · {formatUtcOffset(timezone.gmtOffset)}
+                </span>
+              </div>
+            )}
+
+            {timezoneStatus === "error" && (
+              <span className="text-sm font-medium text-rose-500">
+                {timezoneError}
+              </span>
+            )}
+          </div>
+          {/* Current Weather */}
+          <div className="flex flex-col items-start gap-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+              Current Weather
+            </h2>
+            <div className="flex items-center gap-3">
               <span
-                className="text-5xl transition-transform duration-300 hover:scale-110"
+                className="text-4xl transition-transform duration-300 hover:scale-105"
                 role="img"
                 aria-label={getWeatherCondition(current.weatherCode)}
               >
                 {getWeatherIcon(current.weatherCode)}
               </span>
-
-              <div>
-                <p className="text-4xl font-semibold tracking-tight text-zinc-900">
+              <div className="flex flex-col">
+                <span className="text-3xl font-semibold tracking-tight text-zinc-900">
                   {current.temperature ?? "—"}°C
-                </p>
-
-                <p className="mt-1 text-sm text-zinc-600">
+                </span>
+                <span className="text-sm font-medium text-zinc-600">
                   {getWeatherCondition(current.weatherCode)}
-                </p>
+                </span>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-8 gap-y-5 sm:min-w-70">
-            <div>
-              <div className="flex items-center gap-2">
-                <p className="text-xs text-zinc-400">Feels like</p>
+          {/* Weather Details */}
+          <div className="flex flex-col items-start gap-3 sm:col-span-2 lg:col-span-1">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+              Conditions
+            </h2>
+            <div className="grid w-full grid-cols-3 gap-2 rounded-xl bg-zinc-50 p-4 border border-zinc-100/50">
+              <div className="flex flex-col">
+                <span className="text-xs text-zinc-500">Feels like</span>
+                <span className="mt-1 text-sm font-semibold text-zinc-900">
+                  {current.feelsLike ?? "—"}°C
+                </span>
               </div>
 
-              <p className="mt-1 font-medium text-zinc-900">
-                {current.feelsLike ?? "—"}°C{" "}
-                <span aria-hidden="true" className="text-base">
-                  🌡️
+              <div className="flex flex-col">
+                <span className="text-xs text-zinc-500">Humidity</span>
+                <span className="mt-1 text-sm font-semibold text-zinc-900">
+                  {current.humidity ?? "—"}%
                 </span>
-              </p>
-            </div>
-
-            <div>
-              <div className="flex items-center gap-2">
-                <p className="text-xs text-zinc-400">Humidity</p>
               </div>
 
-              <p className="mt-1 font-medium text-zinc-900">
-                {current.humidity ?? "—"}%{" "}
-                <span aria-hidden="true" className="text-base">
-                  💧
+              <div className="flex flex-col">
+                <span className="text-xs text-zinc-500">Wind</span>
+                <span className="mt-1 text-sm font-semibold text-zinc-900">
+                  {current.windSpeed ?? "—"}{" "}
+                  <span className="text-xs font-medium text-zinc-500">
+                    km/h
+                  </span>
                 </span>
-              </p>
-            </div>
-
-            <div>
-              <div className="flex items-center gap-2">
-                <p className="text-xs text-zinc-400">Wind</p>
               </div>
-
-              <p className="mt-1 font-medium text-zinc-900">
-                {current.windSpeed ?? "—"} km/h{" "}
-                <span aria-hidden="true" className="text-base">
-                  💨
-                </span>
-              </p>
             </div>
           </div>
         </div>
