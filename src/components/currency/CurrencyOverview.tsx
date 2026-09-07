@@ -39,7 +39,7 @@ export default function CurrencyOverview({
         </div>
       </div>
 
-      <div className="mt-5 rounded-md bg-zinc-50 px-4 py-3">
+      <div className="mt-5 rounded-md  px-4 py-3">
         <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
           Exchange Rate
         </p>
