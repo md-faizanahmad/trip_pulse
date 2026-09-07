@@ -106,7 +106,7 @@ export default function CurrencyConverter({
         </label>
       </div>
 
-      <div className="rounded-md bg-zinc-50 px-4 py-3">
+      <div className="rounded-md  px-4 py-3">
         {status === "loading" && (
           <p className="text-sm text-zinc-500">Loading exchange rate...</p>
         )}
@@ -114,7 +114,7 @@ export default function CurrencyConverter({
         {status === "error" && <p className="text-sm text-red-600">{error}</p>}
 
         {status === "success" && convertedAmount !== null && currency && (
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+          <div className="flex flex-row gap-1 sm:flex-row sm:items-baseline sm:justify-between">
             <div>
               <p className="text-xs font-medium text-zinc-500">
                 Converted Amount
@@ -123,11 +123,10 @@ export default function CurrencyConverter({
               <p className="mt-0.5 text-xl font-semibold text-zinc-900">
                 {convertedAmount.toFixed(2)} {currency.quote}
               </p>
+              <p className="text-xs text-zinc-500">
+                1 {currency.base} = {currency.rate.toFixed(2)} {currency.quote}
+              </p>
             </div>
-
-            <p className="text-xs text-zinc-500">
-              1 {currency.base} = {currency.rate.toFixed(2)} {currency.quote}
-            </p>
           </div>
         )}
       </div>
