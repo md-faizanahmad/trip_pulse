@@ -1,5 +1,6 @@
 "use client";
 
+import { Ambulance, Flame, Phone, ShieldAlert, Siren } from "lucide-react";
 import { useSafety } from "@/hooks/useSafety";
 
 type SafetyProps = {
@@ -10,22 +11,22 @@ const emergencyItems = [
   {
     key: "emergency" as const,
     label: "Emergency",
-    icon: "🚨",
+    icon: Siren,
   },
   {
     key: "police" as const,
     label: "Police",
-    icon: "👮",
+    icon: ShieldAlert,
   },
   {
     key: "ambulance" as const,
     label: "Ambulance",
-    icon: "🚑",
+    icon: Ambulance,
   },
   {
     key: "fire" as const,
     label: "Fire",
-    icon: "🚒",
+    icon: Flame,
   },
 ];
 
@@ -44,43 +45,64 @@ export default function Safety({ countryCode }: SafetyProps) {
       </div>
 
       {status === "loading" && (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="space-y-2">
           {emergencyItems.map((item) => (
             <div
               key={item.key}
-              className="h-20 animate-pulse rounded-lg border border-zinc-200 bg-zinc-100"
+              className="h-14 animate-pulse rounded-md bg-zinc-100"
             />
           ))}
         </div>
       )}
 
       {status === "error" && (
-        <div className="rounded-lg border border-red-100 bg-red-50 p-4">
+        <div className="border-l-2 border-red-400 bg-red-50 px-4 py-3">
           <p className="text-sm font-medium text-red-700">{error}</p>
         </div>
       )}
 
       {status === "success" && emergency && (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {emergencyItems.map((item) => (
-            <div
-              key={item.key}
-              className="flex items-center gap-3 border-b border-zinc-100 py-3 sm:rounded-lg sm:border sm:border-zinc-200 sm:bg-white sm:px-4"
-            >
-              <span className="text-xl" aria-hidden="true">
-                {item.icon}
-              </span>
+        <div className="divide-y divide-zinc-100 border-y border-zinc-200">
+          {emergencyItems.map((item) => {
+            const Icon = item.icon;
+            const number = emergency[item.key];
 
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-                  {item.label}
-                </p>
-                <p className="mt-0.5 text-lg font-bold text-zinc-900">
-                  {emergency[item.key] ?? "—"}
-                </p>
+            return (
+              <div
+                key={item.key}
+                className="flex items-center justify-between gap-4 py-3.5"
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  <Icon
+                    size={18}
+                    strokeWidth={2}
+                    className="shrink-0 text-zinc-500"
+                    aria-hidden="true"
+                  />
+
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-zinc-900">
+                      {item.label}
+                    </p>
+                    <p className="text-sm font-bold text-zinc-500">
+                      {number ?? "—"}
+                    </p>
+                  </div>
+                </div>
+
+                {number && (
+                  <a
+                    href={`tel:${number}`}
+                    className="flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-semibold text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950"
+                    aria-label={`Call ${item.label}`}
+                  >
+                    <Phone size={15} strokeWidth={2} aria-hidden="true" />
+                    Call
+                  </a>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>
