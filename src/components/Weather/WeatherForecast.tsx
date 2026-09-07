@@ -30,7 +30,7 @@ export default function WeatherForecast({ forecast }: WeatherForecastProps) {
         {forecast.map((day, index) => (
           <div
             key={day.date}
-            className="group w-40 shrink-0 snap-start rounded-2xl bg-zinc-50/80 p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-zinc-100/80 sm:w-auto sm:shrink"
+            className="group w-40 shrink-0 snap-start rounded-2xl /80 p-5 transition-all duration-300 hover:-translate-y-1 hover:bg-zinc-100/80 sm:w-auto sm:shrink"
             style={{
               animationDelay: `${index * 60}ms`,
             }}

@@ -2,7 +2,7 @@ export default function WeatherSkeleton() {
   return (
     <section className="mt-10">
       <div
-        className="rounded-2xl bg-zinc-50/80 p-6 sm:p-8"
+        className="rounded-2xl /80 p-6 sm:p-8"
         aria-label="Loading weather"
         aria-busy="true"
       >

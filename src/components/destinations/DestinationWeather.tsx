@@ -36,7 +36,7 @@ export default function DestinationWeather({
   if (status === "error") {
     return (
       <section className="mt-10">
-        <div className="rounded-2xl bg-zinc-50/80 p-6 sm:p-8">
+        <div className="rounded-2xl /80 p-6 sm:p-8">
           <h2 className="text-xl font-semibold tracking-tight text-zinc-900">
             Current Weather
           </h2>
@@ -119,7 +119,7 @@ export default function DestinationWeather({
             <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
               Conditions
             </h2>
-            <div className="grid w-full grid-cols-3 gap-2 rounded-xl bg-zinc-50 p-4 border border-zinc-100/50">
+            <div className="grid w-full grid-cols-3 gap-2 rounded-xl  p-4 border border-zinc-100/50">
               <div className="flex flex-col">
                 <span className="text-xs text-zinc-500">Feels like</span>
                 <span className="mt-1 text-sm font-semibold text-zinc-900">
