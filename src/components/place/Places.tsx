@@ -1,13 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import { usePlaces } from "@/hooks/usePlaces";
 
 type PlacesProps = {
   latitude: number;
   longitude: number;
 };
+
+const INITIAL_PLACE_COUNT = 6;
+
 export default function Places({ latitude, longitude }: PlacesProps) {
   const { places, status, error } = usePlaces(latitude, longitude);
+  const [showAll, setShowAll] = useState(false);
+
+  const visiblePlaces = showAll ? places : places.slice(0, INITIAL_PLACE_COUNT);
+
+  const hasMorePlaces = places.length > INITIAL_PLACE_COUNT;
+
+  function getGoogleMapsUrl(placeLatitude: number, placeLongitude: number) {
+    return `https://www.google.com/maps/search/?api=1&query=${placeLatitude},${placeLongitude}`;
+  }
 
   return (
     <section className="mt-8 border-t border-zinc-100 pt-8 sm:mt-10 sm:pt-10">
@@ -21,12 +34,9 @@ export default function Places({ latitude, longitude }: PlacesProps) {
       </div>
 
       {status === "loading" && (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((item) => (
-            <div
-              key={item}
-              className="h-24 animate-pulse rounded-lg border border-zinc-200 bg-zinc-100"
-            />
+        <div className="divide-y divide-zinc-100 border-y border-zinc-200">
+          {[1, 2, 3, 4, 5, 6].map((item) => (
+            <div key={item} className="h-16 animate-pulse bg-zinc-50" />
           ))}
         </div>
       )}
@@ -46,20 +56,51 @@ export default function Places({ latitude, longitude }: PlacesProps) {
       )}
 
       {status === "success" && places.length > 0 && (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {places.map((place) => (
-            <article
-              key={place.id}
-              className="rounded-lg border border-zinc-200 bg-white p-4"
-            >
-              <h3 className="font-semibold text-zinc-900">{place.name}</h3>
+        <>
+          <div className="max-h-80 divide-y divide-zinc-100 overflow-y-auto overscroll-contain border-y border-zinc-200 p-5">
+            {visiblePlaces.map((place) => (
+              <div
+                key={place.id}
+                className="flex items-center justify-between gap-4 py-4"
+              >
+                <div className="min-w-0">
+                  <h3 className="truncate font-semibold text-zinc-900">
+                    {place.name}
+                  </h3>
 
-              {place.address && (
-                <p className="mt-1 text-sm text-zinc-500">{place.address}</p>
-              )}
-            </article>
-          ))}
-        </div>
+                  {(place.address || place.city) && (
+                    <p className="mt-1 truncate text-sm text-zinc-500">
+                      {[place.address, place.city].filter(Boolean).join(", ")}
+                    </p>
+                  )}
+                </div>
+
+                <a
+                  href={getGoogleMapsUrl(place.latitude, place.longitude)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 text-sm font-semibold text-zinc-700 underline decoration-zinc-300 underline-offset-4 transition hover:text-zinc-950 hover:decoration-zinc-900"
+                >
+                  Maps
+                </a>
+              </div>
+            ))}
+          </div>
+
+          {hasMorePlaces && (
+            <div className="mt-5 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setShowAll((current) => !current)}
+                className="rounded-md border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900"
+              >
+                {showAll
+                  ? "Show less"
+                  : `Show all ${places.length} attractions`}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </section>
   );

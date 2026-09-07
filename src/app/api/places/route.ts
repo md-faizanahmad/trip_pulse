@@ -5,14 +5,8 @@ type OverpassElement = {
   id?: number;
   lat?: number;
   lon?: number;
-  center?: {
-    lat?: number;
-    lon?: number;
-  };
-  tags?: {
-    name?: string;
-    [key: string]: string | undefined;
-  };
+  center?: { lat?: number; lon?: number };
+  tags?: { name?: string; [key: string]: string | undefined };
 };
 
 type OverpassResponse = {
@@ -121,7 +115,17 @@ export async function GET(request: NextRequest) {
       })
       .filter((place): place is Place => place !== null);
 
-    return NextResponse.json({ places });
+    const uniquePlaces = places.filter((place, index, allPlaces) => {
+      const normalizedName = place.name.toLowerCase();
+
+      return (
+        allPlaces.findIndex(
+          (item) => item.name.toLowerCase() === normalizedName,
+        ) === index
+      );
+    });
+
+    return NextResponse.json({ places: uniquePlaces });
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") {
       return NextResponse.json(

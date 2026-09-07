@@ -1,6 +1,7 @@
 import Currency from "@/components/currency/Currency";
 import DestinationPlace from "@/components/destinations/DestinationPlace";
 import DestinationWeather from "@/components/destinations/DestinationWeather";
+import Places from "@/components/place/Places";
 import Breadcrumb from "@/shared/Breadcrumb";
 import type { Destination } from "@/types/destination";
 import { getCurrencyByCountryCode } from "@/utils/currency";
@@ -122,6 +123,11 @@ export default async function DestinationPage({
             />
           </div>
         )}
+
+        <Places
+          latitude={selectedDestination.latitude}
+          longitude={selectedDestination.longitude}
+        />
       </div>
     </main>
   );
