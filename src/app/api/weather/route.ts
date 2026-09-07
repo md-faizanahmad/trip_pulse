@@ -13,6 +13,8 @@ type OpenMeteoResponse = {
     weather_code?: number[];
     temperature_2m_max?: number[];
     temperature_2m_min?: number[];
+    sunrise?: string[];
+    sunset?: string[];
   };
 };
 
@@ -67,7 +69,13 @@ export async function GET(request: NextRequest) {
   );
   url.searchParams.set(
     "daily",
-    ["weather_code", "temperature_2m_max", "temperature_2m_min"].join(","),
+    [
+      "weather_code",
+      "temperature_2m_max",
+      "temperature_2m_min",
+      "sunrise",
+      "sunset",
+    ].join(","),
   );
   url.searchParams.set("forecast_days", "7");
   url.searchParams.set("timezone", "auto");
@@ -107,6 +115,10 @@ export async function GET(request: NextRequest) {
         humidity: data.current.relative_humidity_2m ?? null,
         windSpeed: data.current.wind_speed_10m ?? null,
         weatherCode: data.current.weather_code ?? null,
+      },
+      sunTimes: {
+        sunrise: data.daily.sunrise?.[0] ?? null,
+        sunset: data.daily.sunset?.[0] ?? null,
       },
       forecast,
     });

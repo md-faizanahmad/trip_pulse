@@ -1,29 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLocalTime } from "@/hooks/useLocalTime";
 import { useTimezone } from "@/hooks/useTimezone";
 import { useWeather } from "@/hooks/useWeather";
+
 import WeatherForecast from "@/components/Weather/WeatherForecast";
-import { getWeatherCondition, getWeatherIcon } from "@/utils/weather";
 import WeatherSkeleton from "@/skeletons/weatherSkeleton";
+
+import { getWeatherCondition, getWeatherIcon } from "@/utils/weather";
+import { formatUtcOffset } from "@/utils/timezone";
 
 type DestinationWeatherProps = {
   latitude: number;
   longitude: number;
 };
-
-function formatUtcOffset(offset: number | null) {
-  if (offset === null) {
-    return "—";
-  }
-
-  const sign = offset >= 0 ? "+" : "-";
-  const absoluteOffset = Math.abs(offset);
-  const hours = Math.floor(absoluteOffset);
-  const minutes = Math.round((absoluteOffset - hours) * 60);
-
-  return `UTC${sign}${hours}:${String(minutes).padStart(2, "0")}`;
-}
 
 export default function DestinationWeather({
   latitude,
@@ -37,20 +27,10 @@ export default function DestinationWeather({
     error: timezoneError,
   } = useTimezone(latitude, longitude);
 
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60_000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, []);
+  const localTime = useLocalTime(timezone?.timezone ?? null);
 
   if (status === "loading") {
-    <WeatherSkeleton />;
+    return <WeatherSkeleton />;
   }
 
   if (status === "error") {
@@ -60,7 +40,6 @@ export default function DestinationWeather({
           <h2 className="text-xl font-semibold tracking-tight text-zinc-900">
             Current Weather
           </h2>
-
           <p className="mt-4 text-sm text-red-600">{error}</p>
         </div>
       </section>
@@ -72,15 +51,6 @@ export default function DestinationWeather({
   }
 
   const { current, forecast = [] } = weather;
-
-  const localTime = timezone?.timezone
-    ? new Intl.DateTimeFormat("en-US", {
-        timeZone: timezone.timezone,
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-      }).format(currentTime)
-    : null;
 
   return (
     <section className="mt-10 space-y-10">

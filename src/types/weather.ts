@@ -1,3 +1,8 @@
+export type WeatherSunTimes = {
+  sunrise: string | null;
+  sunset: string | null;
+};
+
 export type WeatherCurrent = {
   temperature: number | null;
   feelsLike: number | null;
@@ -15,6 +20,7 @@ export type WeatherForecast = {
 
 export type WeatherResponse = {
   current?: WeatherCurrent;
+  sunTimes?: WeatherSunTimes;
   forecast?: WeatherForecast[];
   error?: string;
 };

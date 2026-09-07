@@ -1,5 +1,5 @@
 import type { Destination } from "@/types/destination";
-
+import SunTimes from "../Weather/SunTimes";
 type DestinationPlaceProps = {
   destination: Destination;
 };
@@ -58,14 +58,22 @@ export default function DestinationPlace({
       </div>
 
       {/* Right Column: Embedded Map */}
-      <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-lg bg-zinc-100 ring-1 ring-black/5 sm:h-36 sm:w-48">
-        <iframe
-          title={`Map showing ${destination.name}`}
-          src={mapsEmbedUrl}
-          className="h-full w-full border-0"
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
+      {/* Right Column: Sun Times & Embedded Map */}
+      <div>
+        <SunTimes
+          latitude={destination.latitude}
+          longitude={destination.longitude}
         />
+
+        <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-lg bg-zinc-100 ring-1 ring-black/5 sm:h-36 sm:w-48">
+          <iframe
+            title={`Map showing ${destination.name}`}
+            src={mapsEmbedUrl}
+            className="h-full w-full border-0"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
       </div>
     </section>
   );

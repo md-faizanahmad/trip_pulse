@@ -1,5 +1,4 @@
 import DestinationPlace from "@/components/destinations/DestinationPlace";
-import DestinationTimezone from "@/components/destinations/DestinationTimezone";
 import DestinationWeather from "@/components/destinations/DestinationWeather";
 import Breadcrumb from "@/shared/Breadcrumb";
 import type { Destination } from "@/types/destination";
@@ -101,10 +100,7 @@ export default async function DestinationPage({
         <div className="mt-6 sm:mt-8">
           <DestinationPlace destination={selectedDestination} />
         </div>
-        {/* <DestinationTimezone
-          latitude={selectedDestination.latitude}
-          longitude={selectedDestination.longitude}
-        /> */}
+
         <DestinationWeather
           latitude={selectedDestination.latitude}
           longitude={selectedDestination.longitude}
