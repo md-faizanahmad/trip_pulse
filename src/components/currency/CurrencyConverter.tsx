@@ -32,8 +32,8 @@ export default function CurrencyConverter({
   }
 
   return (
-    <section className="space-y-4 border-t border-zinc-100 pt-6">
-      <div>
+    <section className="space-y-4 p-4 sm:p-5 border-t border-zinc-100 pt-6">
+      <div className="min-w-0 ">
         <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
           Currency Converter
         </p>
