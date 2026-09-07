@@ -10,7 +10,7 @@ export default function DestinationSearchResults({
 }: DestinationSearchResultsProps) {
   if (destinations.length === 0) {
     return (
-      <div className="mt-3 rounded-2xl bg-zinc-50 px-4 py-5 text-center">
+      <div className="mt-3 rounded-2xl  px-4 py-5 text-center">
         <p className="text-sm text-zinc-500">No destinations found.</p>
       </div>
     );

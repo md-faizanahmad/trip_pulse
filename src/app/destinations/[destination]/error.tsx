@@ -24,7 +24,7 @@ export default function DestinationError({ reset }: DestinationErrorProps) {
         <button
           type="button"
           onClick={reset}
-          className="mt-7 inline-flex min-h-11 items-center justify-center rounded-xl bg-zinc-900 px-5 text-sm font-medium text-white transition hover:bg-zinc-800 active:scale-[0.98]"
+          className="mt-7 inline-flex min-h-11 items-center justify-center rounded-xl  px-5 text-sm font-medium text-white transition hover:bg-zinc-800 active:scale-[0.98]"
         >
           Try again
         </button>

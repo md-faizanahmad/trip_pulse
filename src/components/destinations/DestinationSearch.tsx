@@ -28,7 +28,7 @@ export default function DestinationSearch() {
   }
 
   return (
-    <section className=" bg-zinc-50">
+    <section className=" ">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
         <div className="text-center">
           <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
@@ -59,7 +59,7 @@ export default function DestinationSearch() {
             <button
               type="submit"
               disabled={isLoading || validationError !== null}
-              className="rounded-xl bg-zinc-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-xl  px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
               Search
             </button>

@@ -32,7 +32,7 @@ export default function CurrencyOverview({
               {currencyName}
             </h2>
 
-            <span className="rounded bg-zinc-900 px-2 py-0.5 text-xs font-bold tracking-wide text-white">
+            <span className="rounded  px-2 py-0.5 text-xs font-bold tracking-wide text-white">
               {currencyCode}
             </span>
           </div>
