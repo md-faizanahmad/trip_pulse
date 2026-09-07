@@ -17,10 +17,7 @@ export default function Currency({
   currencySymbol,
   baseCurrency,
 }: CurrencyProps) {
-  const { currency, status } = useCurrency(baseCurrency, currencyCode);
-
-  const rate = currency?.rate ?? null;
-  const date = currency?.date ?? null;
+  const { currency, status, error } = useCurrency(baseCurrency, currencyCode);
 
   return (
     <section className="space-y-8">
@@ -29,20 +26,17 @@ export default function Currency({
         currencyCode={currencyCode}
         currencySymbol={currencySymbol}
         baseCurrency={baseCurrency}
-        rate={rate}
-        date={date}
+        rate={currency?.rate ?? null}
+        date={currency?.date ?? null}
       />
 
       <CurrencyConverter
         defaultFromCurrency={baseCurrency}
         defaultToCurrency={currencyCode}
+        currency={currency}
+        status={status}
+        error={error}
       />
-
-      {status === "error" && (
-        <p className="text-sm text-zinc-500">
-          Exchange rate is currently unavailable.
-        </p>
-      )}
     </section>
   );
 }
