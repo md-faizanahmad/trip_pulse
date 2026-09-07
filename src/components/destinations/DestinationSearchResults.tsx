@@ -10,7 +10,7 @@ export default function DestinationSearchResults({
 }: DestinationSearchResultsProps) {
   if (destinations.length === 0) {
     return (
-      <div className="mt-3 rounded-2xl bg-zinc-50 px-4 py-5 text-center">
+      <div className="mt-3 rounded-2xl  px-4 py-5 text-center">
         <p className="text-sm text-zinc-500">No destinations found.</p>
       </div>
     );
@@ -24,7 +24,7 @@ export default function DestinationSearchResults({
             key={`${destination.osmType}-${destination.osmId}`}
             className="group"
           >
-            <div className="flex items-center gap-4 px-4 py-3 transition-colors hover:bg-zinc-50">
+            <div className="flex items-center gap-4 px-4 py-3 transition-colors hover:">
               <Link
                 href={`/destinations/${encodeURIComponent(
                   destination.name.toLowerCase(),
