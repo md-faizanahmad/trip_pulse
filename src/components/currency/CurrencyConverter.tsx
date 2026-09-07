@@ -3,10 +3,14 @@
 import { useState } from "react";
 import { useCurrency } from "@/hooks/useCurrency";
 import { availableCurrencies } from "@/utils/currency";
+import { CurrencyRate } from "@/types/currency";
 
 type CurrencyConverterProps = {
   defaultFromCurrency: string;
   defaultToCurrency: string;
+  currency: CurrencyRate | null;
+  status: "idle" | "loading" | "success" | "error";
+  error: string;
 };
 
 export default function CurrencyConverter({
