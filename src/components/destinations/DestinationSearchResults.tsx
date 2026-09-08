@@ -24,7 +24,7 @@ export default function DestinationSearchResults({
             key={`${destination.osmType}-${destination.osmId}`}
             className="group"
           >
-            <div className="flex items-center gap-4 px-4 py-3 transition-colors hover:bg-zinc-50">
+            <div className="flex items-center gap-4 px-4 py-3 transition-colors hover:">
               <Link
                 href={`/destinations/${encodeURIComponent(
                   destination.name.toLowerCase(),
