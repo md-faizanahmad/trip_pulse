@@ -30,7 +30,7 @@ export default function DestinationSearch() {
   return (
     <section
       className={
-        status === "idle" ? "flex min-h-[calc(100vh-4rem)] items-center " : ""
+        status === "idle" ? "flex min-h-[calc(100vh-4rem)] items-center" : ""
       }
     >
       <div className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
@@ -63,7 +63,7 @@ export default function DestinationSearch() {
             <button
               type="submit"
               disabled={isLoading || validationError !== null}
-              className="rounded-xl bg-zinc-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="rounded-xl  px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
               Search
             </button>

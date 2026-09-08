@@ -38,7 +38,7 @@ export default function DestinationPlace({
           href={mapsDirUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex w-fit items-center gap-1.5 rounded-lg bg-zinc-900 px-3.5 py-2 text-xs font-medium text-white transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900/20 active:scale-[0.98]"
+          className="inline-flex w-fit items-center gap-1.5 rounded-lg  px-3.5 py-2 text-xs font-medium text-white transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900/20 active:scale-[0.98]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
