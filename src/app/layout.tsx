@@ -14,7 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 export const metadata: Metadata = {
+  metadataBase: appUrl ? new URL(appUrl) : undefined,
   title: {
     default: "TripPulse",
     template: "%s | TripPulse",
@@ -22,8 +25,20 @@ export const metadata: Metadata = {
   description:
     "TripPulse helps you discover destinations and plan smarter trips with useful travel information.",
   applicationName: "TripPulse",
+  openGraph: {
+    type: "website",
+    siteName: "TripPulse",
+    title: "TripPulse",
+    description:
+      "Discover destinations and plan smarter trips with useful travel information.",
+  },
+  twitter: {
+    card: "summary",
+    title: "TripPulse",
+    description:
+      "Discover destinations and plan smarter trips with useful travel information.",
+  },
 };
-
 export default function RootLayout({
   children,
 }: {
