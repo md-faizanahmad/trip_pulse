@@ -15,8 +15,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TripPulse",
-  description: "TripPulse",
+  title: {
+    default: "TripPulse",
+    template: "%s | TripPulse",
+  },
+  description:
+    "TripPulse helps you discover destinations and plan smarter trips with useful travel information.",
+  applicationName: "TripPulse",
 };
 
 export default function RootLayout({
