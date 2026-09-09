@@ -31,6 +31,14 @@ export const metadata: Metadata = {
     title: "TripPulse",
     description:
       "Discover destinations and plan smarter trips with useful travel information.",
+    images: [
+      {
+        url: "/brand/trippulse-og.png",
+        width: 1731,
+        height: 909,
+        alt: "TripPulse",
+      },
+    ],
   },
   twitter: {
     card: "summary",
