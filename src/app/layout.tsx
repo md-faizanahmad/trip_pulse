@@ -14,11 +14,39 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "TripPulse",
-  description: "TripPulse",
-};
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
+export const metadata: Metadata = {
+  metadataBase: appUrl ? new URL(appUrl) : undefined,
+  title: {
+    default: "TripPulse",
+    template: "%s | TripPulse",
+  },
+  description:
+    "TripPulse helps you discover destinations and plan smarter trips with useful travel information.",
+  applicationName: "TripPulse",
+  openGraph: {
+    type: "website",
+    siteName: "TripPulse",
+    title: "TripPulse",
+    description:
+      "Discover destinations and plan smarter trips with useful travel information.",
+    images: [
+      {
+        url: "/brand/trippulse-og.png",
+        width: 1731,
+        height: 909,
+        alt: "TripPulse",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "TripPulse",
+    description:
+      "Discover destinations and plan smarter trips with useful travel information.",
+  },
+};
 export default function RootLayout({
   children,
 }: {
@@ -31,7 +59,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Header />
-        {children}
+        <main className="flex-1">{children}</main>
         <Footer />
       </body>
     </html>
