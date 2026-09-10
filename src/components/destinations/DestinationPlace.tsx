@@ -1,6 +1,7 @@
 import type { Destination } from "@/types/destination";
 import SunTimes from "../Weather/SunTimes";
 import LocalTime from "../localTime/LocalTime";
+import CountryInfo from "../CountryInfo/CountryInfo";
 
 type DestinationPlaceProps = {
   destination: Destination;
@@ -9,10 +10,6 @@ type DestinationPlaceProps = {
 export default function DestinationPlace({
   destination,
 }: DestinationPlaceProps) {
-  const countryLabel = [destination.country, destination.countryCode]
-    .filter(Boolean)
-    .join(" · ");
-
   const mapsDirUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination.latitude},${destination.longitude}`;
   const mapsEmbedUrl = `https://maps.google.com/maps?q=${destination.latitude},${destination.longitude}&z=14&output=embed`;
 
@@ -22,11 +19,10 @@ export default function DestinationPlace({
         {/* Destination Information */}
         <div className="flex flex-1 flex-col justify-between">
           <div>
-            {countryLabel && (
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
-                {countryLabel}
-              </p>
-            )}
+            <CountryInfo
+              country={destination.country}
+              countryCode={destination.countryCode}
+            />
 
             <h1 className="mt-1 text-2xl font-medium tracking-tight text-zinc-950 sm:text-3xl">
               {destination.name}
