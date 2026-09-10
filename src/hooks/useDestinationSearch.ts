@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import type { Destination, SearchResponse } from "@/types/destination";
 import { validateDestinationQuery } from "@/validation/validation";
 
@@ -57,6 +57,7 @@ function searchReducer(state: SearchState, action: SearchAction): SearchState {
 
 export function useDestinationSearch(query: string) {
   const [state, dispatch] = useReducer(searchReducer, initialState);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
     const searchQuery = query.trim();
@@ -109,11 +110,16 @@ export function useDestinationSearch(query: string) {
       clearTimeout(timeoutId);
       controller.abort();
     };
-  }, [query]);
+  }, [query, retryKey]);
+
+  function retry() {
+    setRetryKey((current) => current + 1);
+  }
 
   return {
     destinations: state.destinations,
     status: state.status,
     error: state.error,
+    retry,
   };
 }

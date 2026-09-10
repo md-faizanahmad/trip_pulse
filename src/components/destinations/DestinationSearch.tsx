@@ -22,7 +22,7 @@ export default function DestinationSearch() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(150);
 
-  const { destinations, status, error } = useDestinationSearch(query);
+  const { destinations, status, error, retry } = useDestinationSearch(query);
 
   const {
     isSupported: isVoiceSearchSupported,
@@ -166,10 +166,10 @@ export default function DestinationSearch() {
                     isListening ? "Stop voice search" : "Search by voice"
                   }
                   aria-pressed={isListening}
-                  className={`rounded-md p-2 transition focus:outline-none focus:ring-2 focus:ring-zinc-300 ${
+                  className={` cursor-pointer p-2 transition focus:outline-none  ${
                     isListening
                       ? "bg-red-50 text-red-600"
-                      : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
+                      : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 rounded-sm"
                   }`}
                 >
                   <svg
@@ -223,8 +223,19 @@ export default function DestinationSearch() {
         {isLoading && <SearchSkeleton />}
 
         {status === "error" && (
-          <div className="mt-3 rounded-2xl bg-red-50 px-4 py-3" role="alert">
+          <div
+            className="mt-3 flex items-center justify-between gap-4 rounded-md border border-red-200 bg-red-50/80 px-4 py-3 backdrop-blur-sm"
+            role="alert"
+          >
             <p className="text-sm text-red-700">{error}</p>
+
+            <button
+              type="button"
+              onClick={retry}
+              className="shrink-0 rounded-md px-3 py-1.5 text-sm font-medium text-red-700 transition hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-300"
+            >
+              Try again
+            </button>
           </div>
         )}
         {voiceError && (
