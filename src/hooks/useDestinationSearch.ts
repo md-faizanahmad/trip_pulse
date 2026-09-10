@@ -28,7 +28,7 @@ function searchReducer(state: SearchState, action: SearchAction): SearchState {
   switch (action.type) {
     case "SEARCH_STARTED":
       return {
-        destinations: [],
+        ...state,
         status: "loading",
         error: "",
       };
