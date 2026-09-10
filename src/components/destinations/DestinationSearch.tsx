@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDestinationSearch } from "@/hooks/useDestinationSearch";
+import { useVoiceSearch } from "@/hooks/useVoiceSearch";
 import DestinationSearchResults from "@/components/destinations/DestinationSearchResults";
 import { validateDestinationQuery } from "@/validation/validation";
 import SearchSkeleton from "./SearchSkeleton";
@@ -22,6 +23,16 @@ export default function DestinationSearch() {
   const [typingSpeed, setTypingSpeed] = useState(150);
 
   const { destinations, status, error } = useDestinationSearch(query);
+
+  const {
+    isSupported: isVoiceSearchSupported,
+    isListening,
+    error: voiceError,
+    startListening,
+    stopListening,
+  } = useVoiceSearch({
+    onResult: setQuery,
+  });
 
   const isLoading = status === "loading";
   const validationError = validateDestinationQuery(query);
@@ -64,16 +75,27 @@ export default function DestinationSearch() {
     };
 
     const timer = setTimeout(handleTyping, typingSpeed);
+
     return () => clearTimeout(timer);
   }, [currentPlaceholder, isDeleting, placeholderIndex, query, typingSpeed]);
 
   function handleQueryChange(value: string) {
     const sanitizedValue = value.replace(/[^a-zA-ZÀ-ÿ\s.'-]/g, "");
+
     setQuery(sanitizedValue);
   }
 
   function handleClear() {
     setQuery("");
+  }
+
+  function handleVoiceSearch() {
+    if (isListening) {
+      stopListening();
+      return;
+    }
+
+    startListening();
   }
 
   return (
@@ -89,7 +111,7 @@ export default function DestinationSearch() {
           </h2>
 
           <p className="mt-2 text-sm text-zinc-600">
-            Search for a city or destination.
+            Enter a destination or search with your voice.
           </p>
         </div>
 
@@ -108,11 +130,11 @@ export default function DestinationSearch() {
                 query ? "" : currentPlaceholder || "Search a destination..."
               }
               autoComplete="off"
-              aria-busy={isLoading}
-              className="w-full rounded-md border border-zinc-200/80 bg-white/75 px-4 py-3.5 pr-20 text-base font-medium text-zinc-950 shadow-sm shadow-zinc-900/5 backdrop-blur-md outline-none transition duration-200 placeholder:text-zinc-500 focus:border-zinc-400 focus:bg-white/90 focus:shadow-md focus:shadow-zinc-900/10 focus:ring-1 focus:ring-zinc-300 disabled:cursor-not-allowed disabled:bg-zinc-100/70 sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
+              aria-busy={isLoading || isListening}
+              className="w-full rounded-md border border-zinc-200/80 bg-white/75 px-4 py-3.5 pr-24 text-base font-medium text-zinc-950 shadow-sm shadow-zinc-900/5 backdrop-blur-md outline-none transition duration-200 placeholder:text-zinc-500 focus:border-zinc-400 focus:bg-white/90 focus:shadow-md focus:shadow-zinc-900/10 focus:ring-1 focus:ring-zinc-300 sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
             />
 
-            <div className="absolute inset-y-0 right-3 flex items-center gap-2">
+            <div className="absolute inset-y-0 right-3 flex items-center gap-1">
               {query && (
                 <button
                   type="button"
@@ -136,6 +158,45 @@ export default function DestinationSearch() {
                 </button>
               )}
 
+              {isVoiceSearchSupported && (
+                <button
+                  type="button"
+                  onClick={handleVoiceSearch}
+                  aria-label={
+                    isListening ? "Stop voice search" : "Search by voice"
+                  }
+                  aria-pressed={isListening}
+                  className={`rounded-md p-2 transition focus:outline-none focus:ring-2 focus:ring-zinc-300 ${
+                    isListening
+                      ? "bg-red-50 text-red-600"
+                      : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
+                  }`}
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className={`h-5 w-5 ${isListening ? "animate-pulse" : ""}`}
+                  >
+                    <rect
+                      x="9"
+                      y="3"
+                      width="6"
+                      height="12"
+                      rx="3"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                    />
+                    <path
+                      d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+              )}
+
               {isLoading && (
                 <span
                   aria-label="Searching"
@@ -150,6 +211,18 @@ export default function DestinationSearch() {
         {validationError && query.trim().length > 0 && (
           <p className="mt-3 text-sm text-zinc-500" role="status">
             {validationError}
+          </p>
+        )}
+
+        {voiceError && (
+          <p className="mt-3 text-sm text-red-600" role="alert">
+            {voiceError}
+          </p>
+        )}
+
+        {isListening && (
+          <p className="mt-3 text-sm text-zinc-600" role="status">
+            Listening...
           </p>
         )}
 
