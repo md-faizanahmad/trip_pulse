@@ -109,7 +109,7 @@ export default function DestinationSearch() {
               }
               autoComplete="off"
               aria-busy={isLoading}
-              className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3.5 pr-20 text-base sm:text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:cursor-not-allowed disabled:bg-zinc-50 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
+              className="w-full rounded-md border border-zinc-200/80 bg-white/75 px-4 py-3.5 pr-20 text-base font-medium text-zinc-950 shadow-sm shadow-zinc-900/5 backdrop-blur-md outline-none transition duration-200 placeholder:text-zinc-500 focus:border-zinc-400 focus:bg-white/90 focus:shadow-md focus:shadow-zinc-900/10 focus:ring-1 focus:ring-zinc-300 disabled:cursor-not-allowed disabled:bg-zinc-100/70 sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
             />
 
             <div className="absolute inset-y-0 right-3 flex items-center gap-2">
