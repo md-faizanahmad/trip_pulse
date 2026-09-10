@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import type {
   SpeechRecognitionErrorEvent,
   SpeechRecognitionInstance,
@@ -21,6 +27,34 @@ type UseVoiceSearchReturn = {
   stopListening: () => void;
 };
 
+function subscribeToSpeechRecognitionSupport(
+  onStoreChange: () => void,
+): () => void {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  onStoreChange();
+
+  return () => {};
+}
+
+function getSpeechRecognitionSupport(): boolean {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  const speechWindow = window as SpeechRecognitionWindow;
+
+  return Boolean(
+    speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition,
+  );
+}
+
+function getServerSpeechRecognitionSupport(): boolean {
+  return false;
+}
+
 export function useVoiceSearch({
   onResult,
   language = "en-US",
@@ -28,16 +62,21 @@ export function useVoiceSearch({
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const onResultRef = useRef(onResult);
 
-  const [isSupported, setIsSupported] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const isSupported = useSyncExternalStore(
+    subscribeToSpeechRecognitionSupport,
+    getSpeechRecognitionSupport,
+    getServerSpeechRecognitionSupport,
+  );
 
   useEffect(() => {
     onResultRef.current = onResult;
   }, [onResult]);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
+    if (!isSupported) {
       return;
     }
 
@@ -50,8 +89,6 @@ export function useVoiceSearch({
       return;
     }
 
-    setIsSupported(true);
-
     const recognition = new SpeechRecognition();
 
     recognition.continuous = false;
@@ -61,11 +98,9 @@ export function useVoiceSearch({
     recognition.onresult = (event: SpeechRecognitionResultEvent) => {
       const transcript = event.results[0]?.[0]?.transcript?.trim();
 
-      if (!transcript) {
-        return;
+      if (transcript) {
+        onResultRef.current(transcript);
       }
-
-      onResultRef.current(transcript);
     };
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
@@ -109,7 +144,7 @@ export function useVoiceSearch({
 
       recognitionRef.current = null;
     };
-  }, [language]);
+  }, [isSupported, language]);
 
   const startListening = useCallback(() => {
     const recognition = recognitionRef.current;
