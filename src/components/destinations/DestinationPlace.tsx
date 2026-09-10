@@ -2,6 +2,7 @@ import type { Destination } from "@/types/destination";
 import SunTimes from "../Weather/SunTimes";
 import LocalTime from "../localTime/LocalTime";
 import CountryInfo from "../CountryInfo/CountryInfo";
+import Image from "next/image";
 
 type DestinationPlaceProps = {
   destination: Destination;
@@ -38,26 +39,20 @@ export default function DestinationPlace({
               latitude={destination.latitude}
               longitude={destination.longitude}
             />
-
             <a
               href={mapsDirUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 border border-zinc-900 bg-zinc-900 px-4 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-zinc-800 sm:w-auto"
+              className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 border border-[#008EEB] bg-[#008EEB] px-4 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:border-[#022A5A] hover:bg-[#022A5A] sm:w-auto"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-3.5 w-3.5"
+              <Image
+                src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Maps_icon_%282015-2020%29.svg"
+                alt=""
+                width={16}
+                height={16}
+                className="h-4 w-4"
                 aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              />
               <span>Get Directions</span>
             </a>
           </div>
