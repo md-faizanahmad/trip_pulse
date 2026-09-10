@@ -1,14 +1,11 @@
 "use client";
 
-import { useLocalTime } from "@/hooks/useLocalTime";
-import { useTimezone } from "@/hooks/useTimezone";
 import { useWeather } from "@/hooks/useWeather";
 
 import WeatherForecast from "@/components/Weather/WeatherForecast";
 import WeatherSkeleton from "@/skeletons/weatherSkeleton";
 
 import { getWeatherCondition, getWeatherIcon } from "@/utils/weather";
-import { formatUtcOffset } from "@/utils/timezone";
 
 type DestinationWeatherProps = {
   latitude: number;
@@ -20,14 +17,6 @@ export default function DestinationWeather({
   longitude,
 }: DestinationWeatherProps) {
   const { weather, status, error } = useWeather(latitude, longitude);
-
-  const {
-    timezone,
-    status: timezoneStatus,
-    error: timezoneError,
-  } = useTimezone(latitude, longitude);
-
-  const localTime = useLocalTime(timezone?.timezone ?? null);
 
   if (status === "loading") {
     return <WeatherSkeleton />;
@@ -56,40 +45,6 @@ export default function DestinationWeather({
     <section className="mt-10 space-y-10">
       <div className="w-full   p-5  sm:p-6 lg:p-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Local Time */}
-          <div className="flex flex-col items-start gap-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-              Local Time
-            </h2>
-
-            {timezoneStatus === "loading" && (
-              <div
-                className="flex w-full flex-col gap-2 animate-pulse"
-                aria-label="Loading local time"
-                aria-busy="true"
-              >
-                <div className="h-8 w-24 rounded-md bg-zinc-200" />
-                <div className="h-4 w-32 rounded-md bg-zinc-100" />
-              </div>
-            )}
-
-            {timezone && localTime && (
-              <div className="flex flex-col items-start">
-                <span className="text-3xl font-semibold tracking-tight text-zinc-900">
-                  {localTime}
-                </span>
-                <span className="text-sm font-medium text-zinc-600">
-                  {timezone.timezone} · {formatUtcOffset(timezone.gmtOffset)}
-                </span>
-              </div>
-            )}
-
-            {timezoneStatus === "error" && (
-              <span className="text-sm font-medium text-rose-500">
-                {timezoneError}
-              </span>
-            )}
-          </div>
           {/* Current Weather */}
           <div className="flex flex-col items-start gap-3">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
