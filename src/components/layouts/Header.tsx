@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Header() {
   return (
     <header className="border-b border-zinc-200 bg-white">
-      <div className="mx-auto flex h-16 max-w-7xl items-center px-6">
+      <div className="mx-auto flex h-16 max-w-7xl items-center ">
         <Link href="/" aria-label="TripPulse home">
           <Image
             src="/brand/trippulse-logo.png"
