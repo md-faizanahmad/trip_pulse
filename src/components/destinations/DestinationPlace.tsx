@@ -25,7 +25,7 @@ export default function DestinationPlace({
               countryCode={destination.countryCode}
             />
 
-            <h1 className="mt-1 text-2xl font-medium tracking-tight text-zinc-950 sm:text-3xl">
+            <h1 className="mt-6 text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
               {destination.name}
             </h1>
 
