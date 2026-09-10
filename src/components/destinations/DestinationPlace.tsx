@@ -1,5 +1,6 @@
 import type { Destination } from "@/types/destination";
 import SunTimes from "../Weather/SunTimes";
+import LocalTime from "../localTime/LocalTime";
 
 type DestinationPlaceProps = {
   destination: Destination;
@@ -37,11 +38,16 @@ export default function DestinationPlace({
           </div>
 
           <div className="mt-6">
+            <LocalTime
+              latitude={destination.latitude}
+              longitude={destination.longitude}
+            />
+
             <a
               href={mapsDirUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-10 w-full items-center justify-center gap-2 border border-zinc-900 bg-zinc-900 px-4 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-zinc-800 sm:w-auto"
+              className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 border border-zinc-900 bg-zinc-900 px-4 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-zinc-800 sm:w-auto"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
