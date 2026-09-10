@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type {
+  SpeechRecognitionErrorEvent,
   SpeechRecognitionInstance,
+  SpeechRecognitionResultEvent,
   SpeechRecognitionWindow,
 } from "@/types/speech-recognition";
 
@@ -26,6 +28,7 @@ export function useVoiceSearch({
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const onResultRef = useRef(onResult);
 
+  const [isSupported, setIsSupported] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,15 +36,8 @@ export function useVoiceSearch({
     onResultRef.current = onResult;
   }, [onResult]);
 
-  const isSupported =
-    typeof window !== "undefined" &&
-    Boolean(
-      (window as SpeechRecognitionWindow).SpeechRecognition ||
-      (window as SpeechRecognitionWindow).webkitSpeechRecognition,
-    );
-
   useEffect(() => {
-    if (!isSupported) {
+    if (typeof window === "undefined") {
       return;
     }
 
@@ -54,21 +50,25 @@ export function useVoiceSearch({
       return;
     }
 
+    setIsSupported(true);
+
     const recognition = new SpeechRecognition();
 
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.lang = language;
 
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: SpeechRecognitionResultEvent) => {
       const transcript = event.results[0]?.[0]?.transcript?.trim();
 
-      if (transcript) {
-        onResultRef.current(transcript);
+      if (!transcript) {
+        return;
       }
+
+      onResultRef.current(transcript);
     };
 
-    recognition.onerror = (event) => {
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       setIsListening(false);
 
       switch (event.error) {
@@ -109,7 +109,7 @@ export function useVoiceSearch({
 
       recognitionRef.current = null;
     };
-  }, [isSupported, language]);
+  }, [language]);
 
   const startListening = useCallback(() => {
     const recognition = recognitionRef.current;
@@ -140,7 +140,7 @@ export function useVoiceSearch({
       recognition.stop();
     } catch {
       setIsListening(false);
-      setError("Could not stop voice search.");
+      setError("Could not stop voice search. Please try again.");
     }
   }, [isListening]);
 
