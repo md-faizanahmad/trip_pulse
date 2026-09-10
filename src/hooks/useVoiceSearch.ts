@@ -13,6 +13,7 @@ import type {
   SpeechRecognitionResultEvent,
   SpeechRecognitionWindow,
 } from "@/types/speech-recognition";
+import { normalizeVoiceQuery } from "@/utils/normalizeVoiceQuery";
 
 type UseVoiceSearchOptions = {
   onResult: (value: string) => void;
@@ -96,10 +97,16 @@ export function useVoiceSearch({
     recognition.lang = language;
 
     recognition.onresult = (event: SpeechRecognitionResultEvent) => {
-      const transcript = event.results[0]?.[0]?.transcript?.trim();
+      const transcript = event.results[0]?.[0]?.transcript;
 
-      if (transcript) {
-        onResultRef.current(transcript);
+      if (!transcript) {
+        return;
+      }
+
+      const normalizedQuery = normalizeVoiceQuery(transcript);
+
+      if (normalizedQuery) {
+        onResultRef.current(normalizedQuery);
       }
     };
 
