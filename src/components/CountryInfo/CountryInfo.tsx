@@ -1,4 +1,6 @@
-import { getCountryCallingCode, getCountryFlag } from "@/utils/country";
+import Image from "next/image";
+
+import { getCountryCallingCode } from "@/utils/country";
 
 type CountryInfoProps = {
   country: string | null;
@@ -9,7 +11,6 @@ export default function CountryInfo({
   country,
   countryCode,
 }: CountryInfoProps) {
-  const flag = getCountryFlag(countryCode);
   const callingCode = getCountryCallingCode(countryCode);
 
   if (!country && !countryCode) {
@@ -18,10 +19,15 @@ export default function CountryInfo({
 
   return (
     <div className="flex items-center gap-2 text-sm text-zinc-600">
-      {flag && (
-        <span aria-hidden="true" className="text-base">
-          {flag}
-        </span>
+      {countryCode && (
+        <Image
+          src={`https://flagcdn.com/${countryCode.toLowerCase()}.svg`}
+          alt=""
+          width={24}
+          height={16}
+          className="h-4 w-6 object-cover"
+          aria-hidden="true"
+        />
       )}
 
       {country && <span>{country}</span>}

@@ -238,18 +238,6 @@ const COUNTRY_CALLING_CODES: Record<string, string> = {
   ZW: "+263",
 };
 
-export function getCountryFlag(countryCode: string | null): string {
-  if (!countryCode || countryCode.length !== 2) {
-    return "";
-  }
-
-  return countryCode
-    .toUpperCase()
-    .split("")
-    .map((char) => String.fromCodePoint(127397 + char.charCodeAt(0)))
-    .join("");
-}
-
 export function getCountryCallingCode(countryCode: string | null): string {
   if (!countryCode) {
     return "";
