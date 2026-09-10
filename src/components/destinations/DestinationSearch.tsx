@@ -214,12 +214,6 @@ export default function DestinationSearch() {
           </p>
         )}
 
-        {voiceError && (
-          <p className="mt-3 text-sm text-red-600" role="alert">
-            {voiceError}
-          </p>
-        )}
-
         {isListening && (
           <p className="mt-3 text-sm text-zinc-600" role="status">
             Listening...

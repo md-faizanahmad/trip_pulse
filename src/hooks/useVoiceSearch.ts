@@ -128,7 +128,9 @@ export function useVoiceSearch({
           break;
 
         default:
-          setError("Voice search is unavailable. Please try again.");
+          setError(
+            "Voice search is unavailable. Please try again or Check Your Internet.",
+          );
       }
     };
 
