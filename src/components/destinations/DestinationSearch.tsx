@@ -1,13 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDestinationSearch } from "@/hooks/useDestinationSearch";
 import DestinationSearchResults from "@/components/destinations/DestinationSearchResults";
 import { validateDestinationQuery } from "@/validation/validation";
 import SearchSkeleton from "./SearchSkeleton";
 
+const POPULAR_DESTINATIONS = [
+  "Dubai",
+  "New York",
+  "London",
+  "Mumbai",
+  "Australia",
+];
+
 export default function DestinationSearch() {
   const [query, setQuery] = useState("");
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [currentPlaceholder, setCurrentPlaceholder] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [typingSpeed, setTypingSpeed] = useState(150);
 
   const { destinations, status, error } = useDestinationSearch(query);
 
@@ -21,10 +33,47 @@ export default function DestinationSearch() {
     validationError === null &&
     destinations.length === 0;
 
+  useEffect(() => {
+    if (query) return;
+
+    const fullText = `Try searching "${POPULAR_DESTINATIONS[placeholderIndex]}"`;
+
+    const handleTyping = () => {
+      if (!isDeleting) {
+        setCurrentPlaceholder(
+          fullText.substring(0, currentPlaceholder.length + 1),
+        );
+
+        if (currentPlaceholder === fullText) {
+          setTimeout(() => setIsDeleting(true), 1500);
+          setTypingSpeed(100);
+        }
+      } else {
+        setCurrentPlaceholder(
+          fullText.substring(0, currentPlaceholder.length - 1),
+        );
+
+        if (currentPlaceholder === "") {
+          setIsDeleting(false);
+          setPlaceholderIndex(
+            (prev) => (prev + 1) % POPULAR_DESTINATIONS.length,
+          );
+          setTypingSpeed(150);
+        }
+      }
+    };
+
+    const timer = setTimeout(handleTyping, typingSpeed);
+    return () => clearTimeout(timer);
+  }, [currentPlaceholder, isDeleting, placeholderIndex, query, typingSpeed]);
+
   function handleQueryChange(value: string) {
     const sanitizedValue = value.replace(/[^a-zA-ZÀ-ÿ\s.'-]/g, "");
-
     setQuery(sanitizedValue);
+  }
+
+  function handleClear() {
+    setQuery("");
   }
 
   return (
@@ -49,24 +98,52 @@ export default function DestinationSearch() {
             Search destination
           </label>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="relative">
             <input
               id="destination-search"
               type="search"
               value={query}
               onChange={(event) => handleQueryChange(event.target.value)}
-              placeholder="Search a destination"
+              placeholder={
+                query ? "" : currentPlaceholder || "Search a destination..."
+              }
               autoComplete="off"
-              className="min-w-0 flex-1 rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
+              aria-busy={isLoading}
+              className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3.5 pr-20 text-base sm:text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 disabled:cursor-not-allowed disabled:bg-zinc-50 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden"
             />
 
-            <button
-              type="submit"
-              disabled={isLoading || validationError !== null}
-              className="rounded-xl  px-5 py-3 text-sm font-medium text-white transition hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              Search
-            </button>
+            <div className="absolute inset-y-0 right-3 flex items-center gap-2">
+              {query && (
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  aria-label="Clear search"
+                  className="rounded-full p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-300"
+                >
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    className="h-4 w-4"
+                  >
+                    <path
+                      d="M5 5l10 10M15 5L5 15"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+              )}
+
+              {isLoading && (
+                <span
+                  aria-label="Searching"
+                  role="status"
+                  className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-700"
+                />
+              )}
+            </div>
           </div>
         </form>
 
