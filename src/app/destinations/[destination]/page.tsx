@@ -2,7 +2,6 @@ import Currency from "@/components/currency/Currency";
 import DestinationPlace from "@/components/destinations/DestinationPlace";
 import DestinationWeather from "@/components/destinations/DestinationWeather";
 import Places from "@/components/place/Places";
-import PlaceThumbnail from "@/components/place/PlaceThumbnail";
 import Safety from "@/components/Safety/Safety";
 import Transport from "@/components/transport/Transport";
 import Breadcrumb from "@/shared/Breadcrumb";
@@ -98,21 +97,6 @@ export default async function DestinationPage({
 
   const selectedDestination = data.destination;
 
-  const imageResponse = await fetch(
-    `${baseUrl}/api/images?query=${encodeURIComponent(
-      selectedDestination.name,
-    )}`,
-    {
-      cache: "no-store",
-    },
-  );
-
-  const imageData: { imageUrl?: string | null } = imageResponse.ok
-    ? await imageResponse.json()
-    : { imageUrl: null };
-
-  const imageUrl = imageData.imageUrl ?? null;
-
   const destinationCurrency = getCurrencyByCountryCode(
     selectedDestination.countryCode,
   );
@@ -121,13 +105,7 @@ export default async function DestinationPage({
     <main className="flex-1">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-8">
         <Breadcrumb destination={selectedDestination.name} />
-        <PlaceThumbnail
-          src={imageUrl}
-          alt={selectedDestination.name}
-          width={1200}
-          height={500}
-          className="w-full"
-        />
+
         <div className="mt-6 sm:mt-8">
           <DestinationPlace destination={selectedDestination} />
         </div>
