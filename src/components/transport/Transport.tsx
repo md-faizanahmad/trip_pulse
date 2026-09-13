@@ -8,16 +8,71 @@ type TransportProps = {
   longitude: number;
 };
 
-const transportItems: {
-  key: "metro" | "bus" | "train" | "tram" | "ferry";
-  label: string;
-  icon: string;
-}[] = [
-  { key: "metro", label: "Metro", icon: "🚇" },
-  { key: "bus", label: "Bus", icon: "🚌" },
-  { key: "train", label: "Train", icon: "🚆" },
-  { key: "tram", label: "Tram", icon: "🚊" },
-  { key: "ferry", label: "Ferry", icon: "⛴️" },
+const transportConfig: Record<
+  "metro" | "bus" | "train" | "tram" | "ferry",
+  {
+    label: string;
+    icon: string;
+    activeBg: string;
+    activeBorder: string;
+    activeBadge: string;
+    activeText: string;
+    activeNumber: string;
+  }
+> = {
+  metro: {
+    label: "Metro",
+    icon: "🚇",
+    activeBg: "bg-purple-500/10",
+    activeBorder: "border-purple-600",
+    activeBadge: "bg-purple-600 text-white",
+    activeText: "text-purple-950",
+    activeNumber: "text-purple-600",
+  },
+  bus: {
+    label: "Bus",
+    icon: "🚌",
+    activeBg: "bg-amber-500/10",
+    activeBorder: "border-amber-500",
+    activeBadge: "bg-amber-500 text-white",
+    activeText: "text-amber-950",
+    activeNumber: "text-amber-600",
+  },
+  train: {
+    label: "Train",
+    icon: "🚆",
+    activeBg: "bg-[#008EEB]/10",
+    activeBorder: "border-[#008EEB]",
+    activeBadge: "bg-[#008EEB] text-white",
+    activeText: "text-[#022A5A]",
+    activeNumber: "text-[#008EEB]",
+  },
+  tram: {
+    label: "Tram",
+    icon: "🚊",
+    activeBg: "bg-emerald-500/10",
+    activeBorder: "border-emerald-600",
+    activeBadge: "bg-emerald-600 text-white",
+    activeText: "text-emerald-950",
+    activeNumber: "text-emerald-600",
+  },
+  ferry: {
+    label: "Ferry",
+    icon: "⛴️",
+    activeBg: "bg-cyan-500/10",
+    activeBorder: "border-cyan-600",
+    activeBadge: "bg-cyan-600 text-white",
+    activeText: "text-cyan-950",
+    activeNumber: "text-cyan-600",
+  },
+};
+
+const transportKeys: (keyof typeof transportConfig)[] = [
+  "metro",
+  "bus",
+  "train",
+  "tram",
+  "ferry",
 ];
 
 function getStatusLabel(status: TransportStatus) {
@@ -29,40 +84,42 @@ export default function Transport({ latitude, longitude }: TransportProps) {
   const { transport, status, error } = useTransport(latitude, longitude);
 
   return (
-    <section className="w-full border-b border-slate-200 bg-[#FFFFFF] p-4 sm:p-5">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 bg-[#008EEB]" />
-          <h2 className="text-xs font-bold uppercase tracking-widest text-[#022A5A]">
-            Getting Around · Transport
+    <section className="w-full bg-[#FFFFFF] px-4 py-6 sm:px-6">
+      {/* Editorial Header Bar */}
+      <div className="flex flex-col gap-2 border-b border-slate-200 pb-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#008EEB]">
+            Mobility
+          </span>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[#022A5A] sm:text-base">
+            Transit Infrastructure
           </h2>
         </div>
+
         {status === "success" && transport && (
-          <span className="font-mono text-[10px] font-bold text-slate-400">
-            {
-              Object.values(transport).filter(
-                (itemStatus) => itemStatus === "available",
-              ).length
-            }{" "}
-            MODES ACTIVE
-          </span>
+          <div className="font-mono text-[11px] font-medium text-[#334155]">
+            <span className="font-bold text-[#022A5A]">
+              {
+                Object.values(transport).filter(
+                  (itemStatus) => itemStatus === "available",
+                ).length
+              }
+            </span>{" "}
+            of 5 modes verified
+          </div>
         )}
       </div>
 
       {/* Loading Skeleton */}
       {status === "loading" && (
-        <div className="mt-3.5 grid grid-cols-2 border-t border-l border-slate-200 sm:grid-cols-3 lg:grid-cols-5">
-          {transportItems.map((item) => (
+        <div className="mt-4 space-y-1.5">
+          {transportKeys.map((key) => (
             <div
-              key={item.key}
-              className="flex h-20 animate-pulse flex-col justify-between border-r border-b border-slate-200 bg-slate-50 p-3"
+              key={key}
+              className="flex items-center justify-between px-3 py-3 animate-pulse bg-slate-50"
             >
-              <div className="h-4 w-6 bg-slate-200" />
-              <div className="space-y-1.5">
-                <div className="h-3 w-12 bg-slate-200" />
-                <div className="h-2.5 w-16 bg-slate-200" />
-              </div>
+              <div className="h-4 w-28 bg-slate-200" />
+              <div className="h-4 w-20 bg-slate-200" />
             </div>
           ))}
         </div>
@@ -70,48 +127,70 @@ export default function Transport({ latitude, longitude }: TransportProps) {
 
       {/* Error State */}
       {status === "error" && (
-        <div className="mt-3.5 border border-red-200 bg-red-50 p-3">
-          <p className="text-xs font-bold text-red-700">{error}</p>
+        <div className="mt-4 border-l-2 border-red-500 py-1 pl-3">
+          <p className="text-xs font-semibold text-red-600">{error}</p>
         </div>
       )}
 
-      {/* Modern Compact Ledger Grid */}
+      {/* Modern Ledger Stream with Transit-Specific Color Identity */}
       {status === "success" && transport && (
-        <div className="mt-3.5 grid grid-cols-2 border-t border-l border-slate-200 sm:grid-cols-3 lg:grid-cols-5">
-          {transportItems.map((item) => {
-            const isAvailable = transport[item.key] === "available";
+        <div className="mt-3 space-y-1">
+          {transportKeys.map((key, index) => {
+            const currentStatus = transport[key];
+            const isAvailable = currentStatus === "available";
+            const config = transportConfig[key];
 
             return (
               <div
-                key={item.key}
-                className="flex flex-col justify-between border-r border-b border-slate-200 bg-[#FFFFFF] p-3 transition-colors hover:bg-slate-50"
+                key={key}
+                className={`flex items-center justify-between px-3 py-2.5 transition-colors sm:px-4 sm:py-3 ${
+                  isAvailable
+                    ? `${config.activeBg} border-l-2 ${config.activeBorder}`
+                    : "bg-slate-50/60 border-l-2 border-transparent"
+                }`}
               >
-                <div className="flex items-center justify-between gap-2">
+                {/* Mode Identity & Sequence */}
+                <div className="flex items-center gap-3 sm:gap-4">
                   <span
-                    className="text-base select-none"
-                    role="img"
-                    aria-label={item.label}
+                    className={`font-mono text-[10px] font-bold sm:text-xs ${
+                      isAvailable ? config.activeNumber : "text-slate-300"
+                    }`}
                   >
-                    {item.icon}
+                    {String(index + 1).padStart(2, "0")}
                   </span>
                   <span
-                    className={`h-1.5 w-1.5 ${
-                      isAvailable ? "bg-[#008EEB]" : "bg-slate-300"
-                    }`}
-                  />
-                </div>
-
-                <div className="mt-3">
-                  <p className="text-xs font-bold tracking-tight text-[#022A5A]">
-                    {item.label}
-                  </p>
-                  <p
-                    className={`mt-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                      isAvailable ? "text-[#008EEB]" : "text-slate-400"
+                    className="text-base select-none sm:text-lg"
+                    role="img"
+                    aria-label={config.label}
+                  >
+                    {config.icon}
+                  </span>
+                  <span
+                    className={`text-xs font-bold tracking-tight sm:text-sm ${
+                      isAvailable ? config.activeText : "text-slate-500"
                     }`}
                   >
-                    {getStatusLabel(transport[item.key])}
-                  </p>
+                    {config.label}
+                  </span>
+                </div>
+
+                {/* Status Badge */}
+                <div className="flex items-center">
+                  <span
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 font-mono text-[11px] font-extrabold uppercase tracking-wider ${
+                      isAvailable
+                        ? config.activeBadge
+                        : "bg-slate-200/70 text-slate-500"
+                    }`}
+                  >
+                    <span
+                      className={`h-1.5 w-1.5 ${
+                        isAvailable ? "bg-white" : "bg-slate-400"
+                      }`}
+                      aria-hidden="true"
+                    />
+                    {getStatusLabel(currentStatus)}
+                  </span>
                 </div>
               </div>
             );
