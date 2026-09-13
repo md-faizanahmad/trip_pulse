@@ -6,12 +6,16 @@ import { useState } from "react";
 type PlaceThumbnailProps = {
   src: string | null | undefined;
   alt: string;
+  width: number;
+  height: number;
   className?: string;
 };
 
 export default function PlaceThumbnail({
   src,
   alt,
+  width,
+  height,
   className = "",
 }: PlaceThumbnailProps) {
   const [isLoading, setIsLoading] = useState(Boolean(src));
@@ -21,6 +25,7 @@ export default function PlaceThumbnail({
     return (
       <div
         className={`flex items-center justify-center bg-slate-100 ${className}`}
+        style={{ width, height }}
         aria-label={`No image available for ${alt}`}
       >
         <svg
@@ -41,7 +46,10 @@ export default function PlaceThumbnail({
   }
 
   return (
-    <div className={`relative overflow-hidden bg-slate-100 ${className}`}>
+    <div
+      className={`relative overflow-hidden bg-slate-100 ${className}`}
+      style={{ width, height }}
+    >
       {isLoading && (
         <div
           className="absolute inset-0 animate-pulse bg-slate-200"
@@ -52,7 +60,8 @@ export default function PlaceThumbnail({
       <Image
         src={src}
         alt={alt}
-        loading="lazy"
+        width={width}
+        height={height}
         onLoad={() => setIsLoading(false)}
         onError={() => {
           setIsLoading(false);
