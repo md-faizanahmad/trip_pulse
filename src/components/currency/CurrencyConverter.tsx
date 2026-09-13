@@ -36,7 +36,7 @@ export default function CurrencyConverter({
   }
 
   return (
-    <section className="w-full border-b border-zinc-200 bg-white p-4 sm:p-6">
+    <section className="w-full border-b border-zinc-200  p-4 sm:p-6">
       {/* Section Header */}
       <div className="flex items-center gap-2">
         <span className="h-2 w-2 bg-[#008EEB]" />
