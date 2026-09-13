@@ -168,7 +168,7 @@ export default function DestinationWeather({
         </div>
       </div>
 
-      <div className="mt-6 border-t border-zinc-200 pt-6">
+      <div className="mt-6  pt-6">
         <WeatherForecast forecast={forecast} />
       </div>
     </section>

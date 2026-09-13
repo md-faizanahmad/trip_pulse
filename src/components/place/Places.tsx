@@ -22,7 +22,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
   }
 
   return (
-    <section className="w-full border-b border-slate-200 bg-[#FFFFFF] p-4 sm:p-5">
+    <section className="w-full  bg-[#FFFFFF] p-4 sm:p-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">

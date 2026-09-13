@@ -16,7 +16,7 @@ export default function CurrencyOverview({
   date,
 }: CurrencyOverviewProps) {
   return (
-    <section className="w-full border-b border-zinc-200 bg-white p-4 sm:p-6">
+    <section className="w-full  p-4 sm:p-6">
       {/* Header with status marker */}
       <div className="flex items-center gap-2">
         <span className="h-2 w-2 bg-[#008EEB]" />

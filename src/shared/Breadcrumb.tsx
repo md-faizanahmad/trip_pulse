@@ -6,17 +6,32 @@ type BreadcrumbProps = {
 
 export default function Breadcrumb({ destination }: BreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className="mb-6">
-      <ol className="flex items-center gap-2 text-sm text-zinc-500">
-        <li>
-          <Link href="/" className="transition hover:text-zinc-900">
+    <nav
+      aria-label="Breadcrumb"
+      className="w-full  bg-[#FFFFFF] px-4 py-2.5 sm:px-6"
+    >
+      <ol className="flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-wider">
+        {/* Home Anchor with Subtle Leading Marker */}
+        <li className="flex items-center gap-1.5 shrink-0">
+          <Link
+            href="/"
+            className="text-slate-400 transition-colors hover:text-[#008EEB]"
+          >
             Home
           </Link>
         </li>
 
-        <li aria-hidden="true">/</li>
+        {/* Minimalist Delimiter */}
+        <li aria-hidden="true" className="select-none text-slate-300">
+          /
+        </li>
 
-        <li aria-current="page" className="text-zinc-900">
+        {/* Current Active Page with Truncation on Small Screens */}
+        <li
+          aria-current="page"
+          className="min-w-0 truncate text-[#022A5A]"
+          title={destination}
+        >
           {destination}
         </li>
       </ol>
