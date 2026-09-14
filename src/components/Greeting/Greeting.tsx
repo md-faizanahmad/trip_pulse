@@ -27,7 +27,7 @@ export default function Greeting({ name, title }: GreetingProps) {
 
   return (
     <section className="w-full">
-      <div className="flex min-w-0 flex-col gap-0.5 sm:gap-1">
+      <div className="flex min-w-0 flex-row gap-0.5 sm:gap-1">
         <span className="truncate font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-(--theme-primary) sm:text-[10px] sm:tracking-widest">
           {greeting}
         </span>
