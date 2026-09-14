@@ -106,11 +106,11 @@ export default function DestinationSearch() {
     >
       <div className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-3xl">
+          <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
             Where to?
           </h2>
 
-          <p className="mt-2 text-sm text-zinc-600">
+          <p className="mt-2 text-sm text-white">
             Enter a destination or search with your voice.
           </p>
         </div>
