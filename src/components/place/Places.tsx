@@ -1,28 +1,63 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { usePlaces } from "@/hooks/usePlaces";
+import type { PlaceCategory } from "@/types/places";
 
 type PlacesProps = {
   latitude: number;
   longitude: number;
 };
 
+type CategoryFilter = "all" | PlaceCategory;
+
 const INITIAL_PLACE_COUNT = 6;
+
+const CATEGORY_FILTERS: {
+  value: CategoryFilter;
+  label: string;
+}[] = [
+  { value: "all", label: "All" },
+  { value: "museum", label: "Museums" },
+  { value: "park", label: "Parks" },
+  { value: "historical", label: "Historical" },
+  { value: "entertainment", label: "Entertainment" },
+  { value: "beach", label: "Beaches" },
+  { value: "landmark", label: "Landmarks" },
+  { value: "other", label: "Other" },
+];
 
 export default function Places({ latitude, longitude }: PlacesProps) {
   const { places, status, error } = usePlaces(latitude, longitude);
   const [showAll, setShowAll] = useState(false);
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryFilter>("all");
 
-  const visiblePlaces = showAll ? places : places.slice(0, INITIAL_PLACE_COUNT);
-  const hasMorePlaces = places.length > INITIAL_PLACE_COUNT;
+  const filteredPlaces = useMemo(() => {
+    if (selectedCategory === "all") {
+      return places;
+    }
+
+    return places.filter((place) => place.category === selectedCategory);
+  }, [places, selectedCategory]);
+
+  const visiblePlaces = showAll
+    ? filteredPlaces
+    : filteredPlaces.slice(0, INITIAL_PLACE_COUNT);
+
+  const hasMorePlaces = filteredPlaces.length > INITIAL_PLACE_COUNT;
 
   function getGoogleMapsUrl(placeLatitude: number, placeLongitude: number) {
     return `https://www.google.com/maps/search/?api=1&query=${placeLatitude},${placeLongitude}`;
   }
 
+  function handleCategoryChange(category: CategoryFilter) {
+    setSelectedCategory(category);
+    setShowAll(false);
+  }
+
   return (
-    <section className="w-full  bg-[#FFFFFF] p-4 sm:p-5">
+    <section className="w-full bg-[#FFFFFF] p-4 sm:p-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -31,12 +66,48 @@ export default function Places({ latitude, longitude }: PlacesProps) {
             Attractions & Highlights
           </h2>
         </div>
+
         {status === "success" && (
           <span className="font-mono text-[10px] font-bold text-slate-400">
-            {places.length} LOCATIONS
+            {filteredPlaces.length} LOCATIONS
           </span>
         )}
       </div>
+
+      {/* Category Filters */}
+      {status === "success" && places.length > 0 && (
+        <div className="mt-3.5 flex gap-1.5 overflow-x-auto border-y border-slate-200 py-2 scrollbar-none">
+          {CATEGORY_FILTERS.map((category) => {
+            const isActive = selectedCategory === category.value;
+
+            const categoryCount =
+              category.value === "all"
+                ? places.length
+                : places.filter((place) => place.category === category.value)
+                    .length;
+
+            if (category.value !== "all" && categoryCount === 0) {
+              return null;
+            }
+
+            return (
+              <button
+                key={category.value}
+                type="button"
+                onClick={() => handleCategoryChange(category.value)}
+                className={`shrink-0 border px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                  isActive
+                    ? "border-[#022A5A] bg-[#022A5A] text-white"
+                    : "border-slate-200 bg-white text-[#334155] hover:border-[#008EEB] hover:text-[#008EEB]"
+                }`}
+                aria-pressed={isActive}
+              >
+                {category.label} ({categoryCount})
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Loading Skeleton */}
       {status === "loading" && (
@@ -58,16 +129,16 @@ export default function Places({ latitude, longitude }: PlacesProps) {
       )}
 
       {/* Empty State */}
-      {status === "success" && places.length === 0 && (
+      {status === "success" && filteredPlaces.length === 0 && (
         <div className="mt-3.5 border border-slate-200 bg-slate-50 p-3">
           <p className="text-xs font-semibold text-[#334155]">
-            No nearby attractions were found.
+            No nearby attractions were found in this category.
           </p>
         </div>
       )}
 
-      {/* Compact Ledger Grid: 1 col on mobile, 2 on tablet, 3 on desktop */}
-      {status === "success" && places.length > 0 && (
+      {/* Places Grid */}
+      {status === "success" && filteredPlaces.length > 0 && (
         <div className="mt-3.5">
           <div className="grid grid-cols-1 border-t border-l border-slate-200 sm:grid-cols-2 lg:grid-cols-3">
             {visiblePlaces.map((place, index) => (
@@ -117,7 +188,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
             ))}
           </div>
 
-          {/* Action Button: Center on mobile, left-aligned mid-width on desktop */}
+          {/* Show All / Show Less */}
           {hasMorePlaces && (
             <div className="mt-3 flex justify-center md:justify-start">
               <button
@@ -126,8 +197,11 @@ export default function Places({ latitude, longitude }: PlacesProps) {
                 className="inline-flex h-9 w-48 items-center justify-center gap-1.5 border border-[#008EEB] bg-[#008EEB] px-4 text-[11px] font-bold uppercase tracking-wider text-white transition-colors hover:border-[#022A5A] hover:bg-[#022A5A] active:bg-[#022A5A]"
               >
                 <span>
-                  {showAll ? "Show Less" : `Show All (${places.length})`}
+                  {showAll
+                    ? "Show Less"
+                    : `Show All (${filteredPlaces.length})`}
                 </span>
+
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
