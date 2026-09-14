@@ -87,13 +87,34 @@ export default function Transport({ latitude, longitude }: TransportProps) {
     <section className="w-full bg-[#FFFFFF] px-4 py-6 sm:px-6">
       {/* Editorial Header Bar */}
       <div className="flex flex-col gap-2 border-b border-slate-200 pb-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#008EEB]">
-            Mobility
-          </span>
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[#022A5A] sm:text-base">
-            Transit Infrastructure
-          </h2>
+        <div className="flex items-center gap-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-5 w-5 shrink-0 text-[#d13b19]"
+            aria-hidden="true"
+          >
+            <path d="M4 15V5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z" />
+            <path d="M4 11h16" />
+            <path d="M8 15h.01" />
+            <path d="M16 15h.01" />
+            <path d="m8 19-2 3" />
+            <path d="m16 19 2 3" />
+          </svg>
+
+          <div>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#e33a10]">
+              Mobility
+            </span>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#022A5A] sm:text-base">
+              Transit Infrastructure
+            </h2>
+          </div>
         </div>
 
         {status === "success" && transport && (
