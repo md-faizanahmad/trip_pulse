@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import type { Place, PlaceCategory } from "@/types/places";
 
 type OverpassElement = {
   type?: "node" | "way" | "relation";
@@ -13,17 +14,45 @@ type OverpassResponse = {
   elements?: OverpassElement[];
 };
 
-type Place = {
-  id: string;
-  name: string;
-  latitude: number;
-  longitude: number;
-  category: "attraction";
-  address: string | null;
-  city: string | null;
-  country: string | null;
-  countryCode: string | null;
-};
+// for categories place
+
+function getPlaceCategory(
+  tags: Record<string, string | undefined>,
+): PlaceCategory {
+  if (tags.tourism === "museum") {
+    return "museum";
+  }
+
+  if (
+    tags.leisure === "park" ||
+    tags.leisure === "garden" ||
+    tags.tourism === "botanical_garden"
+  ) {
+    return "park";
+  }
+
+  if (tags.historic !== undefined || tags.tourism === "heritage") {
+    return "historical";
+  }
+
+  if (
+    tags.tourism === "theme_park" ||
+    tags.tourism === "zoo" ||
+    tags.tourism === "aquarium"
+  ) {
+    return "entertainment";
+  }
+
+  if (tags.natural === "beach" || tags.leisure === "beach_resort") {
+    return "beach";
+  }
+
+  if (tags.tourism === "viewpoint" || tags.tourism === "attraction") {
+    return "landmark";
+  }
+
+  return "other";
+}
 
 const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
 const SEARCH_RADIUS = 10_000;
@@ -50,8 +79,18 @@ export async function GET(request: NextRequest) {
     [out:json][timeout:25];
     (
       nwr["tourism"="attraction"](around:${SEARCH_RADIUS},${latitude},${longitude});
+      nwr["tourism"="museum"](around:${SEARCH_RADIUS},${latitude},${longitude});
       nwr["tourism"="viewpoint"](around:${SEARCH_RADIUS},${latitude},${longitude});
       nwr["tourism"="theme_park"](around:${SEARCH_RADIUS},${latitude},${longitude});
+    nwr["tourism"="zoo"](around:${SEARCH_RADIUS},${latitude},${longitude});
+    nwr["tourism"="aquarium"](around:${SEARCH_RADIUS},${latitude},${longitude});
+    nwr["tourism"="botanical_garden"](around:${SEARCH_RADIUS},${latitude},${longitude});
+    nwr["tourism"="heritage"](around:${SEARCH_RADIUS},${latitude},${longitude});
+    nwr["leisure"="park"](around:${SEARCH_RADIUS},${latitude},${longitude});
+    nwr["leisure"="garden"](around:${SEARCH_RADIUS},${latitude},${longitude});
+    nwr["leisure"="beach_resort"](around:${SEARCH_RADIUS},${latitude},${longitude});
+    nwr["natural"="beach"](around:${SEARCH_RADIUS},${latitude},${longitude});
+    nwr["historic"](around:${SEARCH_RADIUS},${latitude},${longitude});
     );
     out center;
   `;
@@ -101,7 +140,7 @@ export async function GET(request: NextRequest) {
           name,
           latitude,
           longitude,
-          category: "attraction" as const,
+          category: getPlaceCategory(element.tags ?? {}),
           address: element.tags?.["addr:street"] ?? null,
           city:
             element.tags?.["addr:city"] ??

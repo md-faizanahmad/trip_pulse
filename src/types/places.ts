@@ -18,6 +18,7 @@ export type Place = {
   country: string | null;
   countryCode: string | null;
 };
+
 export type PlacesResponse = {
   places?: Place[];
   error?: string;
