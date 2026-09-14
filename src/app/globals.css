@@ -17,3 +17,123 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Destination country themes */
+
+:root {
+  --country-primary: #008eeb;
+  --country-secondary: #022a5a;
+  --country-surface: #f8fafc;
+}
+
+/* India */
+.theme-in {
+  --country-primary: #ff9933;
+  --country-secondary: #138808;
+  --country-surface: #fff8f0;
+}
+
+/* Japan */
+.theme-jp {
+  --country-primary: #bc002d;
+  --country-secondary: #8f0023;
+  --country-surface: #fff5f7;
+}
+
+/* France */
+.theme-fr {
+  --country-primary: #0055a4;
+  --country-secondary: #ef4135;
+  --country-surface: #f3f7fc;
+}
+
+/* Germany */
+.theme-de {
+  --country-primary: #dd0000;
+  --country-secondary: #ffce00;
+  --country-surface: #fff9e6;
+}
+
+/* Italy */
+.theme-it {
+  --country-primary: #009246;
+  --country-secondary: #ce2b37;
+  --country-surface: #f1faf5;
+}
+
+/* Spain */
+.theme-es {
+  --country-primary: #aa151b;
+  --country-secondary: #f1bf00;
+  --country-surface: #fff9e5;
+}
+
+/* United Kingdom */
+.theme-gb {
+  --country-primary: #012169;
+  --country-secondary: #c8102e;
+  --country-surface: #f3f5fa;
+}
+
+/* United States */
+.theme-us {
+  --country-primary: #3c3b6e;
+  --country-secondary: #b22234;
+  --country-surface: #f4f4fa;
+}
+
+/* Brazil */
+.theme-br {
+  --country-primary: #009c3b;
+  --country-secondary: #ffdf00;
+  --country-surface: #f4fbf6;
+}
+
+/* Australia */
+.theme-au {
+  --country-primary: #00008b;
+  --country-secondary: #e4002b;
+  --country-surface: #f3f6fc;
+}
+
+/* Canada */
+.theme-ca {
+  --country-primary: #d80621;
+  --country-secondary: #b22234;
+  --country-surface: #fff5f6;
+}
+
+/* United Arab Emirates */
+.theme-ae {
+  --country-primary: #00732f;
+  --country-secondary: #ff0000;
+  --country-surface: #f2faf5;
+}
+
+/* Turkey */
+.theme-tr {
+  --country-primary: #e30a17;
+  --country-secondary: #b00812;
+  --country-surface: #fff3f4;
+}
+
+/* Greece */
+.theme-gr {
+  --country-primary: #0d5eaf;
+  --country-secondary: #084b8a;
+  --country-surface: #f2f7fc;
+}
+
+/* Mexico */
+.theme-mx {
+  --country-primary: #006847;
+  --country-secondary: #ce1126;
+  --country-surface: #f2faf6;
+}
+
+/* South Africa */
+.theme-za {
+  --country-primary: #007a4d;
+  --country-secondary: #ffb81c;
+  --country-surface: #f4faf7;
+}
