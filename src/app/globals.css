@@ -14,7 +14,6 @@
 
 body {
   background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -31,8 +30,31 @@ body {
   --country-primary: #ff9933;
   --country-secondary: #138808;
   --country-surface: #fff8f0;
+  --country-gradient: linear-gradient(
+    90deg,
+    var(--country-primary),
+    var(--country-secondary)
+  );
+  .country-gradient-text {
+    background: var(--country-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
 }
-
+/* UAE */
+.theme-ae {
+  --country-primary: #00732f;
+  --country-secondary: #ff0000;
+  --country-surface: #f2faf5;
+  --country-gradient: linear-gradient(
+    90deg,
+    #00732f 0%,
+    #ffffff 50%,
+    #ff0000 100%
+  );
+}
 /* Japan */
 .theme-jp {
   --country-primary: #bc002d;
