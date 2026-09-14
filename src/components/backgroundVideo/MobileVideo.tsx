@@ -1,4 +1,10 @@
-export default function MobileVideo() {
+type MobileVideoProps = {
+  overlayClassName?: string;
+};
+
+export default function MobileVideo({
+  overlayClassName = "bg-black/70",
+}: MobileVideoProps) {
   return (
     <>
       <video
@@ -12,7 +18,10 @@ export default function MobileVideo() {
         <source src="/trip_pulse_video.mp4" type="video/mp4" />
       </video>
 
-      <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
+      <div
+        className={`absolute inset-0 pointer-events-none ${overlayClassName}`}
+        aria-hidden="true"
+      />
     </>
   );
 }

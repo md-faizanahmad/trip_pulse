@@ -1,20 +1,26 @@
+import DesktopVideo from "./DesktopVideo";
+import MobileVideo from "./MobileVideo";
+
 type BackgroundVideoProps = {
   className?: string;
+  overlayClassName?: string;
 };
 
 export default function BackgroundVideo({
   className = "",
+  overlayClassName = "bg-black/70",
 }: BackgroundVideoProps) {
   return (
-    <video
-      className={`absolute inset-0 h-full w-full object-cover ${className}`}
-      autoPlay
-      loop
-      muted
-      playsInline
-      aria-hidden="true"
+    <div
+      className={`absolute inset-0 h-full w-full overflow-hidden ${className}`}
     >
-      <source src="/trip_pulse_video.mp4" type="video/mp4" />
-    </video>
+      <div className="block md:hidden">
+        <MobileVideo overlayClassName={overlayClassName} />
+      </div>
+
+      <div className="hidden md:block">
+        <DesktopVideo overlayClassName={overlayClassName} />
+      </div>
+    </div>
   );
 }
