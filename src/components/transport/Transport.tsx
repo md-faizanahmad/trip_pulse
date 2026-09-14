@@ -13,57 +13,27 @@ const transportConfig: Record<
   {
     label: string;
     icon: string;
-    activeBg: string;
-    activeBorder: string;
-    activeBadge: string;
-    activeText: string;
-    activeNumber: string;
   }
 > = {
   metro: {
     label: "Metro",
     icon: "🚇",
-    activeBg: "bg-purple-500/10",
-    activeBorder: "border-purple-600",
-    activeBadge: "bg-purple-600 text-white",
-    activeText: "text-purple-950",
-    activeNumber: "text-purple-600",
   },
   bus: {
     label: "Bus",
     icon: "🚌",
-    activeBg: "bg-amber-500/10",
-    activeBorder: "border-amber-500",
-    activeBadge: "bg-amber-500 text-white",
-    activeText: "text-amber-950",
-    activeNumber: "text-amber-600",
   },
   train: {
     label: "Train",
     icon: "🚆",
-    activeBg: "bg-[#008EEB]/10",
-    activeBorder: "border-[#008EEB]",
-    activeBadge: "bg-[#008EEB] text-white",
-    activeText: "text-[#022A5A]",
-    activeNumber: "text-[#008EEB]",
   },
   tram: {
     label: "Tram",
     icon: "🚊",
-    activeBg: "bg-emerald-500/10",
-    activeBorder: "border-emerald-600",
-    activeBadge: "bg-emerald-600 text-white",
-    activeText: "text-emerald-950",
-    activeNumber: "text-emerald-600",
   },
   ferry: {
     label: "Ferry",
     icon: "⛴️",
-    activeBg: "bg-cyan-500/10",
-    activeBorder: "border-cyan-600",
-    activeBadge: "bg-cyan-600 text-white",
-    activeText: "text-cyan-950",
-    activeNumber: "text-cyan-600",
   },
 };
 
@@ -84,9 +54,9 @@ export default function Transport({ latitude, longitude }: TransportProps) {
   const { transport, status, error } = useTransport(latitude, longitude);
 
   return (
-    <section className="w-full bg-[#FFFFFF] px-4 py-6 sm:px-6">
+    <section className="w-full bg-(--theme-surface) px-4 py-6 sm:px-6">
       {/* Editorial Header Bar */}
-      <div className="flex flex-col gap-2 border-b border-slate-200 pb-3 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-2 border-b border-(--theme-border) pb-3 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex items-center gap-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +66,7 @@ export default function Transport({ latitude, longitude }: TransportProps) {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="h-5 w-5 shrink-0 text-[#d13b19]"
+            className="h-5 w-5 shrink-0 text-(--theme-primary)"
             aria-hidden="true"
           >
             <path d="M4 15V5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z" />
@@ -108,18 +78,19 @@ export default function Transport({ latitude, longitude }: TransportProps) {
           </svg>
 
           <div>
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#e33a10]">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-(--theme-primary)">
               Mobility
             </span>
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[#022A5A] sm:text-base">
+
+            <h2 className="text-sm font-bold uppercase tracking-wider text-(--theme-text) sm:text-base">
               Transit Infrastructure
             </h2>
           </div>
         </div>
 
         {status === "success" && transport && (
-          <div className="font-mono text-[11px] font-medium text-[#334155]">
-            <span className="font-bold text-[#022A5A]">
+          <div className="font-mono text-[11px] font-medium text-(--theme-muted)">
+            <span className="font-bold text-(--theme-text)">
               {
                 Object.values(transport).filter(
                   (itemStatus) => itemStatus === "available",
@@ -137,10 +108,10 @@ export default function Transport({ latitude, longitude }: TransportProps) {
           {transportKeys.map((key) => (
             <div
               key={key}
-              className="flex items-center justify-between px-3 py-3 animate-pulse bg-slate-50"
+              className="flex animate-pulse items-center justify-between bg-(--theme-muted-bg) px-3 py-3"
             >
-              <div className="h-4 w-28 bg-slate-200" />
-              <div className="h-4 w-20 bg-slate-200" />
+              <div className="h-4 w-28 bg-(--theme-border)" />
+              <div className="h-4 w-20 bg-(--theme-border)" />
             </div>
           ))}
         </div>
@@ -153,7 +124,7 @@ export default function Transport({ latitude, longitude }: TransportProps) {
         </div>
       )}
 
-      {/* Modern Ledger Stream with Transit-Specific Color Identity */}
+      {/* Modern Ledger Stream */}
       {status === "success" && transport && (
         <div className="mt-3 space-y-1">
           {transportKeys.map((key, index) => {
@@ -166,29 +137,35 @@ export default function Transport({ latitude, longitude }: TransportProps) {
                 key={key}
                 className={`flex items-center justify-between px-3 py-2.5 transition-colors sm:px-4 sm:py-3 ${
                   isAvailable
-                    ? `${config.activeBg} border-l-2 ${config.activeBorder}`
-                    : "bg-slate-50/60 border-l-2 border-transparent"
+                    ? "border-l-2 border-(--theme-primary) bg-(--theme-primary-soft)"
+                    : "border-l-2 border-transparent bg-(--theme-muted-bg)"
                 }`}
               >
                 {/* Mode Identity & Sequence */}
                 <div className="flex items-center gap-3 sm:gap-4">
                   <span
                     className={`font-mono text-[10px] font-bold sm:text-xs ${
-                      isAvailable ? config.activeNumber : "text-slate-300"
+                      isAvailable
+                        ? "text-(--theme-primary)"
+                        : "text-(--theme-muted)"
                     }`}
                   >
                     {String(index + 1).padStart(2, "0")}
                   </span>
+
                   <span
-                    className="text-base select-none sm:text-lg"
+                    className="select-none text-base sm:text-lg"
                     role="img"
                     aria-label={config.label}
                   >
                     {config.icon}
                   </span>
+
                   <span
                     className={`text-xs font-bold tracking-tight sm:text-sm ${
-                      isAvailable ? config.activeText : "text-slate-500"
+                      isAvailable
+                        ? "text-(--theme-text)"
+                        : "text-(--theme-muted)"
                     }`}
                   >
                     {config.label}
@@ -200,16 +177,17 @@ export default function Transport({ latitude, longitude }: TransportProps) {
                   <span
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 font-mono text-[11px] font-extrabold uppercase tracking-wider ${
                       isAvailable
-                        ? config.activeBadge
-                        : "bg-slate-200/70 text-slate-500"
+                        ? "bg-(--theme-primary) "
+                        : "bg-(--theme-muted-bg) text-(--theme-muted)"
                     }`}
                   >
                     <span
                       className={`h-1.5 w-1.5 ${
-                        isAvailable ? "bg-white" : "bg-slate-400"
+                        isAvailable ? "bg-white" : "bg-(--theme-muted)"
                       }`}
                       aria-hidden="true"
                     />
+
                     {getStatusLabel(currentStatus)}
                   </span>
                 </div>
