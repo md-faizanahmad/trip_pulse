@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { usePlaces } from "@/hooks/usePlaces";
+
 import type { PlaceCategory } from "@/types/places";
 
 type PlacesProps = {
@@ -57,7 +58,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
   }
 
   return (
-    <section className="w-full bg-[#FFFFFF] p-4 sm:p-5">
+    <section className="w-full bg-white p-4 sm:p-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -69,14 +70,14 @@ export default function Places({ latitude, longitude }: PlacesProps) {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="h-4 w-4 text-[#52bd21]"
+            className="h-4 w-4 text-(--destination-primary)"
             aria-hidden="true"
           >
             <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
             <circle cx="12" cy="10" r="2.5" />
           </svg>
 
-          <h2 className="text-xs font-bold uppercase tracking-widest text-[#022A5A]">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-(--destination-secondary)">
             Attractions & Highlights
           </h2>
         </div>
@@ -111,8 +112,8 @@ export default function Places({ latitude, longitude }: PlacesProps) {
                 onClick={() => handleCategoryChange(category.value)}
                 className={`shrink-0 border px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors ${
                   isActive
-                    ? "border-[#022A5A] bg-[#022A5A] text-white"
-                    : "border-slate-200 bg-white text-[#334155] hover:border-[#008EEB] hover:text-[#008EEB]"
+                    ? "border-(--destination-secondary) bg-(--destination-secondary) text-white"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-(--destination-primary) hover:text-(--destination-primary)"
                 }`}
                 aria-pressed={isActive}
               >
@@ -145,7 +146,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
       {/* Empty State */}
       {status === "success" && filteredPlaces.length === 0 && (
         <div className="mt-3.5 border border-slate-200 bg-slate-50 p-3">
-          <p className="text-xs font-semibold text-[#334155]">
+          <p className="text-xs font-semibold text-slate-700">
             No nearby attractions were found in this category.
           </p>
         </div>
@@ -161,28 +162,28 @@ export default function Places({ latitude, longitude }: PlacesProps) {
                 href={getGoogleMapsUrl(place.latitude, place.longitude)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex items-center justify-between gap-3 border-r border-b border-slate-200 bg-[#FFFFFF] px-3.5 py-2.5 transition-colors hover:bg-slate-50 active:bg-slate-100"
+                className="group relative flex items-center justify-between gap-3 border-r border-b border-slate-200 bg-white px-3.5 py-2.5 transition-colors hover:bg-(--destination-surface) active:bg-slate-100"
               >
                 {/* Index Indicator */}
-                <span className="font-mono text-[11px] font-bold text-slate-300 transition-colors group-hover:text-[#022A5A]">
+                <span className="font-mono text-[11px] font-bold text-slate-300 transition-colors group-hover:text-(--destination-secondary)">
                   {String(index + 1).padStart(2, "0")}
                 </span>
 
                 {/* Place Details */}
                 <div className="min-w-0 flex-1">
-                  <h3 className="truncate text-xs font-bold tracking-tight text-[#022A5A] transition-colors group-hover:text-[#008EEB]">
+                  <h3 className="truncate text-xs font-bold tracking-tight text-(--destination-secondary) transition-colors group-hover:text-(--destination-primary)">
                     {place.name}
                   </h3>
 
                   {(place.address || place.city) && (
-                    <p className="mt-0.5 truncate text-[11px] font-medium text-[#334155]">
+                    <p className="mt-0.5 truncate text-[11px] font-medium text-slate-700">
                       {[place.address, place.city].filter(Boolean).join(", ")}
                     </p>
                   )}
                 </div>
 
                 {/* Arrow Icon */}
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center border border-slate-200 text-slate-400 transition-colors group-hover:border-[#008EEB] group-hover:bg-[#008EEB] group-hover:text-white">
+                <div className="flex h-5 w-5 shrink-0 items-center justify-center border border-slate-200 text-slate-400 transition-colors group-hover:border-(--destination-primary) group-hover:bg-(--destination-primary) group-hover:text-white">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -208,7 +209,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
               <button
                 type="button"
                 onClick={() => setShowAll((current) => !current)}
-                className="inline-flex h-9 w-48 items-center justify-center gap-1.5 border border-[#008EEB] bg-[#008EEB] px-4 text-[11px] font-bold uppercase tracking-wider text-white transition-colors hover:border-[#022A5A] hover:bg-[#022A5A] active:bg-[#022A5A]"
+                className="inline-flex h-9 w-48 items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-4 text-[11px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
               >
                 <span>
                   {showAll
