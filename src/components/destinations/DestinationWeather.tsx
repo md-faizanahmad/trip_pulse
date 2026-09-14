@@ -6,6 +6,7 @@ import WeatherForecast from "@/components/Weather/WeatherForecast";
 import WeatherSkeleton from "@/skeletons/weatherSkeleton";
 
 import { getWeatherCondition, getWeatherIcon } from "@/utils/weather";
+import { Droplets, Thermometer, Wind } from "lucide-react";
 
 type DestinationWeatherProps = {
   latitude: number;
@@ -76,93 +77,80 @@ export default function DestinationWeather({
         </div>
 
         {/* Right: Conditions Matrix */}
-        <div className="flex shrink-0 flex-col gap-3 border-t border-zinc-200 pt-5 md:w-80 md:border-t-0 md:pt-0">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 bg-zinc-900" />
-            <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-950">
-              Conditions
-            </h2>
+
+        <div className="flex shrink-0 flex-col gap-4 md:w-80">
+          {/* Header with Pulse Accent */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 bg-[#008EEB]" aria-hidden="true" />
+              <h2 className="font-mono text-[11px] font-black uppercase tracking-widest text-[#022A5A]">
+                Live Atmosphere
+              </h2>
+            </div>
+            <span className="font-mono text-[9px] font-bold tracking-wider text-slate-400">
+              TELEMETRY
+            </span>
           </div>
 
-          <div className="grid grid-cols-3 divide-x divide-zinc-200 border border-zinc-200 bg-zinc-50/50">
+          {/* Open Floating Metrics: Zero Borders, Native Motion & Tactile Feel */}
+          <div className="grid grid-cols-3 gap-3">
             {/* Feels Like */}
-            <div className="flex flex-col p-3">
-              <div className="flex items-center gap-1.5 text-zinc-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-3.5 w-3.5 shrink-0"
+            <div className="group flex flex-col justify-between py-1 transition-transform duration-200 hover:-translate-y-0.5">
+              <div className="flex items-center gap-1.5">
+                <Thermometer
+                  size={14}
+                  strokeWidth={2.4}
+                  className="text-[#09ac14] transition-transform duration-300 group-hover:-translate-y-0.5"
                   aria-hidden="true"
-                >
-                  <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z" />
-                </svg>
-                <span className="text-[10px] font-semibold uppercase tracking-wider">
+                />
+                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400 transition-colors group-hover:text-[#022A5A]">
                   Feels
                 </span>
               </div>
-              <span className="mt-2 text-sm font-semibold tracking-tight text-zinc-950">
-                {current.feelsLike ?? "—"}°C
-              </span>
+              <div className="mt-2 font-mono text-base font-black tracking-tight text-[#022A5A] sm:text-lg">
+                {current.feelsLike ?? "—"}
+                <span className="text-xs font-semibold text-slate-400">°C</span>
+              </div>
             </div>
 
             {/* Humidity */}
-            <div className="flex flex-col p-3">
-              <div className="flex items-center gap-1.5 text-zinc-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-3.5 w-3.5 shrink-0"
+            <div className="group flex flex-col justify-between py-1 transition-transform duration-200 hover:-translate-y-0.5">
+              <div className="flex items-center gap-1.5">
+                <Droplets
+                  size={14}
+                  strokeWidth={2.4}
+                  className="text-[#008EEB] transition-transform duration-300 group-hover:scale-125"
                   aria-hidden="true"
-                >
-                  <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />
-                </svg>
-                <span className="text-[10px] font-semibold uppercase tracking-wider">
+                />
+                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400 transition-colors group-hover:text-[#022A5A]">
                   Humidity
                 </span>
               </div>
-              <span className="mt-2 text-sm font-semibold tracking-tight text-zinc-950">
-                {current.humidity ?? "—"}%
-              </span>
+              <div className="mt-2 font-mono text-base font-black tracking-tight text-[#022A5A] sm:text-lg">
+                {current.humidity ?? "—"}
+                <span className="text-xs font-semibold text-slate-400">%</span>
+              </div>
             </div>
 
-            {/* Wind */}
-            <div className="flex flex-col p-3">
-              <div className="flex items-center gap-1.5 text-zinc-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-3.5 w-3.5 shrink-0"
+            {/* Wind Flow Animation */}
+            <div className="group flex flex-col justify-between py-1 transition-transform duration-200 hover:-translate-y-0.5">
+              <div className="flex items-center gap-1.5">
+                <Wind
+                  size={14}
+                  strokeWidth={2.4}
+                  className="text-[#cd261a] transition-all duration-300 motion-safe:animate-[pulse_2.5s_ease-in-out_infinite] group-hover:translate-x-1.5"
                   aria-hidden="true"
-                >
-                  <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2" />
-                  <path d="M9.6 4.6A2 2 0 1 1 11 8H2" />
-                  <path d="M12.6 19.4A2 2 0 1 0 14 16H2" />
-                </svg>
-                <span className="text-[10px] font-semibold uppercase tracking-wider">
+                />
+                <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400 transition-colors group-hover:text-[#022A5A]">
                   Wind
                 </span>
               </div>
-              <span className="mt-2 text-sm font-semibold tracking-tight text-zinc-950">
+              <div className="mt-2 font-mono text-base font-black tracking-tight text-[#022A5A] sm:text-lg">
                 {current.windSpeed ?? "—"}{" "}
-                <span className="text-[10px] font-normal uppercase text-zinc-500">
+                <span className="text-[10px] font-bold uppercase tracking-normal text-slate-400">
                   km/h
                 </span>
-              </span>
+              </div>
             </div>
           </div>
         </div>

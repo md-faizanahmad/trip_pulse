@@ -19,7 +19,10 @@ export default function CurrencyOverview({
     <section className="w-full  p-4 sm:p-6">
       {/* Header with status marker */}
       <div className="flex items-center gap-2">
-        <span className="h-2 w-2 bg-[#008EEB]" />
+        <span className="flex h-5 w-5 items-center justify-center rounded-full  text-[25px] font-bold text-black">
+          {currencySymbol}
+        </span>
+
         <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-950">
           Local Currency
         </h2>
