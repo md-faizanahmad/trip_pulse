@@ -36,13 +36,19 @@ export default function CurrencyConverter({
   }
 
   return (
-    <section className="w-full border-b border-zinc-200  p-4 sm:p-6">
+    <section className="w-full border-b border-zinc-200 p-4 sm:p-6">
       {/* Section Header */}
       <div className="flex items-center gap-2">
+        <span
+          className="h-1.5 w-1.5 bg-(--destination-primary)"
+          aria-hidden="true"
+        />
+
         <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-950">
           Currency Converter
         </h2>
       </div>
+
       <p className="mt-1 text-xs font-medium text-zinc-500">
         Convert an amount between local and global currencies.
       </p>
@@ -54,13 +60,14 @@ export default function CurrencyConverter({
           <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
             Amount
           </span>
+
           <input
             type="number"
             min="0"
             step="0.01"
             value={amount}
             onChange={(event) => setAmount(event.target.value)}
-            className="mt-1.5 h-11 w-full border border-zinc-200 bg-white px-3 font-mono text-sm font-bold text-zinc-950 outline-none transition-colors focus:border-zinc-950"
+            className="mt-1.5 h-11 w-full border border-zinc-200 bg-white px-3 font-mono text-sm font-bold text-zinc-950 outline-none transition-colors focus:border-(--destination-primary)"
             placeholder="1"
           />
         </label>
@@ -70,10 +77,11 @@ export default function CurrencyConverter({
           <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
             From
           </span>
+
           <select
             value={fromCurrency}
             onChange={(event) => setFromCurrency(event.target.value)}
-            className="mt-1.5 h-11 w-full border border-zinc-200 bg-white px-3 text-xs font-bold uppercase tracking-wide text-zinc-950 outline-none transition-colors focus:border-zinc-950"
+            className="mt-1.5 h-11 w-full border border-zinc-200 bg-white px-3 text-xs font-bold uppercase tracking-wide text-zinc-950 outline-none transition-colors focus:border-(--destination-primary)"
           >
             {availableCurrencies.map((item) => (
               <option key={item.code} value={item.code}>
@@ -87,7 +95,7 @@ export default function CurrencyConverter({
         <button
           type="button"
           onClick={handleSwap}
-          className="flex h-11 w-full items-center justify-center border border-zinc-200 bg-zinc-50 text-zinc-700 transition-colors hover:border-zinc-950 hover:bg-zinc-950 hover:text-white active:scale-95 sm:w-11"
+          className="flex h-11 w-full items-center justify-center border border-(--destination-primary)/30 bg-(--destination-surface) text-(--destination-secondary) transition-colors hover:border-(--destination-primary) hover:bg-(--destination-primary) hover:text-white active:scale-95 sm:w-11"
           aria-label="Swap currencies"
           title="Swap currencies"
         >
@@ -112,10 +120,11 @@ export default function CurrencyConverter({
           <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
             To
           </span>
+
           <select
             value={toCurrency}
             onChange={(event) => setToCurrency(event.target.value)}
-            className="mt-1.5 h-11 w-full border border-zinc-200 bg-white px-3 text-xs font-bold uppercase tracking-wide text-zinc-950 outline-none transition-colors focus:border-zinc-950"
+            className="mt-1.5 h-11 w-full border border-zinc-200 bg-white px-3 text-xs font-bold uppercase tracking-wide text-zinc-950 outline-none transition-colors focus:border-(--destination-primary)"
           >
             {availableCurrencies.map((item) => (
               <option key={item.code} value={item.code}>
@@ -130,7 +139,7 @@ export default function CurrencyConverter({
       <div className="mt-4 border border-zinc-200 bg-zinc-50/50 p-4">
         {status === "loading" && (
           <div className="flex items-center gap-2 font-mono text-xs font-semibold text-zinc-400">
-            <span className="h-1.5 w-1.5 animate-ping bg-[#008EEB]" />
+            <span className="h-1.5 w-1.5 animate-ping bg-(--destination-primary)" />
             Updating rate...
           </div>
         )}
@@ -145,7 +154,8 @@ export default function CurrencyConverter({
               <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
                 Converted Amount
               </span>
-              <div className="mt-1 font-mono text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
+
+              <div className="mt-1 font-mono text-2xl font-extrabold tracking-tight text-(--destination-primary) sm:text-3xl">
                 {convertedAmount.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,

@@ -16,10 +16,10 @@ export default function CurrencyOverview({
   date,
 }: CurrencyOverviewProps) {
   return (
-    <section className="w-full  p-4 sm:p-6">
-      {/* Header with status marker */}
+    <section className="w-full p-4 sm:p-6">
+      {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="flex h-5 w-5 items-center justify-center rounded-full  text-[25px] font-bold text-black">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full text-[25px] font-bold text-(--destination-primary)">
           {currencySymbol}
         </span>
 
@@ -32,7 +32,7 @@ export default function CurrencyOverview({
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {/* Currency Identity Card */}
         <div className="flex items-center gap-3.5 border border-zinc-200 bg-zinc-50/50 p-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-zinc-200 bg-white font-mono text-xl font-bold text-zinc-950">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-(--destination-primary)/30 bg-white font-mono text-xl font-bold text-(--destination-primary)">
             {currencySymbol}
           </div>
 
@@ -40,11 +40,13 @@ export default function CurrencyOverview({
             <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
               Currency
             </span>
+
             <div className="mt-0.5 flex flex-wrap items-center gap-2">
               <h3 className="truncate text-base font-bold tracking-tight text-zinc-950">
                 {currencyName}
               </h3>
-              <span className="border border-zinc-900 bg-zinc-900 px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-white">
+
+              <span className="border border-(--destination-secondary) bg-(--destination-secondary) px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-white">
                 {currencyCode}
               </span>
             </div>
@@ -57,6 +59,7 @@ export default function CurrencyOverview({
             <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
               Exchange Rate
             </span>
+
             {date && (
               <span className="inline-flex items-center gap-1 text-[11px] font-bold tracking-tight text-zinc-600">
                 <svg
@@ -84,11 +87,13 @@ export default function CurrencyOverview({
             <span className="text-sm font-bold text-zinc-600">
               1 {baseCurrency}
             </span>
+
             <span className="font-bold text-zinc-400">=</span>
-            <div className="text-xl font-bold tracking-tight text-zinc-950 sm:text-2xl">
+
+            <div className="text-xl font-bold tracking-tight sm:text-2xl">
               {rate !== null ? (
                 <>
-                  <span className="font-extrabold text-zinc-950">
+                  <span className="font-extrabold text-(--destination-primary)">
                     {currencySymbol}
                     {rate.toFixed(2)}
                   </span>{" "}
