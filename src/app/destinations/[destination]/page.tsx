@@ -6,6 +6,7 @@ import Safety from "@/components/Safety/Safety";
 import Transport from "@/components/transport/Transport";
 import Breadcrumb from "@/shared/Breadcrumb";
 import type { Destination } from "@/types/destination";
+import { getCountryTheme } from "@/utils/countryTheme";
 import { getCurrencyByCountryCode } from "@/utils/currency";
 
 type DestinationPageProps = {
@@ -97,12 +98,13 @@ export default async function DestinationPage({
 
   const selectedDestination = data.destination;
 
+  const countryTheme = getCountryTheme(selectedDestination.countryCode);
   const destinationCurrency = getCurrencyByCountryCode(
     selectedDestination.countryCode,
   );
 
   return (
-    <main className="flex-1">
+    <main className={`flex-1 ${countryTheme.className}`}>
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-8">
         <Breadcrumb destination={selectedDestination.name} />
 

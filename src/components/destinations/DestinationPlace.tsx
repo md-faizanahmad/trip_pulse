@@ -1,8 +1,9 @@
-import type { Destination } from "@/types/destination";
-import SunTimes from "../Weather/SunTimes";
-import LocalTime from "../localTime/LocalTime";
-import CountryInfo from "../CountryInfo/CountryInfo";
 import Image from "next/image";
+
+import type { Destination } from "@/types/destination";
+import CountryInfo from "../CountryInfo/CountryInfo";
+import LocalTime from "../localTime/LocalTime";
+import SunTimes from "../Weather/SunTimes";
 
 type DestinationPlaceProps = {
   destination: Destination;
@@ -25,7 +26,7 @@ export default function DestinationPlace({
               countryCode={destination.countryCode}
             />
 
-            <h1 className="mt-6 text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
+            <h1 className="destination-gradient-text mt-6 text-2xl font-bold tracking-tight sm:text-3xl">
               {destination.name}
             </h1>
 
@@ -39,11 +40,12 @@ export default function DestinationPlace({
               latitude={destination.latitude}
               longitude={destination.longitude}
             />
+
             <a
               href={mapsDirUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 border border-[#008EEB] bg-[#008EEB] px-4 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:border-[#022A5A] hover:bg-[#022A5A] sm:w-auto"
+              className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 border border-(--destination-primary) bg-(--destination-primary) px-4 text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:border-[var(--destination-secondary)] hover:bg-[var(--destination-secondary)] sm:w-auto"
             >
               <Image
                 src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Maps_icon_%282015-2020%29.svg"
