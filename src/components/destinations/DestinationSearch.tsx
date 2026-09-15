@@ -1,26 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useDestinationSearch } from "@/hooks/useDestinationSearch";
+import { useDestinationSearchUI } from "@/hooks/useDestinationSearchUI";
 import { useVoiceSearch } from "@/hooks/useVoiceSearch";
 import DestinationSearchResults from "@/components/destinations/DestinationSearchResults";
-import { validateDestinationQuery } from "@/validation/validation";
 import SearchSkeleton from "./SearchSkeleton";
 
-const POPULAR_DESTINATIONS = [
-  "Dubai",
-  "New York",
-  "London",
-  "Mumbai",
-  "Australia",
-];
-
 export default function DestinationSearch() {
-  const [query, setQuery] = useState("");
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
-  const [currentPlaceholder, setCurrentPlaceholder] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(150);
+  const {
+    query,
+    currentPlaceholder,
+    validationError,
+    handleQueryChange,
+    handleClear,
+    handleVoiceResult,
+  } = useDestinationSearchUI();
 
   const { destinations, status, error, retry } = useDestinationSearch(query);
 
@@ -31,11 +25,10 @@ export default function DestinationSearch() {
     startListening,
     stopListening,
   } = useVoiceSearch({
-    onResult: setQuery,
+    onResult: handleVoiceResult,
   });
 
   const isLoading = status === "loading";
-  const validationError = validateDestinationQuery(query);
 
   const showResults = status === "success" && destinations.length > 0;
 
@@ -43,51 +36,6 @@ export default function DestinationSearch() {
     status === "success" &&
     validationError === null &&
     destinations.length === 0;
-
-  useEffect(() => {
-    if (query) return;
-
-    const fullText = `Try searching "${POPULAR_DESTINATIONS[placeholderIndex]}"`;
-
-    const handleTyping = () => {
-      if (!isDeleting) {
-        setCurrentPlaceholder(
-          fullText.substring(0, currentPlaceholder.length + 1),
-        );
-
-        if (currentPlaceholder === fullText) {
-          setTimeout(() => setIsDeleting(true), 1500);
-          setTypingSpeed(100);
-        }
-      } else {
-        setCurrentPlaceholder(
-          fullText.substring(0, currentPlaceholder.length - 1),
-        );
-
-        if (currentPlaceholder === "") {
-          setIsDeleting(false);
-          setPlaceholderIndex(
-            (prev) => (prev + 1) % POPULAR_DESTINATIONS.length,
-          );
-          setTypingSpeed(150);
-        }
-      }
-    };
-
-    const timer = setTimeout(handleTyping, typingSpeed);
-
-    return () => clearTimeout(timer);
-  }, [currentPlaceholder, isDeleting, placeholderIndex, query, typingSpeed]);
-
-  function handleQueryChange(value: string) {
-    const sanitizedValue = value.replace(/[^a-zA-ZÀ-ÿ\s.'-]/g, "");
-
-    setQuery(sanitizedValue);
-  }
-
-  function handleClear() {
-    setQuery("");
-  }
 
   function handleVoiceSearch() {
     if (isListening) {
@@ -166,10 +114,10 @@ export default function DestinationSearch() {
                     isListening ? "Stop voice search" : "Search by voice"
                   }
                   aria-pressed={isListening}
-                  className={` cursor-pointer p-2 transition focus:outline-none  ${
+                  className={`cursor-pointer p-2 transition focus:outline-none ${
                     isListening
                       ? "bg-red-50 text-red-600"
-                      : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 rounded-sm"
+                      : "rounded-sm text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900"
                   }`}
                 >
                   <svg
@@ -238,11 +186,13 @@ export default function DestinationSearch() {
             </button>
           </div>
         )}
+
         {voiceError && (
           <p className="mt-3 text-sm text-red-600" role="alert">
             {voiceError}
           </p>
         )}
+
         {showResults && (
           <DestinationSearchResults destinations={destinations} />
         )}

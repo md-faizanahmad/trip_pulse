@@ -24,6 +24,10 @@ export function useDestinationSearchUI() {
     setQuery(sanitizedValue);
   };
 
+  const handleVoiceResult = (value: string) => {
+    handleQueryChange(value);
+  };
+
   const handleClear = () => {
     setQuery("");
   };
@@ -69,6 +73,7 @@ export function useDestinationSearchUI() {
     currentPlaceholder,
     validationError,
     handleQueryChange,
+    handleVoiceResult,
     handleClear,
   };
 }
