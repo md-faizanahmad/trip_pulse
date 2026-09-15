@@ -3,9 +3,9 @@ import DestinationSearch from "@/components/destinations/DestinationSearch";
 
 export default function Home() {
   return (
-    <main className="flex-1 relative overflow-hidden">
+    <div className="relative isolate min-h-full">
       <BackgroundVideo />
       <DestinationSearch />
-    </main>
+    </div>
   );
 }
