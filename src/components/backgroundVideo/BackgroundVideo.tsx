@@ -12,13 +12,13 @@ export default function BackgroundVideo({
 }: BackgroundVideoProps) {
   return (
     <div
-      className={`absolute -z-999 inset-0 h-full w-full overflow-hidden ${className}`}
+      className={`absolute inset-0 -z-10 h-full w-full overflow-hidden ${className}`}
     >
-      <div className="block md:hidden">
+      <div className="h-full w-full md:hidden">
         <MobileVideo overlayClassName={overlayClassName} />
       </div>
 
-      <div className="hidden md:block">
+      <div className="hidden h-full w-full md:block">
         <DesktopVideo overlayClassName={overlayClassName} />
       </div>
     </div>

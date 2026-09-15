@@ -6,9 +6,9 @@ export default function MobileVideo({
   overlayClassName = "bg-black/70",
 }: MobileVideoProps) {
   return (
-    <>
+    <div className="absolute inset-0 h-full w-full overflow-hidden">
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="h-full w-full object-cover"
         autoPlay
         loop
         muted
@@ -19,9 +19,9 @@ export default function MobileVideo({
       </video>
 
       <div
-        className={`absolute inset-0 pointer-events-none ${overlayClassName}`}
+        className={`pointer-events-none absolute inset-0 ${overlayClassName}`}
         aria-hidden="true"
       />
-    </>
+    </div>
   );
 }
