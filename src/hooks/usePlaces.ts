@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import type { PlacesResponse, Place } from "@/types/places";
 
 type PlacesStatus = "idle" | "loading" | "success" | "error";
@@ -56,7 +56,7 @@ function placesReducer(state: PlacesState, action: PlacesAction): PlacesState {
 
 export function usePlaces(latitude: number | null, longitude: number | null) {
   const [state, dispatch] = useReducer(placesReducer, initialState);
-
+  const [retryCount, setRetryCount] = useState(0);
   useEffect(() => {
     if (latitude === null || longitude === null) {
       dispatch({ type: "FETCH_RESET" });
@@ -106,11 +106,12 @@ export function usePlaces(latitude: number | null, longitude: number | null) {
     fetchPlaces();
 
     return () => controller.abort();
-  }, [latitude, longitude]);
+  }, [latitude, longitude, retryCount]);
 
   return {
     places: state.places,
     status: state.status,
     error: state.error,
+    retry: () => setRetryCount((count) => count + 1),
   };
 }
