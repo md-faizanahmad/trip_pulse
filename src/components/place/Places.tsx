@@ -29,7 +29,7 @@ const CATEGORY_FILTERS: {
 ];
 
 export default function Places({ latitude, longitude }: PlacesProps) {
-  const { places, status, error } = usePlaces(latitude, longitude);
+  const { places, status, error, retry } = usePlaces(latitude, longitude);
   const [showAll, setShowAll] = useState(false);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryFilter>("all");
@@ -138,8 +138,33 @@ export default function Places({ latitude, longitude }: PlacesProps) {
 
       {/* Error State */}
       {status === "error" && (
-        <div className="mt-3.5 border border-red-200 bg-red-50 p-3">
+        <div className="mt-3.5 flex items-center justify-between gap-3 border border-red-200 bg-red-50 p-3">
           <p className="text-xs font-bold text-red-700">{error}</p>
+
+          <button
+            type="button"
+            onClick={retry}
+            className="inline-flex h-8 shrink-0 items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-3 text-[10px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-3 w-3"
+              aria-hidden="true"
+            >
+              <path d="M20 11a8.1 8.1 0 0 0-15.5-2" />
+              <path d="M4 5v4h4" />
+              <path d="M4 13a8.1 8.1 0 0 0 15.5 2" />
+              <path d="M20 19v-4h-4" />
+            </svg>
+
+            <span>Retry</span>
+          </button>
         </div>
       )}
 
