@@ -51,7 +51,7 @@ function getStatusLabel(status: TransportStatus) {
 }
 
 export default function Transport({ latitude, longitude }: TransportProps) {
-  const { transport, status, error } = useTransport(latitude, longitude);
+  const { transport, status, error, retry } = useTransport(latitude, longitude);
 
   return (
     <section className="w-full bg-(--destination-background) px-4 py-6 sm:px-6">
@@ -119,10 +119,35 @@ export default function Transport({ latitude, longitude }: TransportProps) {
 
       {/* Error State */}
       {status === "error" && (
-        <div className="mt-4 border-l-2 border-(--destination-secondary) py-1 pl-3">
+        <div className="mt-4 flex items-center justify-between gap-3 border-l-2 border-(--destination-secondary) py-1 pl-3">
           <p className="text-xs font-semibold text-(--destination-secondary)">
             {error}
           </p>
+
+          <button
+            type="button"
+            onClick={retry}
+            className="inline-flex h-8 shrink-0 items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-3 text-[10px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-3 w-3"
+              aria-hidden="true"
+            >
+              <path d="M20 11a8.1 8.1 0 0 0-15.5-2" />
+              <path d="M4 5v4h4" />
+              <path d="M4 13a8.1 8.1 0 0 0 15.5 2" />
+              <path d="M20 19v-4h-4" />
+            </svg>
+
+            <span>Retry</span>
+          </button>
         </div>
       )}
 
