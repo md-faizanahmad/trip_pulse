@@ -144,7 +144,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
           <button
             type="button"
             onClick={retry}
-            className="inline-flex h-8 shrink-0 items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-3 text-[10px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
+            className="inline-flex h-8  cursor-pointer shrink-0 items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-3 text-[10px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
