@@ -46,7 +46,7 @@ export default function CurrencyOverview({
                 {currencyName}
               </h3>
 
-              <span className="border border-(--destination-secondary) bg-(--destination-secondary) px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-white">
+              <span className="border border-zinc-300 bg-zinc-100 px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-zinc-700">
                 {currencyCode}
               </span>
             </div>
