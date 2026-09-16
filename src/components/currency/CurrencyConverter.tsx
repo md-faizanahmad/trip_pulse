@@ -44,7 +44,7 @@ export default function CurrencyConverter({
           aria-hidden="true"
         />
 
-        <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-950">
+        <h2 className="text-xs font-extrabold uppercase tracking-widest text-zinc-950">
           Currency Converter
         </h2>
       </div>
@@ -136,10 +136,11 @@ export default function CurrencyConverter({
       </div>
 
       {/* Result Display Box */}
+      {/* Result Display Box */}
       <div className="mt-4 border border-zinc-200 bg-zinc-50/50 p-4">
         {status === "loading" && (
           <div className="flex items-center gap-2 font-mono text-xs font-semibold text-zinc-400">
-            <span className="h-1.5 w-1.5 animate-ping bg-(--destination-primary)" />
+            <span className="h-1.5 w-1.5 animate-ping bg-zinc-400" />
             Updating rate...
           </div>
         )}
@@ -149,24 +150,22 @@ export default function CurrencyConverter({
         )}
 
         {status === "success" && convertedAmount !== null && currency && (
-          <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-baseline">
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                Converted Amount
-              </span>
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+              Converted Amount
+            </span>
 
-              <div className="mt-1 font-mono text-2xl font-extrabold tracking-tight text-(--destination-primary) sm:text-3xl">
-                {convertedAmount.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}{" "}
-                <span className="text-sm font-bold text-zinc-500">
-                  {currency.quote}
-                </span>
-              </div>
+            <div className="mt-1 font-mono text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
+              {convertedAmount.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              <span className="text-sm font-bold text-zinc-500">
+                {currency.quote}
+              </span>
             </div>
 
-            <div className="font-mono text-xs font-bold text-zinc-500">
+            <div className="mt-1.5 font-mono text-[11px] font-bold text-zinc-500">
               1 {currency.base} = {currency.rate.toFixed(4)} {currency.quote}
             </div>
           </div>
