@@ -33,10 +33,6 @@
 </ul>
 
 
-## Environment Variables
-
-Create a `.env.local` file in the root of the project:
-
 
 # Add your environment variables here
 
