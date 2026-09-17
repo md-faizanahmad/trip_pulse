@@ -33,15 +33,6 @@
 </ul>
 
 
-## Installation
-
-
-git clone https://github.com/your-username/trippulse.git
-cd trippulse
-npm install
-npm run dev
-
-
 ## Environment Variables
 
 Create a `.env.local` file in the root of the project:
