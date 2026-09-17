@@ -35,7 +35,7 @@
 
 ## Installation
 
-```bash
+
 git clone https://github.com/your-username/trippulse.git
 cd trippulse
 npm install
@@ -46,13 +46,13 @@ npm run dev
 
 Create a `.env.local` file in the root of the project:
 
-```env
+
 # Add your environment variables here
 
 
 ## Project Structure
 
-```text
+
 src/
 ├── app/
 ├── components/
