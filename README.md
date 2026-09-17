@@ -20,4 +20,12 @@
   <li>🎙️ Search destinations using voice-to-text</li>
   <li>🇺🇳 Country-based page theme using the country flag</li>
   <li>📱 Responsive design for mobile and desktop</li>
-</ul>
+</u
+## Tech Stack
+
+<ul>
+  <li>Next.js</li>
+  <li>React</li>
+  <li>TypeScript</li>
+  <li>Tailwind CSS</li>
+</ul>l>
