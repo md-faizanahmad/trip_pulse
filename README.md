@@ -21,6 +21,8 @@
   <li>🇺🇳 Country-based page theme using the country flag</li>
   <li>📱 Responsive design for mobile and desktop</li>
 </u
+
+
 ## Tech Stack
 
 <ul>
