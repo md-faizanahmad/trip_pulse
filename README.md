@@ -66,3 +66,14 @@ public/
 ## License
 
 This project is for personal and educational purposes.
+
+## Future Features
+
+<ul>
+  <li>🕰️ Timezone converter</li>
+  <li>🌤️ Weather information</li>
+  <li>🏨 Hotels and accommodation</li>
+  <li>🍽️ Restaurants and local food</li>
+  <li>🗺️ Interactive maps</li>
+  <li>❤️ Save favourite destinations</li>
+</ul>
