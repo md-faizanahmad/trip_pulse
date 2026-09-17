@@ -31,3 +31,12 @@
   <li>TypeScript</li>
   <li>Tailwind CSS</li>
 </ul>
+
+
+## Installation
+
+```bash
+git clone https://github.com/your-username/trippulse.git
+cd trippulse
+npm install
+npm run dev
