@@ -33,11 +33,6 @@
 </ul>
 
 
-
-## License
-
-This project is for personal and educational purposes.
-
 ## Future Features
 
 <ul>
