@@ -34,22 +34,6 @@
 
 
 
-# Add your environment variables here
-
-
-## Project Structure
-
-
-src/
-├── app/
-├── components/
-├── hooks/
-├── services/
-└── types/
-
-public/
-
-
 ## License
 
 This project is for personal and educational purposes.
