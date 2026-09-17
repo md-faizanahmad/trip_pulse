@@ -20,7 +20,7 @@
   <li>🎙️ Search destinations using voice-to-text</li>
   <li>🇺🇳 Country-based page theme using the country flag</li>
   <li>📱 Responsive design for mobile and desktop</li>
-</u
+</u>
 
 
 ## Tech Stack
