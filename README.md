@@ -30,4 +30,4 @@
   <li>React</li>
   <li>TypeScript</li>
   <li>Tailwind CSS</li>
-</ul>l>
+</ul>
