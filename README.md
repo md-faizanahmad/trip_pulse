@@ -48,3 +48,16 @@ Create a `.env.local` file in the root of the project:
 
 ```env
 # Add your environment variables here
+
+
+## Project Structure
+
+```text
+src/
+├── app/
+├── components/
+├── hooks/
+├── services/
+└── types/
+
+public/
