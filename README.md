@@ -61,3 +61,8 @@ src/
 └── types/
 
 public/
+
+
+## License
+
+This project is for personal and educational purposes.
