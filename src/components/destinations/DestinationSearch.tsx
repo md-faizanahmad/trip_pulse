@@ -140,7 +140,7 @@ export default function DestinationSearch() {
                   type="button"
                   onClick={handleClear}
                   aria-label="Clear search"
-                  className="rounded-full p-1.5 text-zinc-400 transition hover:bg-zinc-100 hover:text-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-300"
+                  className="rounded-full cursor-pointer p-1.5 text-zinc-400 transition hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-zinc-300"
                 >
                   <svg
                     aria-hidden="true"
