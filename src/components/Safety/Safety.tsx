@@ -88,7 +88,7 @@ export default function Safety({ countryCode }: SafetyProps) {
 
       {/* Emergency Contacts */}
       {status === "success" && emergency && (
-        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4 lg:gap-10">
+        <div className="mt-6 grid grid-cols-1 gap-6 cursor-pointer sm:grid-cols-2 sm:gap-8 lg:grid-cols-4 lg:gap-10">
           {emergencyItems.map((item) => {
             const Icon = item.icon;
             const number = emergency[item.key];
