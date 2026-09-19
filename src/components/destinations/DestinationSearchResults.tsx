@@ -23,7 +23,15 @@ export default function DestinationSearchResults({
   }
 
   return (
-    <div className="mt-3 max-h-80 overflow-y-auto overscroll-contain rounded-2xl border border-zinc-200 bg-white shadow-lg shadow-zinc-900/5">
+    // <div className="mt-3 max-h-80 overflow-y-auto overscroll-contain rounded-2xl border border-zinc-200 bg-white shadow-lg shadow-zinc-900/5">
+    <div
+      className="
+    destination-scrollbar
+    mt-3 max-h-70 overflow-y-auto overscroll-contain
+     border border-zinc-200 bg-white
+    shadow-lg shadow-zinc-900/5
+  "
+    >
       <ul className="divide-y divide-zinc-100">
         {destinations.map((destination) => (
           <li key={`${destination.osmType}-${destination.osmId}`}>
@@ -33,9 +41,9 @@ export default function DestinationSearchResults({
               )}?osmType=${encodeURIComponent(
                 destination.osmType,
               )}&osmId=${destination.osmId}`}
-              className="group flex w-full items-center gap-4 px-4 py-3.5 transition-colors hover:bg-zinc-50 focus:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-300"
+              className="group flex w-full items-center gap-4 px-4 py-3.5 transition-colors hover:bg-zinc-100 focus:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-300"
             >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-zinc-500 transition-colors group-hover:bg-zinc-200">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center  bg-zinc-100 text-zinc-500 transition-colors group-hover:bg-zinc-200">
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 24 24"

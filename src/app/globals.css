@@ -152,3 +152,20 @@ body {
   color: transparent;
   -webkit-text-fill-color: transparent;
 }
+
+.destination-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.destination-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.destination-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: linear-gradient(to bottom, #38bdf8, #22c55e, #ef4444);
+}
+
+.destination-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #0ea5e9, #16a34a, #dc2626);
+}
