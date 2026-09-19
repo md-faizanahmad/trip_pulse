@@ -166,17 +166,21 @@ export default function DestinationSearch() {
                     isListening ? "Stop voice search" : "Search by voice"
                   }
                   aria-pressed={isListening}
-                  className={` cursor-pointer p-2 transition focus:outline-none  ${
+                  className={`group flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-sky-400/30 ${
                     isListening
-                      ? "bg-red-50 text-red-600"
-                      : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 rounded-sm"
+                      ? "bg-red-50 text-red-500 shadow-sm ring-1 ring-red-200"
+                      : "text-zinc-500 hover:bg-sky-50 hover:text-sky-600"
                   }`}
                 >
                   <svg
                     aria-hidden="true"
                     viewBox="0 0 24 24"
                     fill="none"
-                    className={`h-5 w-5 ${isListening ? "animate-pulse" : ""}`}
+                    className={`h-5 w-5 transition-transform duration-200 ${
+                      isListening
+                        ? "scale-110 animate-pulse"
+                        : "group-hover:scale-110"
+                    }`}
                   >
                     <rect
                       x="9"
@@ -192,6 +196,7 @@ export default function DestinationSearch() {
                       stroke="currentColor"
                       strokeWidth="1.75"
                       strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </button>
