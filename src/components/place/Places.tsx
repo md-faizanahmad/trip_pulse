@@ -110,7 +110,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
                 key={category.value}
                 type="button"
                 onClick={() => handleCategoryChange(category.value)}
-                className={`shrink-0 border px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                className={`shrink-0 cursor-pointer border px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors ${
                   isActive
                     ? "border-(--destination-secondary) bg-(--destination-secondary) text-white"
                     : "border-slate-200 bg-white text-slate-700 hover:border-(--destination-primary) hover:text-(--destination-primary)"
@@ -234,7 +234,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
               <button
                 type="button"
                 onClick={() => setShowAll((current) => !current)}
-                className="inline-flex h-9 w-48 items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-4 text-[11px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
+                className="inline-flex cursor-pointer h-9 w-48 items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-4 text-[11px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
               >
                 <span>
                   {showAll
