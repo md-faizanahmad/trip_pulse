@@ -32,13 +32,6 @@ export default function About() {
             time, currency, transport, attractions, and safety information
             without jumping between different websites.
           </p>
-
-          <Link
-            href="/"
-            className="mt-5 inline-flex h-10 items-center justify-center border border-(--destination-primary) bg-(--destination-primary) px-5 text-[10px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
-          >
-            Explore Destinations
-          </Link>
         </div>
       </div>
     </section>
