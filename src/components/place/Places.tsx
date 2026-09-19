@@ -91,7 +91,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
 
       {/* Category Filters */}
       {status === "success" && places.length > 0 && (
-        <div className="mt-3.5 flex gap-1.5 overflow-x-auto border-y border-slate-200 py-2 scrollbar-none">
+        <div className="mt-3.5 flex gap-1.5 overflow-x-auto  py-2 scrollbar-none">
           {CATEGORY_FILTERS.map((category) => {
             const isActive = selectedCategory === category.value;
 
@@ -180,14 +180,14 @@ export default function Places({ latitude, longitude }: PlacesProps) {
       {/* Places Grid */}
       {status === "success" && filteredPlaces.length > 0 && (
         <div className="mt-3.5">
-          <div className="grid grid-cols-1 border-t border-l border-slate-200 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-3">
             {visiblePlaces.map((place, index) => (
               <a
                 key={place.id}
                 href={getGoogleMapsUrl(place.latitude, place.longitude)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex items-center justify-between gap-3 border-r border-b border-slate-200 bg-white px-3.5 py-2.5 transition-colors hover:bg-(--destination-surface) active:bg-slate-100"
+                className="group relative flex items-center justify-between gap-3  bg-white px-3.5 py-2.5 transition-colors hover:bg-(--destination-surface) active:bg-slate-100"
               >
                 {/* Index Indicator */}
                 <span className="font-mono text-[11px] font-bold text-slate-300 transition-colors group-hover:text-(--destination-secondary)">
