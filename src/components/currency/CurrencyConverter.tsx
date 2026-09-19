@@ -136,8 +136,7 @@ export default function CurrencyConverter({
       </div>
 
       {/* Result Display Box */}
-      {/* Result Display Box */}
-      <div className="mt-4 border border-zinc-200 bg-zinc-50/50 p-4">
+      <div className="mt-4  p-4">
         {status === "loading" && (
           <div className="flex items-center gap-2 font-mono text-xs font-semibold text-zinc-400">
             <span className="h-1.5 w-1.5 animate-ping bg-zinc-400" />
