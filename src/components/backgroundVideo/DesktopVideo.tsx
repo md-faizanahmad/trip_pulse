@@ -13,13 +13,14 @@ export default function DesktopVideo({
         loop
         muted
         playsInline
+        preload="auto"
         aria-hidden="true"
       >
         <source src="/trip_pulse_video.mp4" type="video/mp4" />
       </video>
 
       <div
-        className={`absolute inset-0 pointer-events-none ${overlayClassName}`}
+        className={`pointer-events-none absolute inset-0 ${overlayClassName}`}
         aria-hidden="true"
       />
     </>
