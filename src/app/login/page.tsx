@@ -1,306 +1,174 @@
 "use client";
 
-import Image from "next/image";
 import { FormEvent, useState } from "react";
-
-type LoginStep = "email" | "otp" | "name" | "logged-in";
-
-const STATIC_OTP = "123456";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function LoginPage() {
-  const [step, setStep] = useState<LoginStep>("email");
+  const router = useRouter();
+  const { refreshUser } = useAuth();
+
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
-  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleEmailSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
     setError("");
 
-    if (!email.trim() || !email.includes("@")) {
-      setError("Enter a valid email address.");
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (!normalizedEmail || !password) {
+      setError("Email and password are required.");
       return;
     }
 
-    setStep("otp");
-  }
+    setIsLoading(true);
 
-  function handleOtpSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError("");
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email: normalizedEmail,
+          password,
+        }),
+      });
 
-    if (otp !== STATIC_OTP) {
-      setError("The code is incorrect. Try again.");
-      return;
-    }
+      const data: {
+        user?: {
+          id: string;
+          name: string;
+          email: string;
+        };
+        error?: string;
+      } = await response.json();
 
-    setStep("name");
-  }
+      if (!response.ok) {
+        setError(data.error ?? "Unable to log in.");
+        return;
+      }
 
-  function handleNameSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError("");
+      await refreshUser();
 
-    if (!name.trim()) {
-      setError("Enter your name.");
-      return;
-    }
-
-    setStep("logged-in");
-  }
-
-  function handleBack() {
-    setError("");
-
-    if (step === "otp") {
-      setStep("email");
-      return;
-    }
-
-    if (step === "name") {
-      setStep("otp");
-      return;
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
-    <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-white px-4 py-10 pb-24 md:min-h-[calc(100vh-4rem)] md:pb-10">
-      <div className="w-full max-w-sm">
-        {/* Brand */}
-        <div className="mb-10 flex justify-center">
+    <main className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
+        <div className="mb-8 text-center">
           <Image
             src="/brand/trippulse-logo.png"
             alt="TripPulse"
             width={150}
             height={50}
+            className="mx-auto"
             priority
           />
+
+          <h1 className="mt-6 text-2xl font-bold tracking-tight text-zinc-950">
+            Welcome back
+          </h1>
+
+          <p className="mt-2 text-sm text-zinc-500">
+            Log in to continue to TripPulse.
+          </p>
         </div>
 
-        {/* Email */}
-        {step === "email" && (
-          <section>
-            <div className="mb-7">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-(--destination-primary)">
-                Account
-              </span>
-
-              <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950">
-                Sign in to TripPulse
-              </h1>
-
-              <p className="mt-2 text-xs font-medium leading-relaxed text-zinc-500">
-                Enter your email to continue.
-              </p>
-            </div>
-
-            <form onSubmit={handleEmailSubmit}>
-              <label className="block">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                  Email
-                </span>
-
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  autoFocus
-                  className="mt-1.5 h-12 w-full border border-zinc-300 bg-white px-3 font-mono text-sm text-zinc-950 outline-none transition-colors placeholder:text-zinc-400 focus:border-(--destination-primary)"
-                />
-              </label>
-
-              {error && <ErrorMessage message={error} />}
-
-              <button
-                type="submit"
-                className="mt-4 h-12 w-full bg-(--destination-primary) px-4 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
-              >
-                Continue
-              </button>
-            </form>
-          </section>
-        )}
-
-        {/* OTP */}
-        {step === "otp" && (
-          <section>
-            <button
-              type="button"
-              onClick={handleBack}
-              className="mb-6 text-[10px] font-bold uppercase tracking-wider text-zinc-500 transition-colors hover:text-zinc-950"
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+        >
+          <div>
+            <label
+              htmlFor="email"
+              className="mb-2 block text-sm font-semibold text-zinc-800"
             >
-              ← Change email
-            </button>
+              Email
+            </label>
 
-            <div className="mb-7">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-(--destination-primary)">
-                Verification
-              </span>
-
-              <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950">
-                Check your email
-              </h1>
-
-              <p className="mt-2 text-xs font-medium leading-relaxed text-zinc-500">
-                We sent a verification code to{" "}
-                <span className="font-bold text-zinc-700">{email}</span>.
-              </p>
-            </div>
-
-            <form onSubmit={handleOtpSubmit}>
-              <label className="block">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                  Verification Code
-                </span>
-
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={6}
-                  value={otp}
-                  onChange={(event) =>
-                    setOtp(event.target.value.replace(/\D/g, ""))
-                  }
-                  placeholder="000000"
-                  autoComplete="one-time-code"
-                  autoFocus
-                  className="mt-1.5 h-12 w-full border border-zinc-300 bg-white px-3 text-center font-mono text-lg font-bold tracking-[0.35em] text-zinc-950 outline-none transition-colors placeholder:text-zinc-300 focus:border-(--destination-primary)"
-                />
-              </label>
-
-              <p className="mt-2 font-mono text-[10px] font-medium text-zinc-400">
-                Demo code: {STATIC_OTP}
-              </p>
-
-              {error && <ErrorMessage message={error} />}
-
-              <button
-                type="submit"
-                className="mt-4 h-12 w-full bg-(--destination-primary) px-4 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
-              >
-                Verify
-              </button>
-            </form>
-          </section>
-        )}
-
-        {/* Name */}
-        {step === "name" && (
-          <section>
-            <button
-              type="button"
-              onClick={handleBack}
-              className="mb-6 text-[10px] font-bold uppercase tracking-wider text-zinc-500 transition-colors hover:text-zinc-950"
-            >
-              ← Back
-            </button>
-
-            <div className="mb-7">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-(--destination-primary)">
-                Profile
-              </span>
-
-              <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950">
-                What should we call you?
-              </h1>
-
-              <p className="mt-2 text-xs font-medium leading-relaxed text-zinc-500">
-                Add your name to finish setting up your TripPulse account.
-              </p>
-            </div>
-
-            <form onSubmit={handleNameSubmit}>
-              <label className="block">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                  Name
-                </span>
-
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                  placeholder="Your name"
-                  autoComplete="name"
-                  autoFocus
-                  className="mt-1.5 h-12 w-full border border-zinc-300 bg-white px-3 text-sm font-semibold text-zinc-950 outline-none transition-colors placeholder:text-zinc-400 focus:border-(--destination-primary)"
-                />
-              </label>
-
-              {error && <ErrorMessage message={error} />}
-
-              <button
-                type="submit"
-                className="mt-4 h-12 w-full bg-(--destination-primary) px-4 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
-              >
-                Continue
-              </button>
-            </form>
-          </section>
-        )}
-
-        {/* Logged In */}
-        {step === "logged-in" && (
-          <section className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center border border-(--destination-primary)/30 bg-(--destination-primary)/10 text-(--destination-primary)">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-5 w-5"
-                aria-hidden="true"
-              >
-                <path d="m5 12 4 4L19 6" />
-              </svg>
-            </div>
-
-            <span className="mt-5 block font-mono text-[10px] font-bold uppercase tracking-widest text-(--destination-primary)">
-              Account Ready
-            </span>
-
-            <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950">
-              Hello, {name}
-            </h1>
-
-            <p className="mt-2 text-xs font-medium leading-relaxed text-zinc-500">
-              You&apos;re now signed in to TripPulse.
-            </p>
-          </section>
-        )}
-
-        {/* Step Indicator */}
-        {step !== "logged-in" && (
-          <div className="mt-10 flex items-center justify-center gap-1.5">
-            {[1, 2, 3].map((item) => {
-              const stepNumber = step === "email" ? 1 : step === "otp" ? 2 : 3;
-
-              return (
-                <span
-                  key={item}
-                  className={`h-1 w-8 ${
-                    item <= stepNumber
-                      ? "bg-(--destination-primary)"
-                      : "bg-zinc-200"
-                  }`}
-                  aria-hidden="true"
-                />
-              );
-            })}
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@example.com"
+              disabled={isLoading}
+              required
+              className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
+            />
           </div>
-        )}
+
+          <div>
+            <label
+              htmlFor="password"
+              className="mb-2 block text-sm font-semibold text-zinc-800"
+            >
+              Password
+            </label>
+
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Enter your password"
+              disabled={isLoading}
+              required
+              className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
+            />
+          </div>
+
+          {error && (
+            <p
+              role="alert"
+              className="rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-600"
+            >
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="flex w-full items-center justify-center rounded-xl bg-(--destination-primary) px-4 py-3 text-sm font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isLoading ? "Logging in..." : "Log in"}
+          </button>
+        </form>
+
+        <p className="mt-6 text-center text-xs text-zinc-500">
+          Your session is secured with an HTTP-only cookie.
+        </p>
+
+        <div className="mt-4 text-center">
+          <Link
+            href="/"
+            className="text-xs font-semibold text-zinc-600 transition-colors hover:text-(--destination-primary)"
+          >
+            Back to TripPulse
+          </Link>
+        </div>
       </div>
     </main>
-  );
-}
-
-function ErrorMessage({ message }: { message: string }) {
-  return (
-    <p className="mt-2 text-[11px] font-semibold text-red-600">{message}</p>
   );
 }
