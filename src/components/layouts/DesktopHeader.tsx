@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
+import { useAuth } from "@/hooks/useAuth";
 
 const navigationItems = [
   {
@@ -13,14 +15,22 @@ const navigationItems = [
     label: "Your List",
     href: "/list",
   },
-  {
-    label: "Login",
-    href: "/login",
-  },
 ];
 
 export default function DesktopHeader() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { isLoading, isAuthenticated, logout } = useAuth();
+
+  async function handleLogout() {
+    try {
+      await logout();
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  }
 
   return (
     <header className="hidden border-b border-zinc-200 bg-white md:block">
@@ -58,6 +68,34 @@ export default function DesktopHeader() {
                 </Link>
               );
             })}
+
+            {isLoading ? (
+              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                ...
+              </span>
+            ) : isAuthenticated ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="text-[11px] font-bold uppercase tracking-wider text-zinc-600 transition-colors hover:text-(--destination-primary)"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                className={`text-[11px] font-bold uppercase tracking-wider transition-colors ${
+                  pathname.startsWith("/login")
+                    ? "text-(--destination-primary)"
+                    : "text-zinc-600 hover:text-(--destination-primary)"
+                }`}
+                aria-current={
+                  pathname.startsWith("/login") ? "page" : undefined
+                }
+              >
+                Login
+              </Link>
+            )}
           </div>
         </nav>
       </div>
