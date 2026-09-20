@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 bg-white">
+    <footer className="hidden border-t border-zinc-200 bg-white md:block">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-4 gap-y-2 px-4 py-5 text-center sm:px-6">
         <Link href="/" aria-label="TripPulse home">
           <Image
