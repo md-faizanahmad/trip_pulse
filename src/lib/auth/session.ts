@@ -1,0 +1,10 @@
+import { createHash, randomBytes } from "node:crypto";
+const SESSION_TOKEN_LENGTH = 32;
+
+export function createSessionToken(): string {
+  return randomBytes(SESSION_TOKEN_LENGTH).toString("hex");
+}
+
+export function hashSessionToken(token: string): string {
+  return createHash("sha256").update(token).digest("hex");
+}
