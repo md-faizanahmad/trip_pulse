@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌍 TripPulse Web App
+# 🌍 TripPulse Web 
 
 <p>
   A travel information website for exploring destinations and their essential travel details.
