@@ -39,6 +39,5 @@
   <li>🕰️ Timezone converter</li>
   <li>🏨 Hotels and accommodation</li>
   <li>🍽️ Restaurants and local food</li>
-  <li>🗺️ Interactive maps</li>
   <li>❤️ Save favourite destinations</li>
 </ul>
