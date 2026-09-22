@@ -1,6 +1,14 @@
 <div align="center">
 
-# 🌍 TripPulse Web 
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/md-faizanahmad/trip_pulse/develop/public/brand/trippulse-logo.png" alt="Trip Pulse Logo" width="120" />
+
+# Trip Pulse
+
+**Your smart travel companion**
+
+</div>
 
 <p>
   A travel information website for exploring destinations and their essential travel details.
