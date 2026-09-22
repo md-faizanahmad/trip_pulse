@@ -10,7 +10,7 @@
 
 ## Features
 
-<ul>
+<ol>
   <li>🌍 Search and explore destinations</li>
   <li>🕐 View local time for a destination</li>
   <li>💱 Currency information and conversion</li>
@@ -20,7 +20,7 @@
   <li>🎙️ Search destinations using voice-to-text</li>
   <li>🇺🇳 Country-based page theme using the country flag</li>
   <li>📱 Responsive design for mobile and desktop</li>
-</u>
+</ol>
 
 
 ## Tech Stack
