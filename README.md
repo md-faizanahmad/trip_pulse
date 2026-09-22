@@ -31,16 +31,6 @@
 </ul>
 
 
-## Tech Stack
-
-<ul>
-  <li>Next.js</li>
-  <li>React</li>
-  <li>TypeScript</li>
-  <li>Tailwind CSS</li>
-</ul>
-
-
 ## Future Features
 
 <ul>
