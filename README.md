@@ -37,7 +37,6 @@
 
 <ul>
   <li>🕰️ Timezone converter</li>
-  <li>🌤️ Weather information</li>
   <li>🏨 Hotels and accommodation</li>
   <li>🍽️ Restaurants and local food</li>
   <li>🗺️ Interactive maps</li>
