@@ -6,7 +6,7 @@
 
 # Trip Pulse
 
-**Your smart travel companion**
+
 
 </div>
 
