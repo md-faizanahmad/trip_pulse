@@ -4,12 +4,14 @@ import { FormEvent, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 import { useAuth } from "@/hooks/useAuth";
 
 export default function LoginPage() {
   const router = useRouter();
   const { refreshUser } = useAuth();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,23 +22,25 @@ export default function LoginPage() {
 
     setError("");
 
+    const normalizedName = name.trim();
     const normalizedEmail = email.trim().toLowerCase();
 
-    if (!normalizedEmail || !password) {
-      setError("Email and password are required.");
+    if (!normalizedName || !normalizedEmail || !password) {
+      setError("Name, email, and password are required.");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch("/api/auth/authenticate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
         body: JSON.stringify({
+          name: normalizedName,
           email: normalizedEmail,
           password,
         }),
@@ -52,7 +56,7 @@ export default function LoginPage() {
       } = await response.json();
 
       if (!response.ok) {
-        setError(data.error ?? "Unable to log in.");
+        setError(data.error ?? "Unable to continue.");
         return;
       }
 
@@ -61,7 +65,7 @@ export default function LoginPage() {
       router.push("/");
       router.refresh();
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("Authentication error:", error);
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
@@ -82,11 +86,11 @@ export default function LoginPage() {
           />
 
           <h1 className="mt-6 text-2xl font-bold tracking-tight text-zinc-950">
-            Welcome back
+            Welcome to TripPulse
           </h1>
 
           <p className="mt-2 text-sm text-zinc-500">
-            Log in to continue to TripPulse.
+            Continue with your account or create one instantly.
           </p>
         </div>
 
@@ -94,6 +98,28 @@ export default function LoginPage() {
           onSubmit={handleSubmit}
           className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
         >
+          <div>
+            <label
+              htmlFor="name"
+              className="mb-2 block text-sm font-semibold text-zinc-800"
+            >
+              Name
+            </label>
+
+            <input
+              id="name"
+              name="name"
+              type="text"
+              autoComplete="name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              placeholder="Your name"
+              disabled={isLoading}
+              required
+              className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
+            />
+          </div>
+
           <div>
             <label
               htmlFor="email"
@@ -152,12 +178,13 @@ export default function LoginPage() {
             disabled={isLoading}
             className="flex w-full items-center justify-center rounded-xl bg-(--destination-primary) px-4 py-3 text-sm font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isLoading ? "Logging in..." : "Log in"}
+            {isLoading ? "Please wait..." : "Continue"}
           </button>
         </form>
 
         <p className="mt-6 text-center text-xs text-zinc-500">
-          Your session is secured with an HTTP-only cookie.
+          New accounts are created automatically. Your session is secured with
+          an HTTP-only cookie.
         </p>
 
         <div className="mt-4 text-center">
