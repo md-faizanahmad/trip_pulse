@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -73,19 +72,10 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
+    <main className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <Image
-            src="/brand/trippulse-logo.png"
-            alt="TripPulse"
-            width={150}
-            height={50}
-            className="mx-auto"
-            priority
-          />
-
-          <h1 className="mt-6 text-2xl font-bold tracking-tight text-zinc-950">
+        <div className="mb-4 text-center">
+          <h1 className=" text-2xl font-bold tracking-tight text-zinc-950">
             Welcome to TripPulse
           </h1>
 
