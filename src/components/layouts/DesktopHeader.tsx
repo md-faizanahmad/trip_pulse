@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import UserMenu from "./UserMenu";
 
 const navigationItems = [
   {
@@ -12,10 +13,6 @@ const navigationItems = [
   {
     label: "Your List",
     href: "/list",
-  },
-  {
-    label: "Login",
-    href: "/login",
   },
 ];
 
@@ -58,6 +55,8 @@ export default function DesktopHeader() {
                 </Link>
               );
             })}
+
+            <UserMenu />
           </div>
         </nav>
       </div>
