@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, LogIn, LogOut, List } from "lucide-react";
+import { ChevronDown, List, LogOut } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 
 export default function UserMenu() {
-  const { user, refreshUser } = useAuth();
+  const { user, logout } = useAuth();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -32,17 +32,8 @@ export default function UserMenu() {
     setIsLoggingOut(true);
 
     try {
-      const response = await fetch("/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error("Unable to log out.");
-      }
-
+      await logout();
       setIsOpen(false);
-      await refreshUser();
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
