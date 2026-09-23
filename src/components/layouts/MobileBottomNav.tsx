@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+
 import { useAuth } from "@/hooks/useAuth";
 
 const navigationItems = [
@@ -50,7 +52,65 @@ const navigationItems = [
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
-  const { user, isLoading } = useAuth();
+  const router = useRouter();
+
+  const { user, isLoading, logout } = useAuth();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  async function handleLogout() {
+    setIsLoggingOut(true);
+
+    try {
+      await logout();
+      setIsOpen(false);
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  }
+
+  const renderNavigationItems = () =>
+    navigationItems.map((item) => {
+      const isActive =
+        item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+
+      return (
+        <Link
+          key={item.href}
+          href={item.href}
+          className={`flex flex-1 flex-col items-center justify-center gap-1 text-[9px] font-bold uppercase tracking-wider transition-colors ${
+            isActive
+              ? "text-(--destination-primary)"
+              : "text-zinc-500 hover:text-zinc-950"
+          }`}
+          aria-current={isActive ? "page" : undefined}
+        >
+          {item.icon}
+          <span>{item.label}</span>
+        </Link>
+      );
+    });
 
   if (isLoading) {
     return (
@@ -59,28 +119,7 @@ export default function MobileBottomNav() {
         aria-label="Mobile navigation"
       >
         <div className="mx-auto flex h-16 max-w-md items-stretch">
-          {navigationItems.map((item) => {
-            const isActive =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href);
-
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex flex-1 flex-col items-center justify-center gap-1 text-[9px] font-bold uppercase tracking-wider transition-colors ${
-                  isActive
-                    ? "text-(--destination-primary)"
-                    : "text-zinc-500 hover:text-zinc-950"
-                }`}
-                aria-current={isActive ? "page" : undefined}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
+          {renderNavigationItems()}
 
           <Link
             href="/login"
@@ -102,40 +141,51 @@ export default function MobileBottomNav() {
       aria-label="Mobile navigation"
     >
       <div className="mx-auto flex h-16 max-w-md items-stretch">
-        {navigationItems.map((item) => {
-          const isActive =
-            item.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(item.href);
-
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex flex-1 flex-col items-center justify-center gap-1 text-[9px] font-bold uppercase tracking-wider transition-colors ${
-                isActive
-                  ? "text-(--destination-primary)"
-                  : "text-zinc-500 hover:text-zinc-950"
-              }`}
-              aria-current={isActive ? "page" : undefined}
-            >
-              {item.icon}
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
+        {renderNavigationItems()}
 
         {user ? (
-          <Link
-            href="/list"
-            className="flex flex-1 flex-col items-center justify-center gap-1 text-[9px] font-bold uppercase tracking-wider text-zinc-500 transition-colors hover:text-zinc-950"
-          >
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-(--destination-primary) text-[10px] font-bold text-white">
-              {user.name.trim().charAt(0).toUpperCase()}
-            </span>
+          <div ref={menuRef} className="relative flex flex-1">
+            <button
+              type="button"
+              onClick={() => setIsOpen((open) => !open)}
+              aria-expanded={isOpen}
+              aria-haspopup="menu"
+              className="flex w-full flex-col items-center justify-center gap-1 text-[9px] font-bold uppercase tracking-wider text-zinc-500 transition-colors hover:text-zinc-950"
+            >
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-(--destination-primary) text-[10px] font-bold text-white">
+                {user.name.trim().charAt(0).toUpperCase()}
+              </span>
 
-            <span>Account</span>
-          </Link>
+              <span>Account</span>
+            </button>
+
+            {isOpen && (
+              <div
+                role="menu"
+                className="absolute bottom-full right-2 mb-3 w-40 rounded-xl border border-zinc-200 bg-white p-2 shadow-lg"
+              >
+                <div className="border-b border-zinc-100 px-3 py-2">
+                  <p className="truncate text-xs font-semibold text-zinc-950">
+                    {user.name}
+                  </p>
+
+                  <p className="truncate text-[10px] text-zinc-500">
+                    {user.email}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="mt-1 flex w-full items-center rounded-lg px-3 py-2.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 hover:text-zinc-950 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isLoggingOut ? "Logging out..." : "Logout"}
+                </button>
+              </div>
+            )}
+          </div>
         ) : (
           <Link
             href="/login"
