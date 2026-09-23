@@ -3,15 +3,14 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, List, LogOut } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function UserMenu() {
   const { user, logout } = useAuth();
-
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-
+  const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,6 +33,8 @@ export default function UserMenu() {
     try {
       await logout();
       setIsOpen(false);
+      router.push("/");
+      router.refresh();
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
@@ -104,7 +105,7 @@ export default function UserMenu() {
             role="menuitem"
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 hover:text-zinc-950 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex w-full  items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 hover:text-zinc-950 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <LogOut className="h-4 w-4" aria-hidden="true" />
             {isLoggingOut ? "Logging out..." : "Logout"}
