@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import PasswordMeter from "@/components/auth/PasswordMeter";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -165,6 +166,10 @@ export default function LoginPage() {
                   <Eye className="h-5 w-5" aria-hidden="true" />
                 )}
               </button>
+            </div>
+
+            <div className="mt-3">
+              <PasswordMeter password={password} />
             </div>
           </div>
 
