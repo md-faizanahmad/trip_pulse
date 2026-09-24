@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Destination } from "@/types/destination";
 import CountryInfo from "../CountryInfo/CountryInfo";
 import LocalTime from "../localTime/LocalTime";
+import PinButton from "../pins/PinButton";
 import SunTimes from "../Weather/SunTimes";
 
 type DestinationPlaceProps = {
@@ -26,9 +27,25 @@ export default function DestinationPlace({
               countryCode={destination.countryCode}
             />
 
-            <h1 className="destination-gradient-text mt-6 text-2xl font-bold tracking-tight sm:text-3xl">
-              {destination.name}
-            </h1>
+            <div className="mt-6 flex items-center gap-2">
+              <PinButton
+                type="location"
+                input={{
+                  osmType: destination.osmType,
+                  osmId: String(destination.osmId),
+                  name: destination.name,
+                  latitude: destination.latitude,
+                  longitude: destination.longitude,
+                  displayName: destination.displayName,
+                  country: destination.country,
+                  countryCode: destination.countryCode,
+                }}
+              />
+
+              <h1 className="destination-gradient-text text-2xl font-bold tracking-tight sm:text-3xl">
+                {destination.name}
+              </h1>
+            </div>
 
             <p className="mt-3 text-sm leading-relaxed text-zinc-600 sm:max-w-xl">
               {destination.displayName}
