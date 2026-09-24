@@ -31,7 +31,7 @@ export default function CurrencyOverview({
       {/* Main Grid: Identity & Exchange Rate */}
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {/* Currency Identity Card */}
-        <div className="flex items-center gap-3.5 border border-zinc-200 bg-zinc-50/50 p-4">
+        <div className="flex items-center gap-3.5  p-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-(--destination-primary)/30 bg-white font-mono text-xl font-bold text-(--destination-primary)">
             {currencySymbol}
           </div>
@@ -54,7 +54,7 @@ export default function CurrencyOverview({
         </div>
 
         {/* Exchange Rate Card */}
-        <div className="flex flex-col justify-between border border-zinc-200 bg-zinc-50/50 p-4">
+        <div className="flex flex-col justify-between  p-4">
           <div className="flex items-center justify-between gap-2">
             <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
               Exchange Rate
@@ -66,7 +66,6 @@ export default function CurrencyOverview({
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"

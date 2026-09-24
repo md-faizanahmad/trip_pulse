@@ -1,9 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { usePlaces } from "@/hooks/usePlaces";
 
+import { usePlaces } from "@/hooks/usePlaces";
 import type { PlaceCategory } from "@/types/places";
+
+import PlacesList from "./PlacesList";
 
 type PlacesProps = {
   latitude: number;
@@ -30,6 +32,7 @@ const CATEGORY_FILTERS: {
 
 export default function Places({ latitude, longitude }: PlacesProps) {
   const { places, status, error, retry } = usePlaces(latitude, longitude);
+
   const [showAll, setShowAll] = useState(false);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryFilter>("all");
@@ -48,8 +51,8 @@ export default function Places({ latitude, longitude }: PlacesProps) {
 
   const hasMorePlaces = filteredPlaces.length > INITIAL_PLACE_COUNT;
 
-  function getGoogleMapsUrl(placeLatitude: number, placeLongitude: number) {
-    return `https://www.google.com/maps/search/?api=1&query=${placeLatitude},${placeLongitude}`;
+  function getGoogleMapsUrl(latitude: number, longitude: number) {
+    return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   }
 
   function handleCategoryChange(category: CategoryFilter) {
@@ -91,7 +94,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
 
       {/* Category Filters */}
       {status === "success" && places.length > 0 && (
-        <div className="mt-3.5 flex gap-1.5 overflow-x-auto  py-2 scrollbar-none">
+        <div className="mt-3.5 flex gap-1.5 overflow-x-auto py-2 scrollbar-none">
           {CATEGORY_FILTERS.map((category) => {
             const isActive = selectedCategory === category.value;
 
@@ -126,11 +129,11 @@ export default function Places({ latitude, longitude }: PlacesProps) {
 
       {/* Loading Skeleton */}
       {status === "loading" && (
-        <div className="mt-3.5 grid grid-cols-1 border-t border-l border-slate-200 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-3.5 grid grid-cols-1 border-l border-t border-slate-200 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3, 4, 5, 6].map((item) => (
             <div
               key={item}
-              className="h-16 animate-pulse border-r border-b border-slate-200 bg-slate-50"
+              className="h-16 animate-pulse border-b border-r border-slate-200 bg-slate-50"
             />
           ))}
         </div>
@@ -144,7 +147,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
           <button
             type="button"
             onClick={retry}
-            className="inline-flex h-8  cursor-pointer shrink-0 items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-3 text-[10px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
+            className="inline-flex h-8 shrink-0 cursor-pointer items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-3 text-[10px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -177,56 +180,13 @@ export default function Places({ latitude, longitude }: PlacesProps) {
         </div>
       )}
 
-      {/* Places Grid */}
+      {/* Places List */}
       {status === "success" && filteredPlaces.length > 0 && (
         <div className="mt-3.5">
-          <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-3">
-            {visiblePlaces.map((place, index) => (
-              <a
-                key={place.id}
-                href={getGoogleMapsUrl(place.latitude, place.longitude)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative flex items-center justify-between gap-3  bg-white px-3.5 py-2.5 transition-colors hover:bg-(--destination-surface) active:bg-slate-100"
-              >
-                {/* Index Indicator */}
-                <span className="font-mono text-[11px] font-bold text-slate-300 transition-colors group-hover:text-(--destination-secondary)">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-
-                {/* Place Details */}
-                <div className="min-w-0 flex-1">
-                  <h3 className="truncate text-xs font-bold tracking-tight text-(--destination-secondary) transition-colors group-hover:text-(--destination-primary)">
-                    {place.name}
-                  </h3>
-
-                  {(place.address || place.city) && (
-                    <p className="mt-0.5 truncate text-[11px] font-medium text-slate-700">
-                      {[place.address, place.city].filter(Boolean).join(", ")}
-                    </p>
-                  )}
-                </div>
-
-                {/* Arrow Icon */}
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center border border-slate-200 text-slate-400 transition-colors group-hover:border-(--destination-primary) group-hover:bg-(--destination-primary) group-hover:text-white">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-2.5 w-2.5"
-                    aria-hidden="true"
-                  >
-                    <path d="M7 17L17 7" />
-                    <path d="M7 7h10v10" />
-                  </svg>
-                </div>
-              </a>
-            ))}
-          </div>
+          <PlacesList
+            places={visiblePlaces}
+            getGoogleMapsUrl={getGoogleMapsUrl}
+          />
 
           {/* Show All / Show Less */}
           {hasMorePlaces && (
@@ -234,7 +194,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
               <button
                 type="button"
                 onClick={() => setShowAll((current) => !current)}
-                className="inline-flex cursor-pointer h-9 w-48 items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-4 text-[11px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
+                className="inline-flex h-9 w-48 cursor-pointer items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-4 text-[11px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
               >
                 <span>
                   {showAll

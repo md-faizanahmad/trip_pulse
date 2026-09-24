@@ -55,10 +55,10 @@ export default function AttractionPinButton({
           ? `Remove ${input.name} from your list`
           : `Add ${input.name} to your list`
       }
-      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all ${
+      className={`flex h-8 w-8 shrink-0 items-center justify-center  transition-all ${
         isPinned
-          ? "border-red-200 bg-red-50 text-red-500 hover:bg-red-100"
-          : "border-slate-200 bg-white text-slate-400 hover:border-red-200 hover:bg-red-50 hover:text-red-500"
+          ? "  text-red-500 "
+          : "border-slate-200  text-slate-400  hover:text-red-500"
       } disabled:cursor-not-allowed disabled:opacity-60`}
     >
       {isLoading ? (
