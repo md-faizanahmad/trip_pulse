@@ -62,30 +62,38 @@ export default function PinButton({
       disabled={isLoading}
       aria-pressed={isPinned}
       aria-label={isPinned ? "Remove from your list" : "Add to your list"}
-      title={isPinned ? "Remove from your list" : "Add to your list"}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-full text-zinc-400 transition-colors hover:text-yellow-500 disabled:cursor-not-allowed disabled:opacity-60"
+      className={`inline-flex h-10 items-center gap-2 rounded-lg border px-4 text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
+        isPinned
+          ? "border-yellow-400 bg-yellow-400 text-yellow-950 hover:border-yellow-500 hover:bg-yellow-500"
+          : " border-none"
+      } disabled:cursor-not-allowed disabled:opacity-70`}
     >
       {isLoading ? (
-        <span
-          className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-200 border-t-yellow-500"
-          aria-hidden="true"
-        />
+        <>
+          <span
+            className="h-4 w-4 animate-spin rounded-full border-2 border-yellow-200 border-t-yellow-700"
+            aria-hidden="true"
+          />
+          <span>Saving</span>
+        </>
       ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill={isPinned ? "currentColor" : "none"}
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={`h-5 w-5 transition-colors ${
-            isPinned ? "text-yellow-500" : "text-zinc-400 hover:text-yellow-500"
-          }`}
-          aria-hidden="true"
-        >
-          <path d="M12 17.5 5.5 21l1.5-7L2 9l7.2-1L12 2l2.8 6L22 9l-5 5 1.5 7z" />
-        </svg>
+        <>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill={isPinned ? "currentColor" : "none"}
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
+            <path d="M12 17.5 5.5 21l1.5-7L2 9l7.2-1L12 2l2.8 6L22 9l-5 5 1.5 7z" />
+          </svg>
+
+          <span>{isPinned ? "Pinned" : "Pin"}</span>
+        </>
       )}
     </button>
   );
