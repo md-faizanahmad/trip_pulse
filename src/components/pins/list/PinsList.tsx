@@ -1,6 +1,8 @@
 "use client";
 
 import type { AttractionPin, LocationPin } from "@/types/pins";
+import LocationPinCard from "./LocationPinCard";
+import AttractionPinCard from "./AttractionPinCard";
 
 type PinsListProps = {
   locations: LocationPin[];
@@ -69,7 +71,9 @@ export default function PinsList({
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {/* Location cards will be added next */}
+              {locations.map((location) => (
+                <LocationPinCard key={location.id} location={location} />
+              ))}
             </div>
           </section>
         )}
@@ -87,7 +91,12 @@ export default function PinsList({
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {/* Attraction cards will be added next */}
+              {attractions.map((attraction) => (
+                <AttractionPinCard
+                  key={attraction.id}
+                  attraction={attraction}
+                />
+              ))}
             </div>
           </section>
         )}
