@@ -1,35 +1,29 @@
 "use client";
 
-import { AttractionPinInput, LocationPinInput } from "@/types/pins";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+import type { AttractionPin, LocationPin } from "@/types/pins";
 
 type PinsResponse = {
-  locations: LocationPinInput[];
-  attractions: AttractionPinInput[];
+  locations: LocationPin[];
+  attractions: AttractionPin[];
 };
 
 type UsePinsResult = {
-  locations: LocationPinInput[];
-  attractions: AttractionPinInput[];
+  locations: LocationPin[];
+  attractions: AttractionPin[];
   isLoading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
 };
 
 export function usePins(): UsePinsResult {
-  const [locations, setLocations] = useState<LocationPinInput[]>([]);
-  const [attractions, setAttractions] = useState<AttractionPinInput[]>([]);
+  const [locations, setLocations] = useState<LocationPin[]>([]);
+  const [attractions, setAttractions] = useState<AttractionPin[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const abortControllerRef = useRef<AbortController | null>(null);
-
-  const fetchPins = useCallback(async () => {
-    abortControllerRef.current?.abort();
-
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
-
+  const fetchPins = useCallback(async (signal?: AbortSignal) => {
     setIsLoading(true);
     setError(null);
 
@@ -38,7 +32,7 @@ export function usePins(): UsePinsResult {
         method: "GET",
         credentials: "include",
         cache: "no-store",
-        signal: controller.signal,
+        signal,
       });
 
       if (!response.ok) {
@@ -51,6 +45,10 @@ export function usePins(): UsePinsResult {
 
       const data: PinsResponse = await response.json();
 
+      if (signal?.aborted) {
+        return;
+      }
+
       setLocations(data.locations);
       setAttractions(data.attractions);
     } catch (error) {
@@ -58,13 +56,15 @@ export function usePins(): UsePinsResult {
         return;
       }
 
-      console.error("Failed to load pins:", error);
+      if (!signal?.aborted) {
+        console.error("Failed to load pins:", error);
 
-      setError(
-        error instanceof Error ? error.message : "Unable to load your list.",
-      );
+        setError(
+          error instanceof Error ? error.message : "Unable to load your list.",
+        );
+      }
     } finally {
-      if (!controller.signal.aborted) {
+      if (!signal?.aborted) {
         setIsLoading(false);
       }
     }
@@ -74,9 +74,6 @@ export function usePins(): UsePinsResult {
     const controller = new AbortController();
 
     async function loadPins() {
-      setIsLoading(true);
-      setError(null);
-
       try {
         const response = await fetch("/api/pins", {
           method: "GET",
@@ -101,14 +98,15 @@ export function usePins(): UsePinsResult {
 
         setLocations(data.locations);
         setAttractions(data.attractions);
+        setError(null);
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
         }
 
-        console.error("Failed to load pins:", error);
-
         if (!controller.signal.aborted) {
+          console.error("Failed to load pins:", error);
+
           setError(
             error instanceof Error
               ? error.message
@@ -129,11 +127,15 @@ export function usePins(): UsePinsResult {
     };
   }, []);
 
+  const refetch = useCallback(async () => {
+    await fetchPins();
+  }, [fetchPins]);
+
   return {
     locations,
     attractions,
     isLoading,
     error,
-    refetch: fetchPins,
+    refetch,
   };
 }

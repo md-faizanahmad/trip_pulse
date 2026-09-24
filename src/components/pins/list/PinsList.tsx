@@ -1,8 +1,9 @@
 "use client";
 
 import type { AttractionPin, LocationPin } from "@/types/pins";
-import LocationPinCard from "./LocationPinCard";
+
 import AttractionPinCard from "./AttractionPinCard";
+import LocationPinCard from "./LocationPinCard";
 
 type PinsListProps = {
   locations: LocationPin[];
