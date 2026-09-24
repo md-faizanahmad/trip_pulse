@@ -27,3 +27,15 @@ export type AttractionPinInput = {
 export type PinToggleResult = {
   pinned: boolean;
 };
+
+export type LocationPin = LocationPinInput & {
+  id: string;
+  userId: string;
+  createdAt: Date;
+};
+
+export type AttractionPin = AttractionPinInput & {
+  id: string;
+  userId: string;
+  createdAt: Date;
+};
