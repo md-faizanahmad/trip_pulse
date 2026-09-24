@@ -1,4 +1,6 @@
+import PinButton from "@/components/pins/PinButton";
 import type { Place } from "@/types/places";
+import AttractionPinButton from "../pins/AttractionPinButton";
 
 type PlacesListProps = {
   places: Place[];
@@ -12,21 +14,18 @@ export default function PlacesList({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
       {places.map((place, index) => (
-        <a
+        <div
           key={place.id}
-          href={getGoogleMapsUrl(place.latitude, place.longitude)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group relative flex items-center justify-between gap-3 bg-white px-3.5 py-2.5 transition-colors hover:bg-(--destination-surface) active:bg-slate-100"
+          className="group flex items-center justify-between gap-3 bg-white px-3.5 py-2.5 transition-colors hover:bg-(--destination-surface)"
         >
-          {/* Index Indicator */}
+          {/* Index */}
           <span className="font-mono text-[11px] font-bold text-slate-300 transition-colors group-hover:text-(--destination-secondary)">
             {String(index + 1).padStart(2, "0")}
           </span>
 
           {/* Place Details */}
           <div className="min-w-0 flex-1">
-            <h3 className="truncate text-xs font-bold tracking-tight text-(--destination-secondary) transition-colors group-hover:text-(--destination-primary)">
+            <h3 className="truncate text-xs font-bold tracking-tight text-(--destination-secondary)">
               {place.name}
             </h3>
 
@@ -37,24 +36,47 @@ export default function PlacesList({
             )}
           </div>
 
-          {/* Arrow Icon */}
-          <div className="flex h-5 w-5 shrink-0 items-center justify-center border border-slate-200 text-slate-400 transition-colors group-hover:border-(--destination-primary) group-hover:bg-(--destination-primary) group-hover:text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-2.5 w-2.5"
-              aria-hidden="true"
+          {/* Actions */}
+          <div className="flex shrink-0 items-center gap-2">
+            <AttractionPinButton
+              input={{
+                osmType: place.id.split("-")[0] as "node" | "way" | "relation",
+                osmId: place.id.split("-").slice(1).join("-"),
+                name: place.name,
+                latitude: place.latitude,
+                longitude: place.longitude,
+                address: place.address,
+                city: place.city,
+                country: place.country,
+                countryCode: place.countryCode,
+                category: place.category,
+              }}
+            />
+
+            <a
+              href={getGoogleMapsUrl(place.latitude, place.longitude)}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${place.name} in Google Maps`}
+              className="flex h-8 w-8 shrink-0 items-center justify-center border border-slate-200 text-slate-400 transition-colors hover:border-(--destination-primary) hover:bg-(--destination-primary) hover:text-white"
             >
-              <path d="M7 17L17 7" />
-              <path d="M7 7h10v10" />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-3.5 w-3.5"
+                aria-hidden="true"
+              >
+                <path d="M7 17L17 7" />
+                <path d="M7 7h10v10" />
+              </svg>
+            </a>
           </div>
-        </a>
+        </div>
       ))}
     </div>
   );
