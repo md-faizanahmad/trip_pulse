@@ -62,11 +62,12 @@ export default function PinButton({
       disabled={isLoading}
       aria-pressed={isPinned}
       aria-label={isPinned ? "Remove from your list" : "Add to your list"}
-      className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 transition hover:border-zinc-300 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-60"
+      title={isPinned ? "Remove from your list" : "Add to your list"}
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full text-zinc-400 transition-colors hover:text-yellow-500 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {isLoading ? (
         <span
-          className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-300 border-t-(--destination-primary)"
+          className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-200 border-t-yellow-500"
           aria-hidden="true"
         />
       ) : (
@@ -78,14 +79,14 @@ export default function PinButton({
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="h-4 w-4"
+          className={`h-5 w-5 transition-colors ${
+            isPinned ? "text-yellow-500" : "text-zinc-400 hover:text-yellow-500"
+          }`}
           aria-hidden="true"
         >
           <path d="M12 17.5 5.5 21l1.5-7L2 9l7.2-1L12 2l2.8 6L22 9l-5 5 1.5 7z" />
         </svg>
       )}
-
-      <span>{isPinned ? "Pinned" : "Pin"}</span>
     </button>
   );
 }
