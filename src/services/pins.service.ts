@@ -95,3 +95,16 @@ export async function toggleAttractionPin(
     pinned: true,
   };
 }
+
+export async function getUserPins(userId: string) {
+  const [locations, attractions] = await Promise.all([
+    db.select().from(locationPins).where(eq(locationPins.userId, userId)),
+
+    db.select().from(attractionPins).where(eq(attractionPins.userId, userId)),
+  ]);
+
+  return {
+    locations,
+    attractions,
+  };
+}
