@@ -37,7 +37,7 @@ export default function PasswordField({
           placeholder="Enter your password"
           disabled={disabled}
           required
-          className="w-full rounded-xl border border-zinc-300 px-4 py-3 pr-11 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
+          className="w-full rounded-sm border border-zinc-300 px-4 py-3 pr-11 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
         />
 
         <button

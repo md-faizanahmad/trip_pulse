@@ -31,14 +31,14 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+      className="space-y-5 rounded-sm border border-zinc-200 p-6 shadow-sm"
     >
       <div>
         <label
           htmlFor="name"
           className="mb-2 block text-sm font-semibold text-zinc-800"
         >
-          Name
+          Full Name
         </label>
         <input
           id="name"
@@ -47,10 +47,10 @@ export default function LoginForm() {
           autoComplete="name"
           value={name}
           onChange={(event) => setName(event.target.value)}
-          placeholder="Your name"
+          placeholder="Your Full Name"
           disabled={isLoading}
           required
-          className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
+          className="w-full rounded-sm border border-zinc-300 px-4 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
         />
       </div>
 
@@ -71,7 +71,7 @@ export default function LoginForm() {
           placeholder="you@example.com"
           disabled={isLoading}
           required
-          className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
+          className="w-full rounded-sm border border-zinc-300 px-4 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
         />
       </div>
       <PasswordField
