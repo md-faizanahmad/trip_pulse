@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 export default function GoogleLoginButton() {
@@ -10,10 +11,17 @@ export default function GoogleLoginButton() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="flex w-full items-center justify-center gap-3 rounded-xl border border-zinc-300 bg-white px-4 py-3 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-50"
+        className="flex w-full items-center justify-center gap-3  px-4 py-3 text-sm font-semibold text-zinc-800 "
       >
-        <span className="text-base font-bold">G</span>
-        Continue with Google
+        <Image
+          src="https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/3840px-Google_%22G%22_logo.svg.png"
+          alt="Google"
+          width={20}
+          height={20}
+          className="h-5 w-5"
+        />
+
+        <span>Sign in with Google</span>
       </button>
 
       {isOpen && (
