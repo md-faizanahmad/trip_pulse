@@ -29,7 +29,7 @@ export default function Breadcrumb({ destination }: BreadcrumbProps) {
         {/* Current Active Page with Truncation on Small Screens */}
         <li
           aria-current="page"
-          className="min-w-0 truncate text-[#022A5A]"
+          className="min-w-0 cursor-pointer truncate text-[#1058b0]"
           title={destination}
         >
           {destination}
