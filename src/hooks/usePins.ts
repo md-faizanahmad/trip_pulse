@@ -37,7 +37,8 @@ export function usePins(): UsePinsResult {
 
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error("Please log in to view your list.");
+          setError("Please log in to view your list.");
+          return;
         }
 
         throw new Error("Unable to load your list.");
@@ -69,63 +70,19 @@ export function usePins(): UsePinsResult {
       }
     }
   }, []);
-
   useEffect(() => {
     const controller = new AbortController();
 
-    async function loadPins() {
-      try {
-        const response = await fetch("/api/pins", {
-          method: "GET",
-          credentials: "include",
-          cache: "no-store",
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          if (response.status === 401) {
-            throw new Error("Please log in to view your list.");
-          }
-
-          throw new Error("Unable to load your list.");
-        }
-
-        const data: PinsResponse = await response.json();
-
-        if (controller.signal.aborted) {
-          return;
-        }
-
-        setLocations(data.locations);
-        setAttractions(data.attractions);
-        setError(null);
-      } catch (error) {
-        if (error instanceof DOMException && error.name === "AbortError") {
-          return;
-        }
-
-        if (!controller.signal.aborted) {
-          console.error("Failed to load pins:", error);
-
-          setError(
-            error instanceof Error
-              ? error.message
-              : "Unable to load your list.",
-          );
-        }
-      } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false);
-        }
-      }
-    }
+    const loadPins = async () => {
+      await fetchPins(controller.signal);
+    };
 
     void loadPins();
 
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [fetchPins]);
 
   const refetch = useCallback(async () => {
     await fetchPins();
