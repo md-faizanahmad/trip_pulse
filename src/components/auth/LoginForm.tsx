@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useLogin } from "@/hooks/useLogin";
 import PasswordField from "@/components/auth/PasswordField";
+import GoogleLoginButton from "./GoogleLoginButton";
 
 export default function LoginForm() {
   const { login, error, isLoading } = useLogin();
@@ -94,6 +95,14 @@ export default function LoginForm() {
       >
         {isLoading ? "Please wait..." : "Continue"}
       </button>
+
+      <div className="flex items-center gap-3">
+        <div className="h-px flex-1 bg-zinc-200" />
+        <span className="text-xs text-zinc-400">OR</span>
+        <div className="h-px flex-1 bg-zinc-200" />
+      </div>
+
+      <GoogleLoginButton />
     </form>
   );
 }
