@@ -19,9 +19,7 @@ export default function UserMenu() {
         setIsOpen(false);
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -65,7 +63,7 @@ export default function UserMenu() {
         aria-label="Open user menu"
         className="flex items-center gap-2 rounded-full transition-opacity hover:opacity-80"
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-(--destination-primary) text-sm font-bold text-white">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-(--destination-primary) text-sm font-bold text-white">
           {initial}
         </span>
 
