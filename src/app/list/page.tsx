@@ -11,10 +11,6 @@ export default function ListPage() {
 
   return (
     <main className="min-h-[calc(100vh-4rem)] px-4 py-8 sm:px-6 sm:py-10">
-      <div className="ms-8">
-        <Breadcrumb destination="Your List" />
-      </div>
-
       <div className="mx-auto w-full max-w-6xl">
         {!user ? (
           <div className="py-20 text-center">
@@ -28,6 +24,9 @@ export default function ListPage() {
           </div>
         ) : (
           <>
+            <div className="ms-8">
+              <Breadcrumb destination="Your List" />
+            </div>
             <div className="mb-8">
               <p className="mt-2 max-w-xl text-sm leading-relaxed text-zinc-500">
                 Your saved destinations and attractions in one place.
