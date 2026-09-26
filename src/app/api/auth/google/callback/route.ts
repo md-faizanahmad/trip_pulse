@@ -1,8 +1,12 @@
+import { eq, and } from "drizzle-orm";
 import { NextResponse } from "next/server";
+
+import { db } from "@/db";
+import { oauthAccounts, users } from "@/db/schema";
+import { createSession } from "@/lib/auth/session";
 
 type GoogleTokenResponse = {
   access_token?: string;
-  id_token?: string;
   error?: string;
   error_description?: string;
 };
@@ -16,38 +20,33 @@ type GoogleUserInfo = {
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
+
   const code = url.searchParams.get("code");
   const error = url.searchParams.get("error");
 
   if (error) {
-    return NextResponse.json(
-      {
-        error: "Google sign-in was cancelled or denied.",
-      },
-      { status: 400 },
+    return NextResponse.redirect(
+      new URL("/login?error=google_cancelled", url.origin),
     );
   }
 
   if (!code) {
-    return NextResponse.json(
-      {
-        error: "Missing Google authorization code.",
-      },
-      { status: 400 },
+    return NextResponse.redirect(
+      new URL("/login?error=google_code_missing", url.origin),
     );
   }
 
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
   const redirectUri =
     process.env.GOOGLE_REDIRECT_URI ?? `${url.origin}/api/auth/google/callback`;
 
   if (!clientId || !clientSecret) {
-    return NextResponse.json(
-      {
-        error: "Google OAuth is not configured.",
-      },
-      { status: 500 },
+    console.error("Google OAuth environment variables are missing.");
+
+    return NextResponse.redirect(
+      new URL("/login?error=google_config", url.origin),
     );
   }
 
@@ -72,11 +71,8 @@ export async function GET(request: Request) {
     if (!tokenResponse.ok || !tokenData.access_token) {
       console.error("Google token exchange failed:", tokenData);
 
-      return NextResponse.json(
-        {
-          error: "Unable to authenticate with Google.",
-        },
-        { status: 401 },
+      return NextResponse.redirect(
+        new URL("/login?error=google_auth_failed", url.origin),
       );
     }
 
@@ -95,39 +91,87 @@ export async function GET(request: Request) {
     if (!userResponse.ok) {
       console.error("Google user info request failed:", googleUser);
 
-      return NextResponse.json(
-        {
-          error: "Unable to retrieve your Google account.",
-        },
-        { status: 401 },
+      return NextResponse.redirect(
+        new URL("/login?error=google_user_failed", url.origin),
       );
     }
 
     if (!googleUser.sub || !googleUser.email || !googleUser.email_verified) {
-      return NextResponse.json(
-        {
-          error: "Your Google account could not be verified.",
-        },
-        { status: 401 },
+      return NextResponse.redirect(
+        new URL("/login?error=google_unverified", url.origin),
       );
     }
 
-    return NextResponse.json({
-      message: "Google authentication successful.",
-      googleUser: {
-        id: googleUser.sub,
-        email: googleUser.email,
-        name: googleUser.name ?? "",
-      },
+    const googleEmail = googleUser.email.trim().toLowerCase();
+
+    const [existingOAuthAccount] = await db
+      .select({
+        userId: oauthAccounts.userId,
+      })
+      .from(oauthAccounts)
+      .where(
+        and(
+          eq(oauthAccounts.provider, "google"),
+          eq(oauthAccounts.providerAccountId, googleUser.sub),
+        ),
+      )
+      .limit(1);
+
+    let userId: string;
+
+    if (existingOAuthAccount) {
+      userId = existingOAuthAccount.userId;
+    } else {
+      const [existingUser] = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, googleEmail))
+        .limit(1);
+
+      if (existingUser) {
+        return NextResponse.redirect(
+          new URL("/login?error=google_account_exists", url.origin),
+        );
+      }
+
+      const [createdUser] = await db
+        .insert(users)
+        .values({
+          name: googleUser.name?.trim() || googleEmail.split("@")[0],
+          email: googleEmail,
+          passwordHash: null,
+        })
+        .returning({
+          id: users.id,
+        });
+
+      userId = createdUser.id;
+
+      await db.insert(oauthAccounts).values({
+        userId,
+        provider: "google",
+        providerAccountId: googleUser.sub,
+      });
+    }
+
+    const { sessionToken, expiresAt } = await createSession(userId);
+
+    const response = NextResponse.redirect(new URL("/", url.origin));
+
+    response.cookies.set("session", sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      expires: expiresAt,
     });
+
+    return response;
   } catch (error) {
     console.error("Google OAuth callback error:", error);
 
-    return NextResponse.json(
-      {
-        error: "Unable to complete Google sign-in.",
-      },
-      { status: 500 },
+    return NextResponse.redirect(
+      new URL("/login?error=google_failed", url.origin),
     );
   }
 }
