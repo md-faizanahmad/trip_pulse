@@ -15,7 +15,10 @@ export default function ListPage() {
         {!user ? (
           <div className="py-20 text-center">
             <h2 className="text-xl font-semibold tracking-tight text-zinc-900">
-              Please log in
+              Please{" "}
+              <a href="/login" className="underline">
+                log in
+              </a>
             </h2>
 
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-zinc-500">
