@@ -31,6 +31,15 @@ export async function POST(request: Request) {
     let user;
 
     if (existingUser) {
+      if (!existingUser.passwordHash) {
+        return NextResponse.json(
+          {
+            error: "This account uses Google sign-in.",
+          },
+          { status: 401 },
+        );
+      }
+
       const passwordValid = await verifyPassword(
         password,
         existingUser.passwordHash,
