@@ -1,22 +1,16 @@
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-
 import { db } from "@/db";
-import { sessions, users } from "@/db/schema";
+import { users } from "@/db/schema";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
-import { createSessionToken, hashSessionToken } from "@/lib/auth/session";
-
-const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 7;
+import { createSession } from "@/lib/auth/session";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-
     const name = typeof body.name === "string" ? body.name.trim() : "";
-
     const email =
       typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
-
     const password = typeof body.password === "string" ? body.password : "";
 
     if (!name || !email || !password) {
@@ -67,15 +61,7 @@ export async function POST(request: Request) {
       user = createdUser;
     }
 
-    const sessionToken = createSessionToken();
-    const tokenHash = hashSessionToken(sessionToken);
-    const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
-
-    await db.insert(sessions).values({
-      userId: user.id,
-      tokenHash,
-      expiresAt,
-    });
+    const { sessionToken, expiresAt } = await createSession(user.id);
 
     const response = NextResponse.json({
       user: {
