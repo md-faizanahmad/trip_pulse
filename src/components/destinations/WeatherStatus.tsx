@@ -1,7 +1,7 @@
 import { getWeatherCondition, getWeatherIcon } from "@/utils/weather";
 
 type WeatherStatusProps = {
-  weatherCode: number;
+  weatherCode: number | null;
   temperature: number | null;
 };
 
@@ -27,9 +27,13 @@ export default function WeatherStatus({
           <span
             className="shrink-0 text-4xl select-none"
             role="img"
-            aria-label={getWeatherCondition(weatherCode)}
+            aria-label={
+              weatherCode !== null
+                ? getWeatherCondition(weatherCode)
+                : "Weather unavailable"
+            }
           >
-            {getWeatherIcon(weatherCode)}
+            {weatherCode !== null ? getWeatherIcon(weatherCode) : "—"}
           </span>
 
           <div className="flex flex-col">
@@ -38,7 +42,9 @@ export default function WeatherStatus({
             </span>
 
             <span className="mt-0.5 text-xs font-medium uppercase tracking-wider text-zinc-500">
-              {getWeatherCondition(weatherCode)}
+              {weatherCode !== null
+                ? getWeatherCondition(weatherCode)
+                : "Unavailable"}
             </span>
           </div>
         </div>
