@@ -27,7 +27,15 @@ export default function Footer() {
         </span>
 
         <p className="text-[11px] font-medium text-zinc-400">
-          © {new Date().getFullYear()} TripPulse
+          © {new Date().getFullYear()} TripPulse ·{" "}
+          <a
+            href="https://mdfaizanahmad.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-zinc-600"
+          >
+            mdfaizanahmad.vercel.app
+          </a>
         </p>
       </div>
     </footer>
