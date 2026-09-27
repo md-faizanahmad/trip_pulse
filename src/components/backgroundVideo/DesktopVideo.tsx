@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type DesktopVideoProps = {
   overlayClassName?: string;
 };
@@ -7,17 +9,15 @@ export default function DesktopVideo({
 }: DesktopVideoProps) {
   return (
     <>
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
+      <Image
+        src="/desktop-bg.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
         aria-hidden="true"
-      >
-        <source src="/trip_pulse_video.mp4" type="video/mp4" />
-      </video>
+      />
 
       <div
         className={`pointer-events-none absolute inset-0 ${overlayClassName}`}
