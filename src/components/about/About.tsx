@@ -1,20 +1,7 @@
-import Image from "next/image";
-
 export default function About() {
   return (
     <section className="w-full border-t border-zinc-200 bg-white px-4 py-10 sm:px-6 sm:py-12">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-8 sm:gap-10 md:flex-row md:items-center">
-        {/* Brand */}
-        <div className="flex w-full justify-center md:w-1/2 md:justify-start">
-          <Image
-            src="/brand/trippulse-logo.png"
-            alt="TripPulse"
-            width={190}
-            height={63}
-            className="h-auto w-40 sm:w-48"
-          />
-        </div>
-
         {/* Content */}
         <div className="w-full text-center md:w-1/2 md:text-left">
           <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-(--destination-primary)">
