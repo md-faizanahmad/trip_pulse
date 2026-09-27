@@ -43,8 +43,11 @@ const navigationItems = [
         className="h-5 w-5"
         aria-hidden="true"
       >
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-        <circle cx="12" cy="7" r="4" />
+        <rect x="5" y="4" width="14" height="17" rx="2" />
+        <path d="M9 4V2h6v2" />
+        <path d="M9 9h6" />
+        <path d="M9 13h6" />
+        <path d="M9 17h4" />
       </svg>
     ),
   },
