@@ -10,7 +10,7 @@ export default function Mobile({
   return (
     <div className="absolute inset-0 h-full w-full overflow-hidden">
       <Image
-        src="/desktop-bg.png"
+        src="/mobile-bg.png"
         alt=""
         fill
         priority
