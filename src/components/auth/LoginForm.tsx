@@ -32,15 +32,16 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-5 rounded-sm border border-zinc-200 p-6 shadow-sm"
+      className="w-full space-y-5 border border-zinc-200 bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.06)] sm:p-7"
     >
-      <div>
+      <div className="space-y-2">
         <label
           htmlFor="name"
-          className="mb-2 block text-sm font-semibold text-zinc-800"
+          className="block text-sm font-medium text-zinc-800"
         >
           Full Name
         </label>
+
         <input
           id="name"
           name="name"
@@ -48,20 +49,21 @@ export default function LoginForm() {
           autoComplete="name"
           value={name}
           onChange={(event) => setName(event.target.value)}
-          placeholder="Your Full Name"
+          placeholder="Your full name"
           disabled={isLoading}
           required
-          className="w-full rounded-sm border border-zinc-300 px-4 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
+          className="h-12 w-full rounded-md border border-zinc-300 bg-white px-3.5 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 hover:border-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/15 disabled:cursor-not-allowed disabled:bg-zinc-50"
         />
       </div>
 
-      <div>
+      <div className="space-y-2">
         <label
           htmlFor="email"
-          className="mb-2 block text-sm font-semibold text-zinc-800"
+          className="block text-sm font-medium text-zinc-800"
         >
           Email
         </label>
+
         <input
           id="email"
           name="email"
@@ -72,33 +74,38 @@ export default function LoginForm() {
           placeholder="you@example.com"
           disabled={isLoading}
           required
-          className="w-full rounded-sm border border-zinc-300 px-4 py-3 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/20 disabled:cursor-not-allowed disabled:bg-zinc-50"
+          className="h-12 w-full rounded-md border border-zinc-300 bg-white px-3.5 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 hover:border-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/15 disabled:cursor-not-allowed disabled:bg-zinc-50"
         />
       </div>
+
       <PasswordField
         value={password}
         onChange={setPassword}
         disabled={isLoading}
       />
+
       {formError && (
         <p
           role="alert"
-          className="rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-600"
+          className="border border-red-200 bg-red-50 px-3.5 py-3 text-sm font-medium text-red-700"
         >
           {formError}
         </p>
       )}
+
       <button
         type="submit"
         disabled={isLoading}
-        className="flex w-full items-center justify-center rounded-xl bg-(--destination-primary) px-4 py-3 text-sm font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        className="flex h-12 w-full items-center justify-center rounded-md bg-(--destination-primary) px-4 text-sm font-semibold text-white transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-(--destination-primary)/30 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isLoading ? "Please wait..." : "Continue"}
       </button>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4 py-1">
         <div className="h-px flex-1 bg-zinc-200" />
-        <span className="text-xs text-zinc-400">OR</span>
+        <span className="text-[11px] font-medium tracking-[0.12em] text-zinc-400">
+          OR
+        </span>
         <div className="h-px flex-1 bg-zinc-200" />
       </div>
 
