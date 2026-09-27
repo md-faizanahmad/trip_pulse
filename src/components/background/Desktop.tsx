@@ -1,16 +1,16 @@
 import Image from "next/image";
 
-type MobileVideoProps = {
+type DesktopProps = {
   overlayClassName?: string;
 };
 
-export default function MobileVideo({
+export default function Desktop({
   overlayClassName = "bg-black/70",
-}: MobileVideoProps) {
+}: DesktopProps) {
   return (
-    <div className="absolute inset-0 h-full w-full overflow-hidden">
+    <>
       <Image
-        src="/mobile-bg.png"
+        src="/desktop-bg.png"
         alt=""
         fill
         priority
@@ -23,6 +23,6 @@ export default function MobileVideo({
         className={`pointer-events-none absolute inset-0 ${overlayClassName}`}
         aria-hidden="true"
       />
-    </div>
+    </>
   );
 }
