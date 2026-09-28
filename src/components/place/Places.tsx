@@ -1,11 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-
 import { usePlaces } from "@/hooks/usePlaces";
 import type { PlaceCategory } from "@/types/places";
-
 import PlacesList from "./PlacesList";
+import ErrorState from "../common/ErrorState";
 
 type PlacesProps = {
   latitude: number;
@@ -13,7 +12,6 @@ type PlacesProps = {
 };
 
 type CategoryFilter = "all" | PlaceCategory;
-
 const INITIAL_PLACE_COUNT = 6;
 
 const CATEGORY_FILTERS: {
@@ -32,7 +30,6 @@ const CATEGORY_FILTERS: {
 
 export default function Places({ latitude, longitude }: PlacesProps) {
   const { places, status, error, retry } = usePlaces(latitude, longitude);
-
   const [showAll, setShowAll] = useState(false);
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryFilter>("all");
@@ -142,34 +139,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
       )}
 
       {/* Error State */}
-      {status === "error" && (
-        <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-red-100 bg-red-50/50 p-5 sm:flex-row">
-          <p className="text-sm font-medium text-red-600">{error}</p>
-          <button
-            type="button"
-            onClick={retry}
-            className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-4 text-sm font-medium text-red-600 shadow-sm ring-1 ring-inset ring-red-200 transition-colors hover:bg-red-50"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-4 w-4"
-              aria-hidden="true"
-            >
-              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-              <path d="M3 3v5h5" />
-            </svg>
-            <span>Retry</span>
-          </button>
-        </div>
-      )}
-
-      {/* Empty State */}
+      {status === "error" && <ErrorState message={error} onRetry={retry} />}
       {status === "success" && filteredPlaces.length === 0 && (
         <div className="flex min-h-30 items-center justify-center rounded-xl border border-dashed border-zinc-200 bg-zinc-50 p-6">
           <p className="text-sm font-medium text-zinc-500">
