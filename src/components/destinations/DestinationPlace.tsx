@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 import type { Destination } from "@/types/destination";
@@ -5,6 +7,7 @@ import CountryInfo from "../CountryInfo/CountryInfo";
 import LocalTime from "../localTime/LocalTime";
 import SunTimes from "../Weather/SunTimes";
 import PinButton from "../pins/PinButton";
+import { useAuth } from "@/hooks/useAuth";
 
 type DestinationPlaceProps = {
   destination: Destination;
@@ -13,6 +16,8 @@ type DestinationPlaceProps = {
 export default function DestinationPlace({
   destination,
 }: DestinationPlaceProps) {
+  const { user } = useAuth();
+
   const mapsDirUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination.latitude},${destination.longitude}`;
   const mapsEmbedUrl = `https://maps.google.com/maps?q=${destination.latitude},${destination.longitude}&z=14&output=embed`;
 
@@ -41,6 +46,7 @@ export default function DestinationPlace({
               latitude={destination.latitude}
               longitude={destination.longitude}
             />
+
             <div className="mt-8 flex items-center gap-2">
               <a
                 href={mapsDirUrl}
@@ -58,24 +64,27 @@ export default function DestinationPlace({
                 />
                 <span>Directions</span>
               </a>
-              <PinButton
-                type="location"
-                input={{
-                  osmType: destination.osmType,
-                  osmId: String(destination.osmId),
-                  name: destination.name,
-                  latitude: destination.latitude,
-                  longitude: destination.longitude,
-                  displayName: destination.displayName,
-                  country: destination.country,
-                  countryCode: destination.countryCode,
-                }}
-              />
+
+              {user && (
+                <PinButton
+                  type="location"
+                  input={{
+                    osmType: destination.osmType,
+                    osmId: String(destination.osmId),
+                    name: destination.name,
+                    latitude: destination.latitude,
+                    longitude: destination.longitude,
+                    displayName: destination.displayName,
+                    country: destination.country,
+                    countryCode: destination.countryCode,
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
 
-        {/* Pin, Sun Times & Embedded Map */}
+        {/* Sun Times & Embedded Map */}
         <div className="flex shrink-0 flex-col gap-4 border-t border-zinc-200 pt-5 md:w-64 md:border-t-0 md:pt-0">
           <SunTimes
             latitude={destination.latitude}
