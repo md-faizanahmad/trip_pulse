@@ -44,9 +44,9 @@ export default function UserMenu() {
     return (
       <Link
         href="/login"
-        className="text-[11px] font-bold uppercase tracking-wider text-zinc-600 transition-colors hover:text-(--destination-primary)"
+        className="inline-flex h-9 items-center justify-center rounded-lg bg-(--destination-primary) px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-(--destination-secondary) active:scale-95"
       >
-        Login
+        Log in
       </Link>
     );
   }
@@ -61,14 +61,14 @@ export default function UserMenu() {
         aria-expanded={isOpen}
         aria-haspopup="menu"
         aria-label="Open user menu"
-        className="flex items-center gap-2 rounded-full transition-opacity hover:opacity-80"
+        className="group flex items-center gap-2 rounded-full outline-none transition-all"
       >
-        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-(--destination-primary) text-sm font-bold text-white">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-(--destination-primary)/10 text-sm font-bold text-(--destination-primary) ring-1 ring-inset ring-(--destination-primary)/20 transition-all group-hover:bg-(--destination-primary)/20 group-active:scale-95">
           {initial}
         </span>
 
         <ChevronDown
-          className={`h-4 w-4 text-zinc-500 transition-transform ${
+          className={`h-4 w-4 text-zinc-400 transition-all duration-300 group-hover:text-zinc-600 ${
             isOpen ? "rotate-180" : ""
           }`}
           aria-hidden="true"
@@ -78,36 +78,39 @@ export default function UserMenu() {
       {isOpen && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-3 w-56 rounded-xl border border-zinc-200 bg-white p-2 shadow-lg"
+          className="absolute right-0 top-full z-50 mt-2 w-56 origin-top-right  bg-white p-2 shadow-xl animate-in fade-in zoom-in-95 duration-200"
         >
-          <div className="border-b border-zinc-100 px-3 py-2">
-            <p className="truncate text-sm font-semibold text-zinc-950">
+          <div className="border-b border-zinc-100 px-3 pb-3 pt-2">
+            <p className="truncate text-sm font-semibold text-zinc-900">
               {user.name}
             </p>
-
             <p className="truncate text-xs text-zinc-500">{user.email}</p>
           </div>
 
-          <Link
-            href="/list"
-            role="menuitem"
-            onClick={() => setIsOpen(false)}
-            className="mt-1 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 hover:text-zinc-950"
-          >
-            <List className="h-4 w-4" aria-hidden="true" />
-            Your List
-          </Link>
+          <div className="py-1">
+            <Link
+              href="/list"
+              role="menuitem"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-(--destination-primary)/5 hover:text-(--destination-primary)"
+            >
+              <List className="h-4 w-4" aria-hidden="true" />
+              Your List
+            </Link>
+          </div>
 
-          <button
-            type="button"
-            role="menuitem"
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-            className="flex w-full  items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 hover:text-zinc-950 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <LogOut className="h-4 w-4" aria-hidden="true" />
-            {isLoggingOut ? "Logging out..." : "Logout"}
-          </button>
+          <div className="border-t border-zinc-100 pt-1">
+            <button
+              type="button"
+              role="menuitem"
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <LogOut className="h-4 w-4" aria-hidden="true" />
+              {isLoggingOut ? "Logging out..." : "Log out"}
+            </button>
+          </div>
         </div>
       )}
     </div>
