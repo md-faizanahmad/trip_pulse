@@ -54,80 +54,69 @@ export default function Transport({ latitude, longitude }: TransportProps) {
   const { transport, status, error, retry } = useTransport(latitude, longitude);
 
   return (
-    <section className="w-full bg-(--destination-background) px-4 py-6 sm:px-6">
-      {/* Editorial Header Bar */}
-      <div className="flex flex-col gap-2 border-b border-(--destination-border) pb-3 sm:flex-row sm:items-end sm:justify-between">
-        <div className="flex items-center gap-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-5 w-5 shrink-0 text-(--destination-primary)"
-            aria-hidden="true"
-          >
-            <path d="M4 15V5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z" />
-            <path d="M4 11h16" />
-            <path d="M8 15h.01" />
-            <path d="M16 15h.01" />
-            <path d="m8 19-2 3" />
-            <path d="m16 19 2 3" />
-          </svg>
-
+    <section className="w-full  bg-(--destination-background) p-5  sm:p-6">
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-(--destination-primary)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-5 w-5"
+              aria-hidden="true"
+            >
+              <path d="M4 15V5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z" />
+              <path d="M4 11h16" />
+              <path d="M8 15h.01" />
+              <path d="M16 15h.01" />
+              <path d="m8 19-2 3" />
+              <path d="m16 19 2 3" />
+            </svg>
+          </div>
           <div>
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-(--destination-primary)">
-              Mobility
-            </span>
-
-            <h2 className="text-sm font-bold uppercase tracking-wider text-(--destination-text) sm:text-base">
+            <h2 className="text-base font-semibold text-(--destination-text) sm:text-lg">
               Transit Infrastructure
             </h2>
+            {status === "success" && transport && (
+              <p className="mt-0.5 text-sm text-(--destination-secondary)">
+                <span className="font-medium text-(--destination-text)">
+                  {
+                    Object.values(transport).filter(
+                      (itemStatus) => itemStatus === "available",
+                    ).length
+                  }
+                </span>{" "}
+                of 5 modes verified
+              </p>
+            )}
           </div>
         </div>
-
-        {status === "success" && transport && (
-          <div className="font-mono text-[11px] font-medium text-(--destination-secondary)">
-            <span className="font-bold text-(--destination-text)">
-              {
-                Object.values(transport).filter(
-                  (itemStatus) => itemStatus === "available",
-                ).length
-              }
-            </span>{" "}
-            of 5 modes verified
-          </div>
-        )}
       </div>
 
       {/* Loading Skeleton */}
       {status === "loading" && (
-        <div className="mt-4 space-y-1.5">
+        <div className="mt-6 flex gap-3 overflow-x-hidden sm:grid sm:grid-cols-3 md:grid-cols-5">
           {transportKeys.map((key) => (
-            <div
-              key={key}
-              className="flex animate-pulse items-center justify-between bg-(--destination-secondary)/10 px-3 py-3"
-            >
-              <div className="h-4 w-28 bg-(--destination-border)" />
-              <div className="h-4 w-20 bg-(--destination-border)" />
-            </div>
+            <div key={key} />
           ))}
         </div>
       )}
 
       {/* Error State */}
       {status === "error" && (
-        <div className="mt-4 flex items-center justify-between gap-3 border-l-2 border-(--destination-secondary) py-1 pl-3">
-          <p className="text-xs font-semibold text-(--destination-secondary)">
+        <div className="mt-6 flex flex-col items-center justify-between gap-4  border border-(--destination-secondary)/30 bg-(--destination-secondary)/5 p-5 sm:flex-row">
+          <p className="text-sm font-medium text-(--destination-secondary)">
             {error}
           </p>
-
           <button
             type="button"
             onClick={retry}
-            className="inline-flex h-8 cursor-pointer shrink-0 items-center justify-center gap-1.5 border border-(--destination-primary) bg-(--destination-primary) px-3 text-[10px] font-bold uppercase tracking-wider text-white transition-colors hover:border-(--destination-secondary) hover:bg-(--destination-secondary) active:bg-(--destination-secondary)"
+            className="inline-flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg bg-(--destination-primary) px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-(--destination-secondary)"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -137,7 +126,7 @@ export default function Transport({ latitude, longitude }: TransportProps) {
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-3 w-3"
+              className="h-4 w-4"
               aria-hidden="true"
             >
               <path d="M20 11a8.1 8.1 0 0 0-15.5-2" />
@@ -145,16 +134,15 @@ export default function Transport({ latitude, longitude }: TransportProps) {
               <path d="M4 13a8.1 8.1 0 0 0 15.5 2" />
               <path d="M20 19v-4h-4" />
             </svg>
-
             <span>Retry</span>
           </button>
         </div>
       )}
 
-      {/* Modern Ledger Stream */}
+      {/* Transport Tiles: Mobile Carousel / Desktop Grid */}
       {status === "success" && transport && (
-        <div className="mt-3 space-y-1">
-          {transportKeys.map((key, index) => {
+        <div className="mt-6 flex snap-x snap-mandatory gap-3 cursor-pointer overflow-x-auto pb-4 scrollbar-none sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 md:grid-cols-5 [&::-webkit-scrollbar]:hidden">
+          {transportKeys.map((key) => {
             const currentStatus = transport[key];
             const isAvailable = currentStatus === "available";
             const config = transportConfig[key];
@@ -162,64 +150,54 @@ export default function Transport({ latitude, longitude }: TransportProps) {
             return (
               <div
                 key={key}
-                className={`flex items-center justify-between px-3 py-2.5 transition-colors sm:px-4 sm:py-3 ${
+                className={`relative flex min-w-30 snap-start flex-col items-center justify-center   p-5 transition-all duration-300 sm:min-w-0 ${
                   isAvailable
-                    ? "border-l-2 border-(--destination-primary) bg-(--destination-primary)/10"
-                    : "border-l-2 border-transparent bg-(--destination-secondary)/10"
+                    ? " bg-(--destination-primary)/5  hover:-translate-y-1  "
+                    : " bg-(--destination-background) opacity-70 grayscale-30"
                 }`}
               >
-                {/* Mode Identity & Sequence */}
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <span
-                    className={`font-mono text-[10px] font-bold sm:text-xs ${
-                      isAvailable
-                        ? "text-(--destination-primary)"
-                        : "text-(--destination-secondary)"
-                    }`}
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+                {/* Status Indicator Dot */}
+                <div
+                  className={`absolute right-3 top-3 flex h-2 w-2 rounded-full ${
+                    isAvailable
+                      ? "bg-(--destination-secondary) shadow-[0_0_8px_var(--destination-surface)]"
+                      : "bg-(--destination-primary)/40"
+                  }`}
+                  aria-hidden="true"
+                />
 
-                  <span
-                    className="select-none text-base sm:text-lg"
-                    role="img"
-                    aria-label={config.label}
-                  >
-                    {config.icon}
-                  </span>
+                {/* Big Icon */}
+                <span
+                  className={`text-4xl sm:text-5xl transition-transform duration-300 ${
+                    isAvailable ? "scale-105" : "scale-95 opacity-80"
+                  }`}
+                  role="img"
+                  aria-label={config.label}
+                >
+                  {config.icon}
+                </span>
 
-                  <span
-                    className={`text-xs font-bold tracking-tight sm:text-sm ${
-                      isAvailable
-                        ? "text-(--destination-text)"
-                        : "text-(--destination-secondary)"
-                    }`}
-                  >
-                    {config.label}
-                  </span>
-                </div>
+                {/* Mode Label */}
+                <span
+                  className={`mt-3 text-sm font-semibold tracking-tight ${
+                    isAvailable
+                      ? "text-(--destination-text)"
+                      : "text-(--destination-secondary)"
+                  }`}
+                >
+                  {config.label}
+                </span>
 
-                {/* Status Badge */}
-                <div className="flex items-center">
-                  <span
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 font-mono text-[11px] font-extrabold uppercase tracking-wider ${
-                      isAvailable
-                        ? "bg-(--destination-primary) text-white"
-                        : "bg-(--destination-secondary)/10 text-(--destination-secondary)"
-                    }`}
-                  >
-                    <span
-                      className={`h-1.5 w-1.5 ${
-                        isAvailable
-                          ? "bg-white"
-                          : "bg-(--destination-secondary)"
-                      }`}
-                      aria-hidden="true"
-                    />
-
-                    {getStatusLabel(currentStatus)}
-                  </span>
-                </div>
+                {/* Status Text */}
+                <span
+                  className={`mt-0.5 text-[10px] font-medium uppercase tracking-wider ${
+                    isAvailable
+                      ? "text-(--destination-primary)"
+                      : "text-(--destination-secondary)/70"
+                  }`}
+                >
+                  {getStatusLabel(currentStatus)}
+                </span>
               </div>
             );
           })}
