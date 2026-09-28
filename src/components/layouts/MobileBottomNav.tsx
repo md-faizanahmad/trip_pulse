@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { Bookmark, Home, LogIn, LogOut } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 
@@ -10,46 +11,12 @@ const navigationItems = [
   {
     label: "Home",
     href: "/",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="h-5 w-5"
-        aria-hidden="true"
-      >
-        <path d="m3 10 9-7 9 7" />
-        <path d="M5 9v11h14V9" />
-        <path d="M9 20v-6h6v6" />
-      </svg>
-    ),
+    icon: Home,
   },
   {
-    label: "Your List",
+    label: "Saved",
     href: "/list",
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="h-5 w-5"
-        aria-hidden="true"
-      >
-        <rect x="5" y="4" width="14" height="17" rx="2" />
-        <path d="M9 4V2h6v2" />
-        <path d="M9 9h6" />
-        <path d="M9 13h6" />
-        <path d="M9 17h4" />
-      </svg>
-    ),
+    icon: Bookmark,
   },
 ];
 
@@ -97,20 +64,41 @@ export default function MobileBottomNav() {
     navigationItems.map((item) => {
       const isActive =
         item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+      const Icon = item.icon;
 
       return (
         <Link
           key={item.href}
           href={item.href}
-          className={`flex flex-1 flex-col items-center justify-center gap-1 text-[9px] font-bold uppercase tracking-wider transition-colors ${
-            isActive
-              ? "text-(--destination-primary)"
-              : "text-zinc-500 hover:text-zinc-950"
-          }`}
+          className="group flex flex-1 flex-col items-center justify-center gap-1 outline-none"
           aria-current={isActive ? "page" : undefined}
         >
-          {item.icon}
-          <span>{item.label}</span>
+          {/* Active Pill & Icon */}
+          <div
+            className={`flex h-8 w-14 items-center justify-center rounded-full transition-all duration-300 ${
+              isActive
+                ? "bg-(--destination-primary)/15 text-(--destination-primary)"
+                : "text-zinc-500 group-hover:text-zinc-900 group-active:scale-95"
+            }`}
+          >
+            <Icon
+              className="h-5.5 w-5.5 transition-all"
+              strokeWidth={isActive ? 2.5 : 2}
+              fill={isActive ? "currentColor" : "none"}
+              aria-hidden="true"
+            />
+          </div>
+
+          {/* Label */}
+          <span
+            className={`text-[10px] transition-colors duration-300 ${
+              isActive
+                ? "font-semibold text-(--destination-primary)"
+                : "font-medium text-zinc-500"
+            }`}
+          >
+            {item.label}
+          </span>
         </Link>
       );
     });
@@ -118,21 +106,16 @@ export default function MobileBottomNav() {
   if (isLoading) {
     return (
       <nav
-        className="fixed inset-x-0 bottom-0 z-50 border-t border-zinc-200 bg-white md:hidden"
+        className="fixed inset-x-0 bottom-0 z-50 border-t border-zinc-200/80 bg-white/80 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
         aria-label="Mobile navigation"
       >
         <div className="mx-auto flex h-16 max-w-md items-stretch">
           {renderNavigationItems()}
 
-          <Link
-            href="/login"
-            className="flex flex-1 flex-col items-center justify-center gap-1 text-[9px] font-bold uppercase tracking-wider text-zinc-500"
-          >
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 text-[9px]">
-              ?
-            </span>
-            <span>Login</span>
-          </Link>
+          <div className="flex flex-1 flex-col items-center justify-center gap-1 opacity-50">
+            <div className="flex h-8 w-14 animate-pulse items-center justify-center rounded-full bg-zinc-200" />
+            <span className="h-3 w-10 animate-pulse rounded bg-zinc-200" />
+          </div>
         </div>
       </nav>
     );
@@ -140,7 +123,7 @@ export default function MobileBottomNav() {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-zinc-200 bg-white md:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-zinc-200/80 bg-white/80 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
       aria-label="Mobile navigation"
     >
       <div className="mx-auto flex h-16 max-w-md items-stretch">
@@ -153,28 +136,45 @@ export default function MobileBottomNav() {
               onClick={() => setIsOpen((open) => !open)}
               aria-expanded={isOpen}
               aria-haspopup="menu"
-              className="flex w-full flex-col items-center justify-center gap-1 text-[9px] font-bold uppercase tracking-wider text-zinc-500 transition-colors hover:text-zinc-950"
+              className="group flex w-full flex-col items-center justify-center gap-1 outline-none"
             >
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-(--destination-primary) text-[10px] font-bold text-white">
-                {user.name.trim().charAt(0).toUpperCase()}
+              <div
+                className={`flex h-8 w-14 items-center justify-center rounded-full transition-all duration-300 ${
+                  isOpen
+                    ? "bg-(--destination-primary)/15"
+                    : "group-active:scale-95"
+                }`}
+              >
+                <span
+                  className={`flex h-5.5 w-5.5 items-center justify-center rounded-full text-[11px] font-bold transition-colors ${
+                    isOpen
+                      ? "bg-(--destination-primary) text-white"
+                      : "bg-zinc-200 text-zinc-600 group-hover:bg-zinc-300 group-hover:text-zinc-900"
+                  }`}
+                >
+                  {user.name.trim().charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <span
+                className={`text-[10px] font-medium transition-colors duration-300 ${
+                  isOpen ? "text-(--destination-primary)" : "text-zinc-500"
+                }`}
+              >
+                Account
               </span>
-
-              <span>Account</span>
             </button>
 
+            {/* Popup Menu */}
             {isOpen && (
               <div
                 role="menu"
-                className="absolute bottom-full right-2 mb-3 w-40 rounded-xl border border-zinc-200 bg-white p-2 shadow-lg"
+                className="absolute bottom-full right-4 mb-2 w-48 origin-bottom-right rounded-2xl border border-zinc-100 bg-white p-2 shadow-xl animate-in zoom-in-95"
               >
-                <div className="border-b border-zinc-100 px-3 py-2">
-                  <p className="truncate text-xs font-semibold text-zinc-950">
+                <div className="border-b border-zinc-100 px-3 pb-3 pt-2">
+                  <p className="truncate text-sm font-semibold text-zinc-900">
                     {user.name}
                   </p>
-
-                  <p className="truncate text-[10px] text-zinc-500">
-                    {user.email}
-                  </p>
+                  <p className="truncate text-xs text-zinc-500">{user.email}</p>
                 </div>
 
                 <button
@@ -182,9 +182,10 @@ export default function MobileBottomNav() {
                   role="menuitem"
                   onClick={handleLogout}
                   disabled={isLoggingOut}
-                  className="mt-1 flex w-full items-center rounded-lg px-3 py-2.5 text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50 hover:text-zinc-950 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="mt-1 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isLoggingOut ? "Logging out..." : "Logout"}
+                  <LogOut className="h-4 w-4" aria-hidden="true" />
+                  {isLoggingOut ? "Logging out..." : "Log out"}
                 </button>
               </div>
             )}
@@ -192,13 +193,18 @@ export default function MobileBottomNav() {
         ) : (
           <Link
             href="/login"
-            className="flex flex-1 flex-col items-center justify-center gap-1 text-[9px] font-bold uppercase tracking-wider text-zinc-500 transition-colors hover:text-zinc-950"
+            className="group flex flex-1 flex-col items-center justify-center gap-1 outline-none"
           >
-            <span className="flex h-5 w-5 items-center justify-center rounded-full border border-zinc-400 text-[10px]">
-              →
+            <div className="flex h-8 w-14 items-center justify-center rounded-full text-zinc-500 transition-all duration-300 group-hover:text-zinc-900 group-active:scale-95">
+              <LogIn
+                className="h-5.5 w-5.5"
+                strokeWidth={2}
+                aria-hidden="true"
+              />
+            </div>
+            <span className="text-[10px] font-medium text-zinc-500 transition-colors duration-300">
+              Log in
             </span>
-
-            <span>Login</span>
           </Link>
         )}
       </div>
