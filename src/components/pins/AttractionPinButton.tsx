@@ -27,7 +27,6 @@ export default function AttractionPinButton({
 
     try {
       const result = await toggleAttractionPin(input);
-
       setIsPinned(result.pinned);
 
       toast.success(

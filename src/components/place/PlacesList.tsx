@@ -1,5 +1,8 @@
+"use client";
+
 import type { Place } from "@/types/places";
 import AttractionPinButton from "../pins/AttractionPinButton";
+import { useAuth } from "@/hooks/useAuth";
 
 type PlacesListProps = {
   places: Place[];
@@ -10,6 +13,8 @@ export default function PlacesList({
   places,
   getGoogleMapsUrl,
 }: PlacesListProps) {
+  const { user } = useAuth();
+
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
       {places.map((place, index) => (
@@ -37,20 +42,25 @@ export default function PlacesList({
 
           {/* Actions */}
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-            <AttractionPinButton
-              input={{
-                osmType: place.id.split("-")[0] as "node" | "way" | "relation",
-                osmId: place.id.split("-").slice(1).join("-"),
-                name: place.name,
-                latitude: place.latitude,
-                longitude: place.longitude,
-                address: place.address,
-                city: place.city,
-                country: place.country,
-                countryCode: place.countryCode,
-                category: place.category,
-              }}
-            />
+            {user && (
+              <AttractionPinButton
+                input={{
+                  osmType: place.id.split("-")[0] as
+                    | "node"
+                    | "way"
+                    | "relation",
+                  osmId: place.id.split("-").slice(1).join("-"),
+                  name: place.name,
+                  latitude: place.latitude,
+                  longitude: place.longitude,
+                  address: place.address,
+                  city: place.city,
+                  country: place.country,
+                  countryCode: place.countryCode,
+                  category: place.category,
+                }}
+              />
+            )}
 
             <a
               href={getGoogleMapsUrl(place.latitude, place.longitude)}
