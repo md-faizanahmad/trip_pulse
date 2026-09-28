@@ -171,7 +171,7 @@ const POLICIES: PolicySection[] = [
   },
 ];
 
-export default function LegalAndPrivacyCenter() {
+export default function PolicySection() {
   const [openSection, setOpenSection] = useState<string | null>("cookies");
 
   const toggleSection = (id: string) => {

@@ -22,9 +22,9 @@ export default function Footer() {
           Plan better trips, one journey at a time.
         </p>
 
-        <p className="text-xs font-medium text-zinc-400">
-          We don&apos;t sell your personal data.
-        </p>
+        <Link href="/policy" className="text-xs font-medium text-zinc-400">
+          Policy Section
+        </Link>
 
         <span className="hidden text-zinc-300 md:inline" aria-hidden="true">
           |
