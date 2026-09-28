@@ -200,7 +200,7 @@ export default function PolicySection() {
             return (
               <div
                 key={policy.id}
-                className={`overflow-hidden rounded-2xl border transition-all duration-300 ${
+                className={`overflow-hidden  transition-all duration-300 ${
                   isOpen
                     ? "border-(--destination-primary)/30 bg-white shadow-md"
                     : "border-zinc-200 bg-white shadow-sm hover:border-zinc-300"
