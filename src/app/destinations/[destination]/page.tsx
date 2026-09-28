@@ -111,11 +111,12 @@ export default async function DestinationPage({
         <div className="mt-6 sm:mt-8">
           <DestinationPlace destination={selectedDestination} />
         </div>
-
-        <DestinationWeather
-          latitude={selectedDestination.latitude}
-          longitude={selectedDestination.longitude}
-        />
+        <div className="mt-6 sm:mt-8">
+          <DestinationWeather
+            latitude={selectedDestination.latitude}
+            longitude={selectedDestination.longitude}
+          />
+        </div>
 
         {destinationCurrency && (
           <div className="mt-8 sm:mt-10">

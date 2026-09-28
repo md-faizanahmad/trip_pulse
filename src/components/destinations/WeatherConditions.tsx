@@ -12,85 +12,58 @@ export default function WeatherConditions({
   windSpeed,
 }: WeatherConditionsProps) {
   return (
-    <div className="flex shrink-0 flex-col gap-4 md:w-80">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span
-            className="h-1.5 w-1.5 bg-(--destination-primary)"
-            aria-hidden="true"
-          />
+    <div className="flex shrink-0 flex-col md:w-80">
+      <div className="mb-4 flex items-center gap-2">
+        <span
+          className="h-1.5 w-1.5 bg-(--destination-primary)"
+          aria-hidden="true"
+        />
 
-          <h2 className="font-mono text-[11px] font-black uppercase tracking-widest text-(--destination-secondary)">
-            Live Atmosphere
-          </h2>
-        </div>
-
-        <span className="font-mono text-[9px] font-bold tracking-wider text-slate-400">
-          TELEMETRY
-        </span>
+        <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-900">
+          Conditions
+        </h2>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
-        <div className="group flex flex-col justify-between py-1 transition-transform duration-200 hover:-translate-y-0.5">
-          <div className="flex items-center gap-1.5">
-            <Thermometer
-              size={14}
-              strokeWidth={2.4}
-              className="text-[#09ac14] transition-transform duration-300 group-hover:-translate-y-0.5"
-              aria-hidden="true"
-            />
+      <div className="grid grid-cols-3 divide-x divide-zinc-200 border-y border-zinc-200">
+        <div className="flex min-w-0 flex-col gap-2 py-3 pr-3">
+          <div className="flex items-center gap-1.5 text-zinc-500">
+            <Thermometer size={15} strokeWidth={1.8} aria-hidden="true" />
 
-            <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400 transition-colors group-hover:text-(--destination-secondary)">
-              Feels
-            </span>
+            <span className="truncate text-[11px] font-medium">Feels like</span>
           </div>
 
-          <div className="mt-2 font-mono text-base font-black tracking-tight text-(--destination-secondary) sm:text-lg">
+          <p className="text-lg font-semibold tracking-tight text-zinc-950">
             {feelsLike ?? "—"}
-            <span className="text-xs font-semibold text-slate-400">°C</span>
-          </div>
+            <span className="ml-0.5 text-xs font-medium text-zinc-400">°C</span>
+          </p>
         </div>
 
-        <div className="group flex flex-col justify-between py-1 transition-transform duration-200 hover:-translate-y-0.5">
-          <div className="flex items-center gap-1.5">
-            <Droplets
-              size={14}
-              strokeWidth={2.4}
-              className="text-(--destination-primary) transition-transform duration-300 group-hover:scale-125"
-              aria-hidden="true"
-            />
+        <div className="flex min-w-0 flex-col gap-2 px-3 py-3">
+          <div className="flex items-center gap-1.5 text-zinc-500">
+            <Droplets size={15} strokeWidth={1.8} aria-hidden="true" />
 
-            <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400 transition-colors group-hover:text-(--destination-secondary)">
-              Humidity
-            </span>
+            <span className="truncate text-[11px] font-medium">Humidity</span>
           </div>
 
-          <div className="mt-2 font-mono text-base font-black tracking-tight text-(--destination-secondary) sm:text-lg">
+          <p className="text-lg font-semibold tracking-tight text-zinc-950">
             {humidity ?? "—"}
-            <span className="text-xs font-semibold text-slate-400">%</span>
-          </div>
+            <span className="ml-0.5 text-xs font-medium text-zinc-400">%</span>
+          </p>
         </div>
 
-        <div className="group flex flex-col justify-between py-1 transition-transform duration-200 hover:-translate-y-0.5">
-          <div className="flex items-center gap-1.5">
-            <Wind
-              size={14}
-              strokeWidth={2.4}
-              className="text-[#cd261a] transition-all duration-300 motion-safe:animate-[pulse_2.5s_ease-in-out_infinite] group-hover:translate-x-1.5"
-              aria-hidden="true"
-            />
+        <div className="flex min-w-0 flex-col gap-2 pl-3 py-3">
+          <div className="flex items-center gap-1.5 text-zinc-500">
+            <Wind size={15} strokeWidth={1.8} aria-hidden="true" />
 
-            <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-slate-400 transition-colors group-hover:text-(--destination-secondary)">
-              Wind
-            </span>
+            <span className="truncate text-[11px] font-medium">Wind</span>
           </div>
 
-          <div className="mt-2 font-mono text-base font-black tracking-tight text-(--destination-secondary) sm:text-lg">
-            {windSpeed ?? "—"}{" "}
-            <span className="text-[10px] font-bold uppercase tracking-normal text-slate-400">
+          <p className="text-lg font-semibold tracking-tight text-zinc-950">
+            {windSpeed ?? "—"}
+            <span className="ml-0.5 text-xs font-medium text-zinc-400">
               km/h
             </span>
-          </div>
+          </p>
         </div>
       </div>
     </div>

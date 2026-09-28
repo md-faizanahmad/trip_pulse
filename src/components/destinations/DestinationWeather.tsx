@@ -45,7 +45,7 @@ export default function DestinationWeather({
   const { current, forecast = [] } = weather;
 
   return (
-    <section className="w-full border-b border-zinc-200 bg-white p-4 sm:p-6">
+    <section className="w-full border-b border-zinc-200 bg-white p-4  sm:p-6">
       <div className="flex flex-col gap-6 md:flex-row md:items-stretch md:justify-between">
         <WeatherStatus
           weatherCode={current.weatherCode}
