@@ -1,3 +1,5 @@
+import React from "react";
+
 type CurrencyOverviewProps = {
   currencyName: string;
   currencyCode: string;
@@ -16,95 +18,88 @@ export default function CurrencyOverview({
   date,
 }: CurrencyOverviewProps) {
   return (
-    <section className="w-full p-4 sm:p-6">
-      {/* Header */}
-      <div className="flex items-center gap-2">
-        <span className="flex h-5 w-5 items-center justify-center rounded-full text-[25px] font-bold text-(--destination-primary)">
+    <section className="w-full  p-5  sm:p-6">
+      {/* Identity Section */}
+      <div className="flex items-center gap-4">
+        {/* Branded Currency Symbol */}
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-xl font-medium text-(--destination-primary)">
           {currencySymbol}
-        </span>
+        </div>
 
-        <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-950">
-          Local Currency
-        </h2>
+        <div className="flex flex-col">
+          <h2 className="text-base font-semibold text-zinc-900 sm:text-lg">
+            {currencyName}
+          </h2>
+          <p className="text-sm text-zinc-500">
+            Local Currency • {currencyCode}
+          </p>
+        </div>
       </div>
 
-      {/* Main Grid: Identity & Exchange Rate */}
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {/* Currency Identity Card */}
-        <div className="flex items-center gap-3.5  p-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-(--destination-primary)/30 bg-white font-mono text-xl font-bold text-(--destination-primary)">
-            {currencySymbol}
-          </div>
+      {/* Exchange Rate Card */}
+      <div className="mt-6  p-4 sm:p-5 hover:bg-(--destination-primary)/5 cursor-pointer">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <span className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+            Current Exchange Rate
+          </span>
 
-          <div className="min-w-0 flex-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-              Currency
+          {date && (
+            <span className="flex items-center gap-1.5 text-xs text-zinc-400">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                strokeWidth="2"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-3.5 w-3.5"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              Updated {date}
             </span>
+          )}
+        </div>
 
-            <div className="mt-0.5 flex flex-wrap items-center gap-2">
-              <h3 className="truncate text-base font-bold tracking-tight text-zinc-950">
-                {currencyName}
-              </h3>
+        <div className="mt-3 flex flex-wrap items-baseline gap-3 sm:mt-4">
+          <span className="text-lg font-medium text-zinc-500 sm:text-xl">
+            1 {baseCurrency}
+          </span>
 
-              <span className="border border-zinc-300 bg-zinc-100 px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-zinc-700">
+          <svg
+            className="h-4 w-4 text-zinc-300"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
+
+          {rate !== null ? (
+            <div className="flex items-baseline gap-1.5">
+              {/* Branded Output Rate */}
+              <span className="text-3xl font-semibold tracking-tight text-(--destination-primary) sm:text-4xl">
+                {currencySymbol}
+                {rate.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </span>
+              <span className="text-sm font-medium text-zinc-500">
                 {currencyCode}
               </span>
             </div>
-          </div>
-        </div>
-
-        {/* Exchange Rate Card */}
-        <div className="flex flex-col justify-between  p-4">
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-              Exchange Rate
-            </span>
-
-            {date && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-bold tracking-tight text-zinc-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-3 w-3 shrink-0 text-zinc-400"
-                  aria-hidden="true"
-                >
-                  <rect width="18" height="18" x="3" y="4" rx="0" />
-                  <path d="M16 2v4" />
-                  <path d="M8 2v4" />
-                  <path d="M3 10h18" />
-                </svg>
-                <span>{date}</span>
-              </span>
-            )}
-          </div>
-
-          <div className="mt-2 flex items-baseline gap-2 font-mono">
-            <span className="text-sm font-bold text-zinc-600">
-              1 {baseCurrency}
-            </span>
-
-            <span className="font-bold text-zinc-400">=</span>
-
-            <div className="text-xl font-bold tracking-tight sm:text-2xl">
-              {rate !== null ? (
-                <>
-                  <span className="font-extrabold text-(--destination-primary)">
-                    {currencySymbol}
-                    {rate.toFixed(2)}
-                  </span>{" "}
-                  <span className="text-xs font-bold text-zinc-500">
-                    {currencyCode}
-                  </span>
-                </>
-              ) : (
-                <span className="font-bold text-zinc-400">—</span>
-              )}
-            </div>
-          </div>
+          ) : (
+            <span className="text-3xl font-medium text-zinc-300">—</span>
+          )}
         </div>
       </div>
     </section>
