@@ -22,7 +22,10 @@ export default function Footer() {
           Plan better trips, one journey at a time.
         </p>
 
-        <Link href="/policy" className="text-xs font-medium text-zinc-400">
+        <Link
+          href="/policy"
+          className="text-xs underline font-medium text-blue-400"
+        >
           Policy Section
         </Link>
 
