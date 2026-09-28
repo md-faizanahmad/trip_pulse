@@ -13,7 +13,7 @@ export default function LocationPinCard({ location }: LocationPinCardProps) {
   const mapsDirUrl = `https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}`;
 
   return (
-    <article className="group flex h-full flex-col justify-between  p-5  transition-all duration-300 hover:-translate-y-0.5 hover:border-(--destination-primary)/40 hover:shadow-md">
+    <article className="group flex h-full flex-col justify-between shadow-sm p-5  transition-all duration-300 hover:-translate-y-0.5 hover:border-(--destination-primary)/40 hover:shadow-md">
       <div>
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
