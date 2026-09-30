@@ -14,8 +14,8 @@ export default function ListPage() {
     <main className="min-h-[calc(100vh-4rem)] bg-zinc-50/30 py-6 sm:py-10">
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
         {!user ? (
-          <div className="mt-10 flex min-h-[40vh] flex-col items-center justify-center rounded-2xl border border-zinc-200 bg-white p-8 text-center shadow-sm">
-            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-zinc-50 text-zinc-400">
+          <div className="mt-10 flex min-h-[40vh] flex-col items-center justify-center  border border-zinc-200 bg-white p-8 text-center shadow-sm">
+            <div className="mb-5 flex h-14 w-14 items-center justify-center  bg-zinc-50 text-zinc-400">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
