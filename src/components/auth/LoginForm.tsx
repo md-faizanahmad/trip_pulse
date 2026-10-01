@@ -5,6 +5,12 @@ import { useLogin } from "@/hooks/useLogin";
 import FormField from "@/components/auth/FormField";
 import PasswordField from "@/components/auth/PasswordField";
 import GoogleLoginButton from "./GoogleLoginButton";
+import {
+  normalizeEmail,
+  normalizeName,
+  sanitizeEmailInput,
+  sanitizeNameInput,
+} from "@/validation/auth-validation";
 
 const INITIAL_VALUES = {
   name: "",
@@ -14,7 +20,6 @@ const INITIAL_VALUES = {
 
 export default function LoginForm() {
   const { login, error, isLoading } = useLogin();
-
   const [values, setValues] = useState(INITIAL_VALUES);
   const [validationError, setValidationError] = useState("");
 
@@ -29,8 +34,8 @@ export default function LoginForm() {
     event.preventDefault();
     setValidationError("");
 
-    const name = values.name.trim();
-    const email = values.email.trim().toLowerCase();
+    const name = normalizeName(values.name);
+    const email = normalizeEmail(values.email);
     const password = values.password;
 
     if (!name || !email || !password.trim()) {
@@ -56,7 +61,9 @@ export default function LoginForm() {
         autoComplete="name"
         placeholder="Your full name"
         value={values.name}
-        onChange={(event) => handleChange("name", event.target.value)}
+        onChange={(event) =>
+          handleChange("name", sanitizeNameInput(event.target.value))
+        }
         maxLength={100}
         required
         disabled={isLoading}
@@ -70,8 +77,10 @@ export default function LoginForm() {
         autoComplete="email"
         placeholder="you@example.com"
         value={values.email}
-        onChange={(event) => handleChange("email", event.target.value)}
-        maxLength={254}
+        onChange={(event) =>
+          handleChange("email", sanitizeEmailInput(event.target.value))
+        }
+        maxLength={255}
         required
         disabled={isLoading}
       />

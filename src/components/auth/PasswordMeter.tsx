@@ -1,7 +1,7 @@
 "use client";
 
 import { usePasswordMeter } from "@/hooks/usePasswordMeter";
-import { Check, X } from "lucide-react";
+import { X } from "lucide-react";
 
 type PasswordMeterProps = {
   password: string;
