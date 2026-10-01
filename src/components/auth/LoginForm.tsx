@@ -1,30 +1,44 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useLogin } from "@/hooks/useLogin";
+import FormField from "@/components/auth/FormField";
 import PasswordField from "@/components/auth/PasswordField";
 import GoogleLoginButton from "./GoogleLoginButton";
 
+const INITIAL_VALUES = {
+  name: "",
+  email: "",
+  password: "",
+};
+
 export default function LoginForm() {
   const { login, error, isLoading } = useLogin();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [values, setValues] = useState(INITIAL_VALUES);
   const [validationError, setValidationError] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleChange(field: keyof typeof INITIAL_VALUES, value: string) {
+    setValues((current) => ({ ...current, [field]: value }));
+    setValidationError("");
+  }
+
+  async function handleSubmit(
+    event: Parameters<NonNullable<React.ComponentProps<"form">["onSubmit"]>>[0],
+  ) {
     event.preventDefault();
     setValidationError("");
 
-    const normalizedName = name.trim();
-    const normalizedEmail = email.trim().toLowerCase();
+    const name = values.name.trim();
+    const email = values.email.trim().toLowerCase();
+    const password = values.password;
 
-    if (!normalizedName || !normalizedEmail || !password) {
+    if (!name || !email || !password.trim()) {
       setValidationError("Name, email, and password are required.");
       return;
     }
 
-    await login(normalizedName, normalizedEmail, password);
+    await login(name, email, password);
   }
 
   const formError = validationError || error;
@@ -34,53 +48,37 @@ export default function LoginForm() {
       onSubmit={handleSubmit}
       className="w-full space-y-5 border border-zinc-200 bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.06)] sm:p-7"
     >
-      <div className="space-y-2">
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-zinc-800"
-        >
-          Full Name
-        </label>
+      <FormField
+        id="name"
+        name="name"
+        label="Full Name"
+        type="text"
+        autoComplete="name"
+        placeholder="Your full name"
+        value={values.name}
+        onChange={(event) => handleChange("name", event.target.value)}
+        maxLength={100}
+        required
+        disabled={isLoading}
+      />
 
-        <input
-          id="name"
-          name="name"
-          type="text"
-          autoComplete="name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          placeholder="Your full name"
-          disabled={isLoading}
-          required
-          className="h-12 w-full rounded-md border border-zinc-300 bg-white px-3.5 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 hover:border-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/15 disabled:cursor-not-allowed disabled:bg-zinc-50"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-zinc-800"
-        >
-          Email
-        </label>
-
-        <input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="you@example.com"
-          disabled={isLoading}
-          required
-          className="h-12 w-full rounded-md border border-zinc-300 bg-white px-3.5 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 hover:border-zinc-400 focus:border-(--destination-primary) focus:ring-2 focus:ring-(--destination-primary)/15 disabled:cursor-not-allowed disabled:bg-zinc-50"
-        />
-      </div>
+      <FormField
+        id="email"
+        name="email"
+        label="Email"
+        type="email"
+        autoComplete="email"
+        placeholder="you@example.com"
+        value={values.email}
+        onChange={(event) => handleChange("email", event.target.value)}
+        maxLength={254}
+        required
+        disabled={isLoading}
+      />
 
       <PasswordField
-        value={password}
-        onChange={setPassword}
+        value={values.password}
+        onChange={(value) => handleChange("password", value)}
         disabled={isLoading}
       />
 
