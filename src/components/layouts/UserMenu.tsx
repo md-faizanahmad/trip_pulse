@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown, List, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import UserMenuSkeleton from "../skeleton/UserMenuSkeleton";
 
 export default function UserMenu() {
   const { user, logout, isLoading } = useAuth();
@@ -41,6 +40,16 @@ export default function UserMenu() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div
+        role="status"
+        aria-label="Loading authentication"
+        className="h-9 w-9 animate-pulse rounded-full bg-zinc-200"
+      />
+    );
+  }
+
   if (!user) {
     return (
       <Link
@@ -50,9 +59,6 @@ export default function UserMenu() {
         Log in
       </Link>
     );
-  }
-  if (isLoading) {
-    return <UserMenuSkeleton />;
   }
   const initial = user.name.trim().charAt(0).toUpperCase();
 

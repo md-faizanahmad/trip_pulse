@@ -1,4 +1,10 @@
+"use client";
+
+import { useAuth } from "@/hooks/useAuth";
+
 export default function DesktopHeaderSkeleton() {
+  const { user } = useAuth();
+
   return (
     <header
       aria-label="Loading header"
@@ -12,6 +18,15 @@ export default function DesktopHeaderSkeleton() {
         <div className="hidden items-center gap-8 md:flex">
           <div className="h-4 w-10 animate-pulse rounded bg-zinc-200" />
           <div className="h-4 w-16 animate-pulse rounded bg-zinc-200" />
+
+          {/* User menu skeleton */}
+          <div className="ml-2 flex items-center gap-3 border-l border-zinc-200 pl-6">
+            {user ? (
+              <div className="h-9 w-9 animate-pulse rounded-full bg-zinc-200" />
+            ) : (
+              <div className="h-9 w-20 animate-pulse rounded-lg bg-zinc-200" />
+            )}
+          </div>
         </div>
       </div>
     </header>
