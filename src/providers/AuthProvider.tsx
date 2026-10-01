@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 
 import {
   AuthContext,
@@ -14,9 +8,17 @@ import {
   type AuthUser,
 } from "@/context/AuthContext";
 
-export default function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+type AuthProviderProps = {
+  children: ReactNode;
+  initialUser: AuthUser | null;
+};
+
+export default function AuthProvider({
+  children,
+  initialUser,
+}: AuthProviderProps) {
+  const [user, setUser] = useState<AuthUser | null>(initialUser);
+  const [isLoading] = useState(false);
 
   const refreshUser = useCallback(async () => {
     try {
@@ -31,7 +33,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      const data: { user: AuthUser } = await response.json();
+      const data: { user: AuthUser | null } = await response.json();
 
       setUser(data.user);
     } catch (error) {
@@ -39,18 +41,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       setUser(null);
     }
   }, []);
-
-  useEffect(() => {
-    async function loadUser() {
-      try {
-        await refreshUser();
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadUser();
-  }, [refreshUser]);
 
   const logout = useCallback(async () => {
     const response = await fetch("/api/auth/logout", {

@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "../components/layouts/Header";
 import Footer from "../components/layouts/Footer";
 import AuthProvider from "@/providers/AuthProvider";
+import { getCurrentUser } from "@/lib/auth/session";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,18 +49,20 @@ export const metadata: Metadata = {
       "Discover destinations and plan smarter trips with useful travel information.",
   },
 };
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
+  const initialUser = await getCurrentUser();
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <AuthProvider>
+        <AuthProvider initialUser={initialUser}>
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
