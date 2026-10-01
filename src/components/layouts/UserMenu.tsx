@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown, List, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import UserMenuSkeleton from "../skeleton/UserMenuSkeleton";
 
 export default function UserMenu() {
-  const { user, logout } = useAuth();
+  const { user, logout, isLoading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
@@ -50,7 +51,9 @@ export default function UserMenu() {
       </Link>
     );
   }
-
+  if (isLoading) {
+    return <UserMenuSkeleton />;
+  }
   const initial = user.name.trim().charAt(0).toUpperCase();
 
   return (
