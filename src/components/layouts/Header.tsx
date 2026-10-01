@@ -1,5 +1,3 @@
-"use client";
-
 import DesktopHeader from "./DesktopHeader";
 import MobileBottomNav from "./MobileBottomNav";
 

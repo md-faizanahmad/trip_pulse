@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function UserMenu() {
-  const { user, logout, isLoading } = useAuth();
+  const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
@@ -38,16 +38,6 @@ export default function UserMenu() {
     } finally {
       setIsLoggingOut(false);
     }
-  }
-
-  if (isLoading) {
-    return (
-      <div
-        role="status"
-        aria-label="Loading authentication"
-        className="h-9 w-9 animate-pulse rounded-full bg-zinc-200"
-      />
-    );
   }
 
   if (!user) {
