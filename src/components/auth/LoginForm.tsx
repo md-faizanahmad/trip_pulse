@@ -109,11 +109,11 @@ export default function LoginForm() {
       </button>
 
       <div className="flex items-center gap-4 py-1">
-        <div className="h-px flex-1 bg-zinc-200" />
+        <div className="h-px flex-1 bg-sky-200" />
         <span className="text-[11px] font-medium tracking-[0.12em] text-zinc-400">
           OR
         </span>
-        <div className="h-px flex-1 bg-zinc-200" />
+        <div className="h-px flex-1 bg-blue-200" />
       </div>
 
       <GoogleLoginButton />
