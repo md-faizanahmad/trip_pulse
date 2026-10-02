@@ -7,6 +7,7 @@ import { useRotatingPlaceholder } from "@/hooks/useRotatingPlaceholder";
 import DestinationSearchResults from "@/components/destinations/DestinationSearchResults";
 import { validateDestinationQuery } from "@/validation/validation";
 import SearchSkeleton from "./SearchSkeleton";
+import { Mic, X } from "lucide-react";
 
 export default function DestinationSearch() {
   const [query, setQuery] = useState("");
@@ -96,19 +97,7 @@ export default function DestinationSearch() {
                   aria-label="Clear search"
                   className="cursor-pointer rounded-full p-1.5 text-zinc-400 transition hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-zinc-300"
                 >
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      d="M5 5l10 10M15 5L5 15"
-                      stroke="currentColor"
-                      strokeWidth="1.75"
-                      strokeLinecap="round"
-                    />
-                  </svg>
+                  <X size={16} aria-hidden="true" />
                 </button>
               )}
 
@@ -126,33 +115,15 @@ export default function DestinationSearch() {
                       : "text-zinc-500 hover:bg-sky-50 hover:text-sky-600"
                   }`}
                 >
-                  <svg
+                  <Mic
+                    size={20}
                     aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className={`h-5 w-5 transition-transform duration-200 ${
+                    className={
                       isListening
-                        ? "scale-110 animate-pulse"
-                        : "group-hover:scale-110"
-                    }`}
-                  >
-                    <rect
-                      x="9"
-                      y="3"
-                      width="6"
-                      height="12"
-                      rx="3"
-                      stroke="currentColor"
-                      strokeWidth="1.75"
-                    />
-                    <path
-                      d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"
-                      stroke="currentColor"
-                      strokeWidth="1.75"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                        ? "animate-pulse"
+                        : "transition-transform group-hover:scale-110"
+                    }
+                  />
                 </button>
               )}
 
