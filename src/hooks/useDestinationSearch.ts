@@ -1,59 +1,12 @@
 "use client";
 
 import { useEffect, useReducer, useState } from "react";
-import type { Destination, SearchResponse } from "@/types/destination";
+import type { SearchResponse } from "@/types/destination";
 import { validateDestinationQuery } from "@/validation/validation";
-
-type SearchStatus = "idle" | "loading" | "success" | "error";
-
-type SearchState = {
-  destinations: Destination[];
-  status: SearchStatus;
-  error: string;
-};
-
-type SearchAction =
-  | { type: "SEARCH_STARTED" }
-  | { type: "SEARCH_SUCCESS"; destinations: Destination[] }
-  | { type: "SEARCH_ERROR"; error: string }
-  | { type: "SEARCH_RESET" };
-
-const initialState: SearchState = {
-  destinations: [],
-  status: "idle",
-  error: "",
-};
-
-function searchReducer(state: SearchState, action: SearchAction): SearchState {
-  switch (action.type) {
-    case "SEARCH_STARTED":
-      return {
-        ...state,
-        status: "loading",
-        error: "",
-      };
-
-    case "SEARCH_SUCCESS":
-      return {
-        destinations: action.destinations,
-        status: "success",
-        error: "",
-      };
-
-    case "SEARCH_ERROR":
-      return {
-        destinations: [],
-        status: "error",
-        error: action.error,
-      };
-
-    case "SEARCH_RESET":
-      return initialState;
-
-    default:
-      return state;
-  }
-}
+import {
+  initialState,
+  searchReducer,
+} from "@/reducers/destinationSearchReducer";
 
 export function useDestinationSearch(query: string) {
   const [state, dispatch] = useReducer(searchReducer, initialState);
