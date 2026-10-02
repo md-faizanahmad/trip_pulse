@@ -11,16 +11,22 @@ type LocationPinCardProps = {
 
 export default function LocationPinCard({ location }: LocationPinCardProps) {
   const mapsDirUrl = `https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}`;
-
+  const destinationUrl = `/destinations/${encodeURIComponent(
+    location.name.toLowerCase(),
+  )}?osmType=${encodeURIComponent(location.osmType)}&osmId=${location.osmId}`;
   return (
     <article className="group flex h-full flex-col justify-between shadow-sm p-5  transition-all duration-300 hover:-translate-y-0.5 hover:border-(--destination-primary)/40 hover:shadow-md">
       <div>
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <h3 className="truncate text-base font-semibold text-zinc-900 transition-colors group-hover:text-(--destination-primary)">
-              {location.name}
-            </h3>
-
+            <Link
+              href={destinationUrl}
+              className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--destination-primary)"
+            >
+              <h3 className="truncate text-base font-semibold text-zinc-900 transition-colors group-hover:text-(--destination-primary)">
+                {location.name}
+              </h3>
+            </Link>
             {(location.country || location.countryCode) && (
               <p className="mt-1 text-xs font-medium text-zinc-500">
                 {location.country}
