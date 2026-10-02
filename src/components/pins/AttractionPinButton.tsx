@@ -22,9 +22,7 @@ export default function AttractionPinButton({
     if (isLoading) {
       return;
     }
-
     setIsLoading(true);
-
     try {
       const result = await toggleAttractionPin(input);
       setIsPinned(result.pinned);

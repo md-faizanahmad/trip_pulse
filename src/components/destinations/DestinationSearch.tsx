@@ -12,7 +12,6 @@ import { Mic, X } from "lucide-react";
 export default function DestinationSearch() {
   const [query, setQuery] = useState("");
   const currentPlaceholder = useRotatingPlaceholder(!query);
-
   const { destinations, status, error, retry } = useDestinationSearch(query);
 
   const {

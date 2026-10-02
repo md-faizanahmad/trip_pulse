@@ -5,6 +5,7 @@ import { usePlaces } from "@/hooks/usePlaces";
 import type { PlaceCategory } from "@/types/places";
 import PlacesList from "./PlacesList";
 import ErrorState from "../common/ErrorState";
+import { Map } from "lucide-react";
 
 type PlacesProps = {
   latitude: number;
@@ -62,21 +63,8 @@ export default function Places({ latitude, longitude }: PlacesProps) {
       {/* Header */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-(--destination-primary)">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-5 w-5"
-              aria-hidden="true"
-            >
-              <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
-              <circle cx="12" cy="10" r="2.5" />
-            </svg>
+          <div className="flex cursor-pointer h-12 w-12 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-(--destination-primary)">
+            <Map />
           </div>
           <div>
             <h2 className="text-base font-semibold text-zinc-900 sm:text-lg">
