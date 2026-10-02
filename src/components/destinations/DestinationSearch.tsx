@@ -1,26 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDestinationSearch } from "@/hooks/useDestinationSearch";
 import { useVoiceSearch } from "@/hooks/useVoiceSearch";
+import { useRotatingPlaceholder } from "@/hooks/useRotatingPlaceholder";
 import DestinationSearchResults from "@/components/destinations/DestinationSearchResults";
 import { validateDestinationQuery } from "@/validation/validation";
 import SearchSkeleton from "./SearchSkeleton";
 
-const POPULAR_DESTINATIONS = [
-  "Dubai",
-  "New York",
-  "London",
-  "Mumbai",
-  "Australia",
-];
-
 export default function DestinationSearch() {
   const [query, setQuery] = useState("");
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
-  const [currentPlaceholder, setCurrentPlaceholder] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(150);
+  const currentPlaceholder = useRotatingPlaceholder(!query);
 
   const { destinations, status, error, retry } = useDestinationSearch(query);
 
@@ -44,44 +34,8 @@ export default function DestinationSearch() {
     validationError === null &&
     destinations.length === 0;
 
-  useEffect(() => {
-    if (query) return;
-
-    const fullText = `Try searching "${POPULAR_DESTINATIONS[placeholderIndex]}"`;
-
-    const handleTyping = () => {
-      if (!isDeleting) {
-        setCurrentPlaceholder(
-          fullText.substring(0, currentPlaceholder.length + 1),
-        );
-
-        if (currentPlaceholder === fullText) {
-          setTimeout(() => setIsDeleting(true), 1500);
-          setTypingSpeed(100);
-        }
-      } else {
-        setCurrentPlaceholder(
-          fullText.substring(0, currentPlaceholder.length - 1),
-        );
-
-        if (currentPlaceholder === "") {
-          setIsDeleting(false);
-          setPlaceholderIndex(
-            (prev) => (prev + 1) % POPULAR_DESTINATIONS.length,
-          );
-          setTypingSpeed(150);
-        }
-      }
-    };
-
-    const timer = setTimeout(handleTyping, typingSpeed);
-
-    return () => clearTimeout(timer);
-  }, [currentPlaceholder, isDeleting, placeholderIndex, query, typingSpeed]);
-
   function handleQueryChange(value: string) {
     const sanitizedValue = value.replace(/[^a-zA-ZÀ-ÿ\s.'-]/g, "");
-
     setQuery(sanitizedValue);
   }
 
@@ -140,7 +94,7 @@ export default function DestinationSearch() {
                   type="button"
                   onClick={handleClear}
                   aria-label="Clear search"
-                  className="rounded-full cursor-pointer p-1.5 text-zinc-400 transition hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-zinc-300"
+                  className="cursor-pointer rounded-full p-1.5 text-zinc-400 transition hover:bg-red-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-zinc-300"
                 >
                   <svg
                     aria-hidden="true"
@@ -220,7 +174,7 @@ export default function DestinationSearch() {
         )}
 
         {isListening && (
-          <p className="mt-3 text-sm text-zinc-600" role="status">
+          <p className="mt-3 text-sm text-white" role="status">
             Listening...
           </p>
         )}
@@ -243,11 +197,13 @@ export default function DestinationSearch() {
             </button>
           </div>
         )}
+
         {voiceError && (
           <p className="mt-3 text-sm text-red-600" role="alert">
             {voiceError}
           </p>
         )}
+
         {showResults && (
           <DestinationSearchResults destinations={destinations} />
         )}
