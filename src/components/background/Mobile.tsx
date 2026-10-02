@@ -14,7 +14,7 @@ export default function Mobile({
         alt=""
         fill
         priority
-        sizes="100vw"
+        sizes="(min-width: 768px) 50vw, 100vw"
         className="object-cover"
         aria-hidden="true"
       />
