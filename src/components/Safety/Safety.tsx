@@ -38,7 +38,7 @@ export default function Safety({ countryCode }: SafetyProps) {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-(--destination-primary)">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-(--destination-primary)">
             <Siren className="h-5 w-5" aria-hidden="true" />
           </div>
           <div>
@@ -98,11 +98,11 @@ export default function Safety({ countryCode }: SafetyProps) {
             return (
               <div
                 key={item.key}
-                className="group relative flex cursor-pointer flex-col justify-between  bg-(--destination-background) p-4  transition-all duration-300 hover:-translate-y-0.5 hover:border-(--destination-primary)/40 hover:bg-(--destination-primary)/5 hover:shadow-md"
+                className="group shadow-sm rounded-sm relative flex cursor-pointer flex-col justify-between  bg-(--destination-background) p-4  transition-all duration-300 hover:-translate-y-0.5 hover:border-(--destination-primary)/40 hover:bg-(--destination-primary)/5 hover:shadow-md"
               >
                 {/* Service Label & Icon */}
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-(--destination-secondary)/10 text-(--destination-secondary) transition-colors group-hover:bg-(--destination-primary)/10 group-hover:text-(--destination-primary)">
+                  <div className="flex h-10 w-10 items-center justify-center  transition-colors  text-(--destination-secondary)">
                     <Icon size={18} strokeWidth={2.2} aria-hidden="true" />
                   </div>
                   <span className="text-sm font-semibold text-(--destination-text)">
@@ -120,10 +120,9 @@ export default function Safety({ countryCode }: SafetyProps) {
                     <a
                       href={`tel:${number}`}
                       aria-label={`Direct call ${item.label}`}
-                      className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg bg-(--destination-primary) px-3 text-sm font-medium text-white shadow-sm transition-colors hover:bg-(--destination-secondary) active:scale-95"
+                      className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg text-(--destination-primary) px-3 text-sm font-medium  shadow-sm transition-colors hover:text-(--destination-secondary) active:scale-95"
                     >
                       <Phone size={14} strokeWidth={2.5} aria-hidden="true" />
-                      <span>Dial</span>
                     </a>
                   )}
                 </div>
