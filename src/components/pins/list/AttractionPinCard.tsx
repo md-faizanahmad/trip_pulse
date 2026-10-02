@@ -20,7 +20,16 @@ export default function AttractionPinCard({
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <h3 className="truncate text-base font-semibold text-zinc-900 transition-colors group-hover:text-(--destination-primary)">
-              {attraction.name}
+              <Link
+                href={`/destinations/${encodeURIComponent(
+                  attraction.name.toLowerCase(),
+                )}?osmType=${encodeURIComponent(
+                  attraction.osmType,
+                )}&osmId=${attraction.osmId}`}
+                className="rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--destination-primary)"
+              >
+                {attraction.name}
+              </Link>
             </h3>
 
             <p className="mt-1 text-xs font-medium capitalize text-zinc-500">
