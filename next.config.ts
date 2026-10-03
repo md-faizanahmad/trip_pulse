@@ -15,6 +15,16 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "thumb.wikimedia.org",
       },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+        pathname: "/wikipedia/commons/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
     ],
   },
 };
