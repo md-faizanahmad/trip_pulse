@@ -1,107 +1,33 @@
-import { eq, and } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 import { db } from "@/db";
 import { oauthAccounts, users } from "@/db/schema";
 import { createSession } from "@/lib/auth/session";
+import { getGoogleUser } from "@/lib/auth/google-oauth";
 
-type GoogleTokenResponse = {
-  access_token?: string;
-  error?: string;
-  error_description?: string;
-};
-
-type GoogleUserInfo = {
-  sub: string;
-  email: string;
-  email_verified: boolean;
-  name?: string;
-};
+function redirectToLogin(origin: string, error: string) {
+  return NextResponse.redirect(new URL(`/login?error=${error}`, origin));
+}
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-
   const code = url.searchParams.get("code");
   const error = url.searchParams.get("error");
 
   if (error) {
-    return NextResponse.redirect(
-      new URL("/login?error=google_cancelled", url.origin),
-    );
+    return redirectToLogin(url.origin, "google_cancelled");
   }
 
   if (!code) {
-    return NextResponse.redirect(
-      new URL("/login?error=google_code_missing", url.origin),
-    );
+    return redirectToLogin(url.origin, "google_code_missing");
   }
-
-  const clientId = process.env.GOOGLE_CLIENT_ID;
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
   const redirectUri =
     process.env.GOOGLE_REDIRECT_URI ?? `${url.origin}/api/auth/google/callback`;
 
-  if (!clientId || !clientSecret) {
-    console.error("Google OAuth environment variables are missing.");
-
-    return NextResponse.redirect(
-      new URL("/login?error=google_config", url.origin),
-    );
-  }
-
   try {
-    const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        client_id: clientId,
-        client_secret: clientSecret,
-        code,
-        grant_type: "authorization_code",
-        redirect_uri: redirectUri,
-      }),
-      cache: "no-store",
-    });
-
-    const tokenData: GoogleTokenResponse = await tokenResponse.json();
-
-    if (!tokenResponse.ok || !tokenData.access_token) {
-      console.error("Google token exchange failed:", tokenData);
-
-      return NextResponse.redirect(
-        new URL("/login?error=google_auth_failed", url.origin),
-      );
-    }
-
-    const userResponse = await fetch(
-      "https://www.googleapis.com/oauth2/v3/userinfo",
-      {
-        headers: {
-          Authorization: `Bearer ${tokenData.access_token}`,
-        },
-        cache: "no-store",
-      },
-    );
-
-    const googleUser: GoogleUserInfo = await userResponse.json();
-
-    if (!userResponse.ok) {
-      console.error("Google user info request failed:", googleUser);
-
-      return NextResponse.redirect(
-        new URL("/login?error=google_user_failed", url.origin),
-      );
-    }
-
-    if (!googleUser.sub || !googleUser.email || !googleUser.email_verified) {
-      return NextResponse.redirect(
-        new URL("/login?error=google_unverified", url.origin),
-      );
-    }
-
+    const googleUser = await getGoogleUser(code, redirectUri);
     const googleEmail = googleUser.email.trim().toLowerCase();
 
     const [existingOAuthAccount] = await db
@@ -123,15 +49,13 @@ export async function GET(request: Request) {
       userId = existingOAuthAccount.userId;
     } else {
       const [existingUser] = await db
-        .select()
+        .select({ id: users.id })
         .from(users)
         .where(eq(users.email, googleEmail))
         .limit(1);
 
       if (existingUser) {
-        return NextResponse.redirect(
-          new URL("/login?error=google_account_exists", url.origin),
-        );
+        return redirectToLogin(url.origin, "google_account_exists");
       }
 
       const [createdUser] = await db
@@ -141,9 +65,11 @@ export async function GET(request: Request) {
           email: googleEmail,
           passwordHash: null,
         })
-        .returning({
-          id: users.id,
-        });
+        .returning({ id: users.id });
+
+      if (!createdUser) {
+        throw new Error("Failed to create user.");
+      }
 
       userId = createdUser.id;
 
@@ -168,10 +94,11 @@ export async function GET(request: Request) {
 
     return response;
   } catch (error) {
-    console.error("Google OAuth callback error:", error);
-
-    return NextResponse.redirect(
-      new URL("/login?error=google_failed", url.origin),
+    console.error(
+      "Google OAuth callback failed:",
+      error instanceof Error ? error.message : "Unknown error",
     );
+
+    return redirectToLogin(url.origin, "google_failed");
   }
 }
