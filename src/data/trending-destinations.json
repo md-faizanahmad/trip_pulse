@@ -1,0 +1,72 @@
+[
+  {
+    "slug": "paris",
+    "name": "Paris",
+    "country": "France",
+    "description": "Discover iconic landmarks, art, cafés, and romantic streets.",
+    "image": "/destinations/paris.webp"
+  },
+  {
+    "slug": "bali",
+    "name": "Bali",
+    "country": "Indonesia",
+    "description": "Explore tropical beaches, lush rice terraces, and temples.",
+    "image": "/destinations/bali.webp"
+  },
+  {
+    "slug": "tokyo",
+    "name": "Tokyo",
+    "country": "Japan",
+    "description": "Experience vibrant city life, traditional temples, and Japanese cuisine.",
+    "image": "/destinations/tokyo.webp"
+  },
+  {
+    "slug": "dubai",
+    "name": "Dubai",
+    "country": "United Arab Emirates",
+    "description": "See modern architecture, luxury attractions, and desert landscapes.",
+    "image": "/destinations/dubai.webp"
+  },
+  {
+    "slug": "london",
+    "name": "London",
+    "country": "United Kingdom",
+    "description": "Visit historic landmarks, world-class museums, and lively neighborhoods.",
+    "image": "/destinations/london.webp"
+  },
+  {
+    "slug": "new-york",
+    "name": "New York City",
+    "country": "United States",
+    "description": "Explore famous skylines, cultural districts, and iconic city attractions.",
+    "image": "/destinations/new-york.webp"
+  },
+  {
+    "slug": "swiss-alps",
+    "name": "Swiss Alps",
+    "country": "Switzerland",
+    "description": "Enjoy alpine villages, mountain scenery, and scenic railway journeys.",
+    "image": "/destinations/swiss-alps.webp"
+  },
+  {
+    "slug": "jaipur",
+    "name": "Jaipur",
+    "country": "India",
+    "description": "Discover royal palaces, historic forts, and colorful bazaars.",
+    "image": "/destinations/jaipur.webp"
+  },
+  {
+    "slug": "goa",
+    "name": "Goa",
+    "country": "India",
+    "description": "Relax on sandy beaches and explore coastal towns and local cuisine.",
+    "image": "/destinations/goa.webp"
+  },
+  {
+    "slug": "agra",
+    "name": "Agra",
+    "country": "India",
+    "description": "Visit the Taj Mahal and explore India's rich Mughal heritage.",
+    "image": "/destinations/agra.webp"
+  }
+]
