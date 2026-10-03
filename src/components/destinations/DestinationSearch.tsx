@@ -58,7 +58,7 @@ export default function DestinationSearch() {
         status === "idle" ? "flex min-h-[calc(100vh-4rem)] items-center" : ""
       }
     >
-      <div className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
+      <div className="mx-auto w-full max-w-3xl px-4 py-25 sm:px-6 sm:py-30">
         <div className="text-center">
           <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
             Where to?

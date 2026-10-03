@@ -4,10 +4,13 @@ import DestinationSearch from "@/components/destinations/DestinationSearch";
 
 export default function Home() {
   return (
-    <div className="relative isolate min-h-full">
-      <Background />
-      <DestinationSearch />
+    <>
+      <section className="relative isolate min-h-screen">
+        <Background />
+        <DestinationSearch />
+      </section>
+
       <About />
-    </div>
+    </>
   );
 }
