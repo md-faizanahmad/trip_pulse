@@ -45,6 +45,41 @@ export async function GET(request: Request) {
 
     let userId: string;
 
+    // if (existingOAuthAccount) {
+    //   userId = existingOAuthAccount.userId;
+    // } else {
+    //   const [existingUser] = await db
+    //     .select({ id: users.id })
+    //     .from(users)
+    //     .where(eq(users.email, googleEmail))
+    //     .limit(1);
+
+    //   if (existingUser) {
+    //     return redirectToLogin(url.origin, "google_account_exists");
+    //   }
+
+    //   const [createdUser] = await db
+    //     .insert(users)
+    //     .values({
+    //       name: googleUser.name?.trim() || googleEmail.split("@")[0],
+    //       email: googleEmail,
+    //       passwordHash: null,
+    //     })
+    //     .returning({ id: users.id });
+
+    //   if (!createdUser) {
+    //     throw new Error("Failed to create user.");
+    //   }
+
+    //   userId = createdUser.id;
+
+    //   await db.insert(oauthAccounts).values({
+    //     userId,
+    //     provider: "google",
+    //     providerAccountId: googleUser.sub,
+    //   });
+    // }
+
     if (existingOAuthAccount) {
       userId = existingOAuthAccount.userId;
     } else {
@@ -55,23 +90,23 @@ export async function GET(request: Request) {
         .limit(1);
 
       if (existingUser) {
-        return redirectToLogin(url.origin, "google_account_exists");
+        userId = existingUser.id;
+      } else {
+        const [createdUser] = await db
+          .insert(users)
+          .values({
+            name: googleUser.name?.trim() || googleEmail.split("@")[0],
+            email: googleEmail,
+            passwordHash: null,
+          })
+          .returning({ id: users.id });
+
+        if (!createdUser) {
+          throw new Error("Failed to create user.");
+        }
+
+        userId = createdUser.id;
       }
-
-      const [createdUser] = await db
-        .insert(users)
-        .values({
-          name: googleUser.name?.trim() || googleEmail.split("@")[0],
-          email: googleEmail,
-          passwordHash: null,
-        })
-        .returning({ id: users.id });
-
-      if (!createdUser) {
-        throw new Error("Failed to create user.");
-      }
-
-      userId = createdUser.id;
 
       await db.insert(oauthAccounts).values({
         userId,
