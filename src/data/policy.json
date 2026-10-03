@@ -1,0 +1,68 @@
+{
+  "pageTitle": "Legal & Privacy Center",
+  "pageDescription": "Learn how TripPulse operates, uses third-party services, and handles your information.",
+  "sections": [
+    {
+      "id": "cookies",
+      "title": "Cookie Policy & Preferences",
+      "icon": "cookie",
+      "paragraphs": [
+        "TripPulse uses cookies and similar browser storage where needed to provide core functionality, maintain your login session, and remember relevant preferences."
+      ],
+      "items": [
+        {
+          "title": "Essential cookies",
+          "description": "Support authentication, session management, security, and core site functionality."
+        },
+        {
+          "title": "Session storage",
+          "description": "May be used to maintain temporary application state and preferences."
+        }
+      ],
+      "footer": "You can manage or clear cookies through your browser settings. Disabling essential cookies may prevent some features from working correctly."
+    },
+    {
+      "id": "privacy",
+      "title": "Privacy Policy",
+      "icon": "shield",
+      "paragraphs": [
+        "TripPulse is a personal project built to explore and provide useful travel-planning features. It is not a commercial travel agency.",
+        "Depending on the features you use, we may process information such as your name and email address for authentication and locations you choose to save. We use this information to provide and maintain the features you request.",
+        "We do not sell your personal information or share it with third parties for advertising or marketing purposes.",
+        "We do not intentionally send your account password or session credentials to travel-data API providers. We aim to collect and process only the information needed to operate the application.",
+        "If you have a privacy question or want to request access to or deletion of your information, please use the contact details provided on the TripPulse website, if available."
+      ]
+    },
+    {
+      "id": "third-party",
+      "title": "Third-Party APIs & Services",
+      "icon": "globe",
+      "paragraphs": [
+        "Some TripPulse features rely on free third-party APIs to retrieve travel-related information, such as destination details and weather forecasts.",
+        "These services are operated by external providers. Their availability, rate limits, and data accuracy may vary, and their use is subject to each provider's terms and privacy policy.",
+        "When a feature makes a request to an external provider, relevant request data may be processed by that provider to deliver the requested information. We do not control how independent providers handle data under their own policies."
+      ]
+    },
+    {
+      "id": "terms",
+      "title": "Terms of Service",
+      "icon": "file-text",
+      "paragraphs": [
+        "By accessing and using TripPulse, you agree to use the application responsibly and in accordance with these terms.",
+        "TripPulse is a personal project provided for informational and travel-planning purposes. Travel information, forecasts, and third-party API results may be incomplete, inaccurate, or unavailable. Verify important details with the relevant official source before making travel decisions.",
+        "You are responsible for keeping your account credentials secure and for activity carried out through your account.",
+        "We may update, change, or discontinue features as the project evolves. We do not guarantee uninterrupted availability of the application or its external services."
+      ]
+    },
+    {
+      "id": "security",
+      "title": "Data Processing & Security",
+      "icon": "lock",
+      "paragraphs": [
+        "We take reasonable steps to protect account information and maintain the security of the application. Authentication sessions use HTTP-only cookies, and passwords are handled through the application's password-hashing process rather than stored as plain text.",
+        "Access to information is limited to what is needed to operate the application. However, no method of online transmission or electronic storage can be guaranteed to be completely secure.",
+        "As TripPulse is a personal project that uses third-party services, availability and security may also depend on the infrastructure and practices of those providers."
+      ]
+    }
+  ]
+}
