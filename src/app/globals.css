@@ -174,3 +174,11 @@ select {
 .destination-scrollbar::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to bottom, #0ea5e9, #16a34a, #dc2626);
 }
+
+.gallery-scroll {
+  scrollbar-width: none;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+  display: none;
+}

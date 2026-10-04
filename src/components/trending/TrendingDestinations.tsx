@@ -45,7 +45,7 @@ export default function TrendingDestinations() {
             <Link
               key={destination.slug}
               href={`/destinations/${destination.slug}`}
-              className="group relative isolate aspect-[4/5] overflow-hidden rounded-xl bg-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--destination-secondary)"
+              className="group relative isolate aspect-4/5 overflow-hidden rounded-xl bg-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--destination-secondary)"
               aria-label={`Explore ${destination.name}, ${destination.country}`}
             >
               <Image
@@ -57,7 +57,7 @@ export default function TrendingDestinations() {
               />
 
               {/* Contrast for text */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/10 to-transparent" />
 
               {/* Destination details */}
               <div className="absolute inset-x-0 bottom-0 p-3 text-white sm:p-5">

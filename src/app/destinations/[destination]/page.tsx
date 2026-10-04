@@ -1,6 +1,7 @@
 import Currency from "@/components/currency/Currency";
 import DestinationPlace from "@/components/destinations/DestinationPlace";
 import DestinationWeather from "@/components/destinations/DestinationWeather";
+import DestinationGallery from "@/components/gallery/DestinationGallery";
 import Places from "@/components/place/Places";
 import Safety from "@/components/Safety/Safety";
 import Transport from "@/components/transport/Transport";
@@ -133,6 +134,7 @@ export default async function DestinationPage({
           latitude={selectedDestination.latitude}
           longitude={selectedDestination.longitude}
         />
+        <DestinationGallery destination={selectedDestination.name} />
         <Transport
           latitude={selectedDestination.latitude}
           longitude={selectedDestination.longitude}
