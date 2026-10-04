@@ -1,168 +1,115 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
-type DestinationPhoto = {
-  id: string;
-  description: string | null;
-  imageUrl: string;
-  thumbnailUrl: string;
-  photoUrl: string;
-  photographerName: string;
-  photographerUrl: string;
-};
+import { useDestinationPhotos } from "@/hooks/useDestinationPhotos";
+import PhotoCard from "@/components/gallery/PhotoCard";
+import PhotoCardSkeleton from "@/components/gallery/PhotoCardSkeleton";
+import MobilePhotoCarousel from "@/components/gallery/MobilePhotoCarousel";
 
 type DestinationGalleryProps = {
   destination: string;
 };
 
-type GalleryState = "loading" | "success" | "empty" | "error";
+const PHOTO_COUNT = 4;
 
 export default function DestinationGallery({
   destination,
 }: DestinationGalleryProps) {
-  const [photos, setPhotos] = useState<DestinationPhoto[]>([]);
-  const [status, setStatus] = useState<GalleryState>("loading");
+  const gallery = useDestinationPhotos(destination);
 
-  useEffect(() => {
-    if (!destination.trim()) {
-      return;
-    }
+  const photos =
+    gallery.status === "success" ? gallery.photos.slice(0, PHOTO_COUNT) : [];
 
-    const controller = new AbortController();
-
-    async function fetchPhotos() {
-      setStatus("loading");
-
-      try {
-        const params = new URLSearchParams({
-          destination: destination.trim(),
-        });
-
-        const response = await fetch(
-          `/api/destination-photos?${params.toString()}`,
-          { signal: controller.signal },
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch destination photos.");
-        }
-
-        const data: { photos: DestinationPhoto[] } = await response.json();
-
-        if (!Array.isArray(data.photos) || data.photos.length === 0) {
-          setPhotos([]);
-          setStatus("empty");
-          return;
-        }
-
-        setPhotos(data.photos);
-        setStatus("success");
-      } catch {
-        if (!controller.signal.aborted) {
-          setStatus("error");
-        }
-      }
-    }
-
-    void fetchPhotos();
-
-    return () => controller.abort();
-  }, [destination]);
+  if (!destination.trim()) return null;
 
   return (
     <section
       aria-labelledby="destination-gallery-heading"
-      className="mt-8 sm:mt-10"
+      className="mt-10 sm:mt-12"
     >
-      <div className="mb-5">
-        <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-(--destination-secondary)">
-          Discover the destination
+      <div className="mb-6 sm:mb-8">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-(--destination-secondary)">
+          Visual inspiration
         </p>
 
         <h2
           id="destination-gallery-heading"
-          className="text-xl font-semibold tracking-tight text-zinc-900 sm:text-2xl"
+          className="text-2xl font-semibold tracking-tight text-(--destination-primary) sm:text-3xl"
         >
-          Photos of {destination}
+          Moments in {destination}
         </h2>
 
-        <p className="mt-1 text-sm text-zinc-500">
-          Get a glimpse of what makes this place special.
+        <p className="mt-2 max-w-md text-sm leading-6 text-zinc-500">
+          A glimpse of the places, streets, and scenery waiting to be explored.
         </p>
       </div>
 
-      {status === "loading" && (
-        <div
-          aria-label="Loading destination photos"
-          className="grid grid-cols-2 gap-3 sm:grid-cols-4"
+      {gallery.status === "loading" && (
+        <>
+          <div className="gallery-scroll -mx-4 flex gap-3 overflow-hidden px-4 md:hidden">
+            {Array.from({ length: PHOTO_COUNT }, (_, index) => (
+              <PhotoCardSkeleton key={index} />
+            ))}
+          </div>
+
+          <div className="hidden grid-cols-2 gap-4 md:grid lg:grid-cols-4">
+            {Array.from({ length: PHOTO_COUNT }, (_, index) => (
+              <PhotoCardSkeleton key={index} />
+            ))}
+          </div>
+        </>
+      )}
+
+      {gallery.status === "success" && (
+        <>
+          <MobilePhotoCarousel photos={photos} />
+
+          <div className="hidden grid-cols-2 gap-4 md:grid lg:grid-cols-4">
+            {photos.map((photo, index) => (
+              <PhotoCard key={photo.id} photo={photo} index={index} />
+            ))}
+          </div>
+        </>
+      )}
+
+      {gallery.status === "empty" && (
+        <p className="rounded-2xl bg-zinc-50 px-5 py-10 text-center text-sm text-zinc-500">
+          No photos are available for this destination yet.
+        </p>
+      )}
+
+      {gallery.status === "error" && (
+        <div className="flex flex-col items-start justify-between gap-4 rounded-2xl bg-zinc-50 p-5 sm:flex-row sm:items-center">
+          <p className="text-sm text-zinc-600">{gallery.message}</p>
+
+          {gallery.retryable && (
+            <button
+              type="button"
+              onClick={gallery.retry}
+              className="shrink-0 text-sm font-semibold text-(--destination-primary) underline underline-offset-4"
+            >
+              Try again
+            </button>
+          )}
+        </div>
+      )}
+
+      <div className="mt-6 flex justify-end">
+        <Link
+          href={`/destinations/${encodeURIComponent(
+            destination.trim().toLowerCase(),
+          )}/photos`}
+          className="group inline-flex items-center gap-2 rounded-full border border-zinc-200 px-4 py-2.5 text-sm font-medium text-(--destination-primary) transition hover:border-zinc-400 hover:bg-zinc-50"
         >
-          {Array.from({ length: 8 }, (_, index) => (
-            <div
-              key={index}
-              className="aspect-[4/3] animate-pulse rounded-xl bg-zinc-200"
-            />
-          ))}
-        </div>
-      )}
-
-      {status === "success" && (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {photos.map((photo) => (
-            <article key={photo.id} className="min-w-0">
-              <a
-                href={photo.photoUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`View photo of ${destination} by ${photo.photographerName} on Unsplash`}
-                className="group relative block aspect-[4/3] overflow-hidden rounded-xl bg-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--destination-secondary)"
-              >
-                <Image
-                  src={photo.imageUrl}
-                  alt={photo.description || `${destination} travel photo`}
-                  fill
-                  sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 25vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </a>
-
-              <p className="mt-2 truncate text-xs text-zinc-500">
-                Photo by{" "}
-                <a
-                  href={photo.photographerUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-medium text-zinc-700 underline underline-offset-2"
-                >
-                  {photo.photographerName}
-                </a>{" "}
-                on{" "}
-                <a
-                  href={photo.photoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-medium text-zinc-700 underline underline-offset-2"
-                >
-                  Unsplash
-                </a>
-              </p>
-            </article>
-          ))}
-        </div>
-      )}
-
-      {status === "empty" && (
-        <p className="py-8 text-center text-sm text-zinc-500">
-          No photos found for this destination.
-        </p>
-      )}
-
-      {status === "error" && (
-        <p role="alert" className="py-8 text-center text-sm text-zinc-500">
-          Unable to load destination photos. Please try again later.
-        </p>
-      )}
+          Explore all photos
+          <ArrowUpRight
+            size={16}
+            className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+          />
+        </Link>
+      </div>
     </section>
   );
 }
