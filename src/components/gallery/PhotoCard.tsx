@@ -15,7 +15,7 @@ export default function PhotoCard({
 }: PhotoCardProps) {
   return (
     <article
-      className={`group relative h-90 w-[82%] shrink-0 snap-center overflow-hidden rounded-2xl transition-all duration-500 sm:w-[70%] md:h-97.5 md:w-auto md:shrink ${
+      className={`group cursor-pointer relative h-90 w-[82%] shrink-0 snap-center overflow-hidden rounded-2xl transition-all duration-500 sm:w-[70%] md:h-97.5 md:w-auto md:shrink ${
         isActive
           ? "scale-100 opacity-100 blur-0"
           : "scale-[0.94] opacity-65 blur-[1.5px]"
@@ -37,8 +37,17 @@ export default function PhotoCard({
         {String(index + 1).padStart(2, "0")}
       </span>
 
-      {/* Photo description and attribution */}
-      <div className="absolute inset-x-0 bottom-0 p-5 text-white sm:p-6">
+      <div
+        className=" cursor-pointer
+    absolute inset-x-0 bottom-0 p-5 text-white sm:p-6
+    translate-y-3 opacity-100
+    transition-all duration-300 ease-out
+    md:translate-y-3 md:opacity-0
+    md:group-hover:translate-y-0 md:group-hover:opacity-100
+    md:group-focus-within:translate-y-0
+    md:group-focus-within:opacity-100
+  "
+      >
         <p className="mb-2 flex items-center gap-2 text-xs text-white/75">
           <Camera size={14} aria-hidden="true" />
           Destination photography
@@ -53,7 +62,11 @@ export default function PhotoCard({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`View photographer ${photo.photographerName}`}
-          className="mt-3 inline-block text-xs text-white/70 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white"
+          className="
+      mt-3 inline-block text-xs text-white/70
+      underline decoration-white/30 underline-offset-4
+      transition-colors hover:text-white
+    "
         >
           Photo by {photo.photographerName}
         </a>
