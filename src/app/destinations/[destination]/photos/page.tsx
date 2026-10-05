@@ -1,4 +1,4 @@
-import PhotosPageHeader from "@/components/gallery/photos/PhotosPageHeader";
+import DestinationPhotosPage from "@/components/gallery/photos/DestinationPhotosPage";
 
 type PhotosPageProps = {
   params: Promise<{
@@ -11,7 +11,7 @@ export default async function PhotosPage({ params }: PhotosPageProps) {
 
   return (
     <main className="min-h-screen bg-(--destination-background)">
-      <PhotosPageHeader destination={destination} />
+      <DestinationPhotosPage destination={destination} />
     </main>
   );
 }
