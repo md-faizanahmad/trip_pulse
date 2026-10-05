@@ -8,8 +8,17 @@ export type DestinationPhoto = {
   photographerUrl: string;
 };
 
+export type DestinationPhotosPagination = {
+  page: number;
+  perPage: number;
+  total: number;
+  totalPages: number;
+  hasNextPage: boolean;
+};
+
 export type DestinationPhotosResponse = {
   photos: DestinationPhoto[];
+  pagination: DestinationPhotosPagination;
 };
 
 export type DestinationPhotoErrorCode =
