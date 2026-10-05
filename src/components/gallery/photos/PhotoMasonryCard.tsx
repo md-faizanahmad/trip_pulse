@@ -26,9 +26,9 @@ export default function PhotoMasonryCard({
       <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/75 via-black/10 to-transparent opacity-0 transition-opacity duration-300 md:group-hover:opacity-100" />
 
       {/* Photo number */}
-      <span className="absolute left-3 top-3 flex h-8 min-w-8 items-center justify-center rounded-full border border-white/30 bg-black/25 px-2 text-[11px] font-medium text-white opacity-100 backdrop-blur-md md:opacity-0 md:transition-opacity md:duration-300 md:group-hover:opacity-100">
+      {/* <span className="absolute left-3 top-3 flex h-8 min-w-8 items-center justify-center rounded-full border border-white/30 bg-black/25 px-2 text-[11px] font-medium text-white opacity-100 backdrop-blur-md md:opacity-0 md:transition-opacity md:duration-300 md:group-hover:opacity-100">
         {String(index + 1).padStart(2, "0")}
-      </span>
+      </span> */}
 
       {/* Photo details */}
       <div className="absolute inset-x-0 bottom-0 p-4 text-white opacity-100 md:translate-y-2 md:opacity-0 md:transition-all md:duration-300 md:group-hover:translate-y-0 md:group-hover:opacity-100">
