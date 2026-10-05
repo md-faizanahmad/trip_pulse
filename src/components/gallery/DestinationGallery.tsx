@@ -24,6 +24,9 @@ export default function DestinationGallery({
 
   if (!destination.trim()) return null;
 
+  const photosPath = `/destinations/$
+        {encodeURIComponent(destination.trim().toLowerCase())}/photos`;
+
   return (
     <section
       aria-labelledby="destination-gallery-heading"
@@ -98,9 +101,7 @@ export default function DestinationGallery({
 
       <div className="mt-6 flex justify-end">
         <Link
-          href={`/destinations/${encodeURIComponent(
-            destination.trim().toLowerCase(),
-          )}/photos`}
+          href={photosPath}
           className="group inline-flex items-center gap-2 rounded-full border border-zinc-200 px-4 py-2.5 text-sm font-medium text-(--destination-primary) transition hover:border-zinc-400 hover:bg-zinc-50"
         >
           Explore all photos
