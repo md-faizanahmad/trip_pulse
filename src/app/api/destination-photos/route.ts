@@ -1,54 +1,56 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import type {
-  ClassifiedPhotoError,
-  DestinationPhotosErrorResponse,
-} from "@/types/destination-photo";
 import { validateDestination } from "@/validation/destination-photo";
 import { classifyUpstreamError, normalizePhotos } from "@/services/unsplash";
+import { photoErrorResponse } from "@/services/destination-photos/error";
 
 const UNSPLASH_API_URL = "https://api.unsplash.com/search/photos";
-const PHOTO_COUNT = 8;
+
+const DEFAULT_PER_PAGE = 24;
+const MAX_PER_PAGE = 30;
 const REQUEST_TIMEOUT_MS = 8_000;
 
 const RESPONSE_HEADERS = {
   "Cache-Control": "private, no-store",
 };
 
-function errorResponse(
-  error: ClassifiedPhotoError,
-): NextResponse<DestinationPhotosErrorResponse> {
-  const headers = new Headers(RESPONSE_HEADERS);
+type UnsplashSearchResponse = {
+  results: unknown;
+  total: number;
+  total_pages: number;
+};
 
-  if (error.retryAfterSeconds !== undefined) {
-    headers.set("Retry-After", String(error.retryAfterSeconds));
+function isUnsplashSearchResponse(
+  data: unknown,
+): data is UnsplashSearchResponse {
+  if (typeof data !== "object" || data === null) {
+    return false;
   }
 
-  return NextResponse.json(
-    {
-      error: {
-        code: error.code,
-        message: error.message,
-        retryable: error.retryable,
-        ...(error.retryAfterSeconds !== undefined && {
-          retryAfterSeconds: error.retryAfterSeconds,
-        }),
-      },
-    },
-    {
-      status: error.status,
-      headers,
-    },
+  if (!("results" in data)) {
+    return false;
+  }
+
+  if (!("total" in data) || !("total_pages" in data)) {
+    return false;
+  }
+
+  const response = data as Record<string, unknown>;
+
+  return (
+    Array.isArray(response.results) &&
+    typeof response.total === "number" &&
+    typeof response.total_pages === "number"
   );
 }
 
 export async function GET(request: NextRequest) {
-  const validation = validateDestination(
-    request.nextUrl.searchParams.get("destination"),
-  );
+  const searchParams = request.nextUrl.searchParams;
+
+  const validation = validateDestination(searchParams.get("destination"));
 
   if (!validation.valid) {
-    return errorResponse({
+    return photoErrorResponse({
       status: 400,
       code: "INVALID_DESTINATION",
       message: validation.message,
@@ -56,10 +58,34 @@ export async function GET(request: NextRequest) {
     });
   }
 
+  const pageParam = searchParams.get("page");
+  const perPageParam = searchParams.get("perPage");
+
+  const page = pageParam ? Number(pageParam) : 1;
+  const perPage = perPageParam ? Number(perPageParam) : DEFAULT_PER_PAGE;
+
+  if (!Number.isInteger(page) || page < 1) {
+    return photoErrorResponse({
+      status: 400,
+      code: "INVALID_PAGE",
+      message: "Page must be a positive integer.",
+      retryable: false,
+    });
+  }
+
+  if (!Number.isInteger(perPage) || perPage < 1 || perPage > MAX_PER_PAGE) {
+    return photoErrorResponse({
+      status: 400,
+      code: "INVALID_PER_PAGE",
+      message: `perPage must be an integer between 1 and ${MAX_PER_PAGE}.`,
+      retryable: false,
+    });
+  }
+
   const accessKey = process.env.UNSPLASH_ACCESS_KEY;
 
   if (!accessKey || accessKey === "your_access_key_here") {
-    return errorResponse({
+    return photoErrorResponse({
       status: 500,
       code: "CONFIGURATION_ERROR",
       message: "Photo search is not configured.",
@@ -68,11 +94,14 @@ export async function GET(request: NextRequest) {
   }
 
   const url = new URL(UNSPLASH_API_URL);
+
   url.searchParams.set("query", validation.destination);
-  url.searchParams.set("per_page", String(PHOTO_COUNT));
+  url.searchParams.set("page", String(page));
+  url.searchParams.set("per_page", String(perPage));
   url.searchParams.set("orientation", "landscape");
 
   const controller = new AbortController();
+
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
@@ -82,17 +111,19 @@ export async function GET(request: NextRequest) {
         Accept: "application/json",
       },
       signal: controller.signal,
-      next: { revalidate: 3600 },
+      next: {
+        revalidate: 3600,
+      },
     });
 
     if (!response.ok) {
-      return errorResponse(classifyUpstreamError(response));
+      return photoErrorResponse(classifyUpstreamError(response));
     }
 
     const data: unknown = await response.json();
 
-    if (typeof data !== "object" || data === null || !("results" in data)) {
-      return errorResponse({
+    if (!isUnsplashSearchResponse(data)) {
+      return photoErrorResponse({
         status: 502,
         code: "INVALID_RESPONSE",
         message: "Photo search returned an invalid response.",
@@ -103,7 +134,7 @@ export async function GET(request: NextRequest) {
     const photos = normalizePhotos(data.results);
 
     if (photos === null) {
-      return errorResponse({
+      return photoErrorResponse({
         status: 502,
         code: "INVALID_RESPONSE",
         message: "Photo search returned an invalid response.",
@@ -111,10 +142,26 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({ photos }, { headers: RESPONSE_HEADERS });
+    const totalPages = Math.max(1, data.total_pages);
+
+    return NextResponse.json(
+      {
+        photos,
+        pagination: {
+          page,
+          perPage,
+          total: data.total,
+          totalPages,
+          hasNextPage: page < totalPages,
+        },
+      },
+      {
+        headers: RESPONSE_HEADERS,
+      },
+    );
   } catch {
     if (controller.signal.aborted) {
-      return errorResponse({
+      return photoErrorResponse({
         status: 504,
         code: "TIMEOUT",
         message: "Photo search took too long. Please try again.",
@@ -122,7 +169,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    return errorResponse({
+    return photoErrorResponse({
       status: 502,
       code: "UPSTREAM_ERROR",
       message: "Unable to load destination photos right now.",

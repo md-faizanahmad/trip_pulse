@@ -19,7 +19,10 @@ export type DestinationPhotoErrorCode =
   | "UPSTREAM_AUTH_ERROR"
   | "UPSTREAM_ERROR"
   | "TIMEOUT"
-  | "INVALID_RESPONSE";
+  | "INVALID_RESPONSE"
+  | "INVALID_QUERY"
+  | "INVALID_PAGE"
+  | "INVALID_PER_PAGE";
 
 export type DestinationPhotosErrorResponse = {
   error: {
