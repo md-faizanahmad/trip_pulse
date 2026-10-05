@@ -99,7 +99,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
                 key={category.value}
                 type="button"
                 onClick={() => handleCategoryChange(category.value)}
-                className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                className={`shrink-0 rounded-sm px-4 py-2 text-sm font-medium transition-all ${
                   isActive
                     ? "bg-(--destination-primary) text-white shadow-sm"
                     : "bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
