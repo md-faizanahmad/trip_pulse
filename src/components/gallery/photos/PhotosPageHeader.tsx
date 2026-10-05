@@ -1,3 +1,5 @@
+import Breadcrumb from "@/shared/Breadcrumb";
+
 type PhotosPageHeaderProps = {
   destination: string;
   photoCount?: number;
@@ -11,6 +13,7 @@ export default function PhotosPageHeader({
 
   return (
     <header className="mx-auto w-full max-w-7xl px-4 pb-6 pt-8 sm:px-6 sm:pb-8 sm:pt-10 lg:px-8">
+      <Breadcrumb destination={name} />
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-(--destination-primary)">
         Destination photos
       </p>
