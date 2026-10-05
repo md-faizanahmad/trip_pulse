@@ -24,8 +24,9 @@ export default function DestinationGallery({
 
   if (!destination.trim()) return null;
 
-  const photosPath = `/destinations/$
-        {encodeURIComponent(destination.trim().toLowerCase())}/photos`;
+  const photosPath = `/destinations/${encodeURIComponent(
+    destination.trim().toLowerCase(),
+  )}/photos`;
 
   return (
     <section
@@ -85,17 +86,33 @@ export default function DestinationGallery({
 
       {gallery.status === "error" && (
         <div className="flex flex-col items-start justify-between gap-4 rounded-2xl bg-zinc-50 p-5 sm:flex-row sm:items-center">
-          <p className="text-sm text-zinc-600">{gallery.message}</p>
+          <p className="text-sm text-zinc-600">
+            {gallery.error ?? "Unable to load destination photos right now."}
+          </p>
 
-          {gallery.retryable && (
-            <button
-              type="button"
-              onClick={gallery.retry}
-              className="shrink-0 text-sm font-semibold text-(--destination-primary) underline underline-offset-4"
-            >
-              Try again
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={gallery.retry}
+            className="shrink-0 text-sm font-semibold text-(--destination-primary) underline underline-offset-4"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
+      {gallery.status === "error" && (
+        <div className="flex flex-col items-start justify-between gap-4 rounded-2xl bg-zinc-50 p-5 sm:flex-row sm:items-center">
+          <p className="text-sm text-zinc-600">
+            {gallery.error ?? "Unable to load destination photos right now."}
+          </p>
+
+          <button
+            type="button"
+            onClick={gallery.retry}
+            className="shrink-0 text-sm font-semibold text-(--destination-primary) underline underline-offset-4"
+          >
+            Try again
+          </button>
         </div>
       )}
 
