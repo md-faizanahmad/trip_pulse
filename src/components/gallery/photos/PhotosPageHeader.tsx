@@ -13,7 +13,17 @@ export default function PhotosPageHeader({
 
   return (
     <header className="mx-auto w-full max-w-7xl px-4 pb-6 pt-8 sm:px-6 sm:pb-8 sm:pt-10 lg:px-8">
-      <Breadcrumb destination={name} />
+      <Breadcrumb
+        items={[
+          {
+            label: "Dubai",
+            href: "/destinations/dubai",
+          },
+          {
+            label: "Photos",
+          },
+        ]}
+      />
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-(--destination-primary)">
         Destination photos
       </p>

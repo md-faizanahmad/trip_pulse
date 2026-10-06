@@ -29,7 +29,13 @@ function DestinationError({ destination, message }: DestinationErrorProps) {
   return (
     <main className="flex-1">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
-        <Breadcrumb destination={destination} />
+        <Breadcrumb
+          items={[
+            {
+              label: destination,
+            },
+          ]}
+        />
 
         <p className="text-sm text-red-600">{message}</p>
       </div>
@@ -107,7 +113,13 @@ export default async function DestinationPage({
   return (
     <main className={`flex-1 ${countryTheme.className}`}>
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-8">
-        <Breadcrumb destination={selectedDestination.name} />
+        <Breadcrumb
+          items={[
+            {
+              label: selectedDestination.name,
+            },
+          ]}
+        />
 
         <div className="mt-6 sm:mt-8">
           <DestinationPlace destination={selectedDestination} />
