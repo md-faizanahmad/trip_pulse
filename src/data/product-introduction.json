@@ -1,0 +1,27 @@
+{
+  "eyebrow": "What is TripPulse?",
+  "title": "Everything you need to understand a destination.",
+  "description": "TripPulse brings essential destination information together so you can explore a place, understand what to expect, and make better travel decisions.",
+  "items": [
+    {
+      "number": "01",
+      "title": "Discover",
+      "description": "Find destinations and explore what each place has to offer."
+    },
+    {
+      "number": "02",
+      "title": "Understand",
+      "description": "Check weather, currency, photos, places, and useful destination information."
+    },
+    {
+      "number": "03",
+      "title": "Compare",
+      "description": "Get the context you need to decide when and where you want to travel."
+    },
+    {
+      "number": "04",
+      "title": "Plan",
+      "description": "Turn destination information into a clearer, more informed travel plan."
+    }
+  ]
+}
