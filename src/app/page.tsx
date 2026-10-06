@@ -1,7 +1,7 @@
 import About from "@/components/about/About";
 import Background from "@/components/background/Background";
 import DestinationSearch from "@/components/destinations/DestinationSearch";
-import TrendingDestinations from "@/components/trending/TrendingDestinations";
+import ProductIntroduction from "@/components/home/ProductIntroduction";
 
 export default function Home() {
   return (
@@ -10,7 +10,7 @@ export default function Home() {
         <Background />
         <DestinationSearch />
       </section>
-      <TrendingDestinations />
+      <ProductIntroduction />
       <About />
     </>
   );
