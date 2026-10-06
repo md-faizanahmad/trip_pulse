@@ -12,7 +12,7 @@ export default function PhotoMasonryCard({
 }: PhotoMasonryCardProps) {
   return (
     <article
-      className={`overflow-hidden rounded-xl transition-all duration-500 ${
+      className={`overflow-hidden cursor-pointer rounded-xl transition-all duration-500 ${
         isVisible
           ? "scale-100 opacity-100 blur-0"
           : "scale-[0.98] opacity-70 blur-[3px]"
