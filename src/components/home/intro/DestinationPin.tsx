@@ -34,14 +34,14 @@ export default function DestinationPin({
 
   return (
     <div className={`absolute ${position} z-20`}>
-      <div className="group flex flex-col items-center">
+      <div className="group relative">
         <div
           className={`flex ${styles.wrapper} items-center justify-center rounded-full border border-white ${background} shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-transform duration-300 group-hover:-translate-y-1`}
         >
           <MapPinned className={`${styles.icon} ${color}`} strokeWidth={1.8} />
         </div>
 
-        <span className="mt-1 whitespace-nowrap text-[7px] font-semibold uppercase tracking-widest text-zinc-400">
+        <span className="absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap text-[7px] font-semibold uppercase tracking-widest text-zinc-400">
           {name}
         </span>
       </div>
