@@ -103,8 +103,8 @@ export default function ProductVisualization() {
       </div>
 
       {/* Small map nodes */}
-      <span className="absolute left-16 top-16 h-2 w-2 animate-pulse bg-(--destination-primary)" />
-      <span className="absolute bottom-24 right-16 h-1.5 w-1.5 animate-pulse bg-(--destination-primary)/60" />
+      <span className="absolute left-16 top-26 rounded-full  h-1.5 w-1.5 animate-pulse bg-(--destination-primary)" />
+      <span className="absolute bottom-24 right-16 rounded-full h-1.5 w-1.5 animate-pulse bg-(--destination-primary)/60" />
     </div>
   );
 }
