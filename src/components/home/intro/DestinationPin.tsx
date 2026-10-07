@@ -41,7 +41,7 @@ export default function DestinationPin({
           <MapPinned className={`${styles.icon} ${color}`} strokeWidth={1.8} />
         </div>
 
-        <span className="mt-1 whitespace-nowrap text-[7px] font-semibold uppercase tracking-[0.1em] text-zinc-400">
+        <span className="mt-1 whitespace-nowrap text-[7px] font-semibold uppercase tracking-widest text-zinc-400">
           {name}
         </span>
       </div>
