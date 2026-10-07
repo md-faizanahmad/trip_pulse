@@ -17,7 +17,7 @@ export default function ProductInfoCard({
 }: ProductInfoCardProps) {
   return (
     <div
-      className={`absolute ${position} z-30 flex items-center gap-2 border border-zinc-200 bg-white px-3 py-2 shadow-[0_8px_25px_rgba(0,0,0,0.06)] ${animation}`}
+      className={`absolute ${position} z-30 flex items-center gap-2  bg-white px-3 py-2 shadow-[0_8px_25px_rgba(0,0,0,0.06)] ${animation}`}
     >
       <Icon
         className="h-4 w-4 shrink-0 text-(--destination-primary)"
