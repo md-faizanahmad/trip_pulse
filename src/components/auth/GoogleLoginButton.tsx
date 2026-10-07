@@ -4,6 +4,7 @@ export default function GoogleLoginButton() {
   return (
     <a
       href="/api/auth/google"
+      target="_blank"
       className="flex h-12 w-full items-center justify-center gap-3 rounded-md border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-400"
     >
       <Image
