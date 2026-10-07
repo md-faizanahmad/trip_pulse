@@ -23,7 +23,7 @@ export default function ProductVisualization() {
       </div>
 
       {/* Destination */}
-      <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute cursor-pointer left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
         <div className="flex h-16 w-16 items-center justify-center border border-(--destination-primary)/30 bg-white shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
           <MapPinned
             className="h-7 w-7 text-(--destination-primary)"
@@ -37,7 +37,7 @@ export default function ProductVisualization() {
       </div>
 
       {/* Attractions */}
-      <div className="absolute left-0 top-3 z-30 flex items-center gap-2 border border-zinc-200 bg-white px-3 py-2 shadow-[0_8px_25px_rgba(0,0,0,0.06)] animate-[bounce_4.2s_ease-in-out_infinite]">
+      <div className="absolute cursor-pointer left-0 top-3 z-30 flex items-center gap-2  bg-white px-3 py-2 shadow-[0_8px_25px_rgba(0,0,0,0.06)] animate-[bounce_4.2s_ease-in-out_infinite]">
         <Landmark
           className="h-4 w-4 text-(--destination-primary)"
           strokeWidth={1.7}
@@ -54,7 +54,7 @@ export default function ProductVisualization() {
       </div>
 
       {/* Weather */}
-      <div className="absolute right-0 top-2 z-30 flex items-center gap-2 border border-zinc-200 bg-white px-3 py-2 shadow-[0_8px_25px_rgba(0,0,0,0.06)] animate-[bounce_4s_ease-in-out_infinite]">
+      <div className="absolute cursor-pointer right-0 top-2 z-30 flex items-center gap-2  bg-white px-3 py-2 shadow-[0_8px_25px_rgba(0,0,0,0.06)] animate-[bounce_4s_ease-in-out_infinite]">
         <CloudSun
           className="h-4 w-4 text-(--destination-primary)"
           strokeWidth={1.7}
@@ -71,7 +71,7 @@ export default function ProductVisualization() {
       </div>
 
       {/* Photos */}
-      <div className="absolute bottom-6 left-0 z-30 flex items-center gap-2 border border-zinc-200 bg-white px-3 py-2 shadow-[0_8px_25px_rgba(0,0,0,0.06)] animate-[bounce_5s_ease-in-out_infinite]">
+      <div className="absolute cursor-pointer bottom-6 left-0 z-30 flex items-center gap-2  bg-white px-3 py-2 shadow-[0_8px_25px_rgba(0,0,0,0.06)] animate-[bounce_5s_ease-in-out_infinite]">
         <Images
           className="h-4 w-4 text-(--destination-primary)"
           strokeWidth={1.7}
@@ -88,7 +88,7 @@ export default function ProductVisualization() {
       </div>
 
       {/* Currency */}
-      <div className="absolute bottom-1 right-0 z-30 flex items-center gap-2 border border-zinc-200 bg-white px-3 py-2 shadow-[0_8px_25px_rgba(0,0,0,0.06)] animate-[bounce_4.5s_ease-in-out_infinite]">
+      <div className="absolute cursor-pointer bottom-1 right-0 z-30 flex items-center gap-2  bg-white px-3 py-2 shadow-[0_8px_25px_rgba(0,0,0,0.06)] animate-[bounce_4.5s_ease-in-out_infinite]">
         <Coins
           className="h-4 w-4 text-(--destination-primary)"
           strokeWidth={1.7}
