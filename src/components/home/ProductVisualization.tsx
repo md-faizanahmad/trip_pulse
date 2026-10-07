@@ -24,7 +24,7 @@ export default function ProductVisualization() {
 
       {/* Destination */}
       <div className="absolute cursor-pointer left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
-        <div className="flex h-16 w-16 items-center justify-center border border-(--destination-primary)/30 bg-white shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
+        <div className="flex h-16 w-16 items-center justify-center  ">
           <MapPinned
             className="h-7 w-7 text-(--destination-primary)"
             strokeWidth={1.5}
