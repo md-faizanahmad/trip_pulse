@@ -2,7 +2,7 @@ export default function DestinationPinIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-6 w-6 text-(--destination-primary)"
+      className="h-6 w-6 text-(--destination-primary) cursor-pointer"
       aria-hidden="true"
     >
       <path
