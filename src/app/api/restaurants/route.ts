@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { fetchRestaurants } from "@/services/restaurants.service";
 
 export async function GET(request: NextRequest) {
   const latitude = Number(request.nextUrl.searchParams.get("latitude"));
@@ -18,9 +19,26 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  return NextResponse.json({
-    message: "Restaurants route is working.",
-    latitude,
-    longitude,
-  });
+  try {
+    const restaurants = await fetchRestaurants(latitude, longitude);
+
+    return NextResponse.json({ restaurants });
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      return NextResponse.json(
+        { error: "Restaurant service timed out." },
+        { status: 504 },
+      );
+    }
+
+    return NextResponse.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch restaurants.",
+      },
+      { status: 502 },
+    );
+  }
 }
