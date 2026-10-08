@@ -28,7 +28,7 @@ export default function DestinationPin({
   position,
   size,
   color,
-  background,
+  // backgrousnd,
 }: DestinationPinProps) {
   const styles = sizeStyles[size];
 
@@ -36,7 +36,7 @@ export default function DestinationPin({
     <div className={`absolute ${position} z-20`}>
       <div className="group relative">
         <div
-          className={`flex ${styles.wrapper} items-center justify-center rounded-full border border-white ${background} shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-transform duration-300 group-hover:-translate-y-1`}
+          className={`flex ${styles.wrapper} items-center justify-center rounded-full cursor-pointer transition-transform duration-300 group-hover:-translate-y-1`}
         >
           <MapPinned className={`${styles.icon} ${color}`} strokeWidth={1.8} />
         </div>
