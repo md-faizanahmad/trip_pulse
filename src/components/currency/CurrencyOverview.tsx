@@ -22,7 +22,7 @@ export default function CurrencyOverview({
       {/* Identity Section */}
       <div className="flex items-center gap-4">
         {/* Branded Currency Symbol */}
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-xl font-medium text-(--destination-primary)">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-xl font-medium text-(--destination-primary)">
           {currencySymbol}
         </div>
 
