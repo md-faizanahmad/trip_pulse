@@ -127,7 +127,7 @@ export default function CurrencyConverter({
       </div>
 
       {/* Result Display Box */}
-      <div className="mt-6 flex min-h-25 flex-col justify-center rounded-xl border border-zinc-100 bg-zinc-50/80 p-4 sm:p-5">
+      <div className="mt-6 flex min-h-25 flex-col justify-center  p-4 sm:p-5">
         {status === "loading" && (
           <div className="flex items-center gap-2 text-sm font-medium text-zinc-500">
             <span className="h-2 w-2 animate-pulse rounded-full bg-(--destination-primary)" />
@@ -141,7 +141,7 @@ export default function CurrencyConverter({
 
         {status === "success" && convertedAmount !== null && currency && (
           <div className="flex flex-col gap-1">
-            <span className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+            <span className="text-xs font-bold uppercase tracking-wide text-zinc-500">
               Converted Amount
             </span>
 
