@@ -1,6 +1,7 @@
 const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
 const SEARCH_RADIUS = 10_000;
 const REQUEST_TIMEOUT = 15_000;
+const RESTAURANT_LIMIT = 5;
 
 type OverpassElement = {
   type: "node" | "way" | "relation";
@@ -50,7 +51,9 @@ export async function fetchRestaurants(
 
     const data: OverpassResponse = await response.json();
 
-    return data.elements ?? [];
+    return (data.elements ?? [])
+      .filter((restaurant) => restaurant.tags?.name)
+      .slice(0, RESTAURANT_LIMIT);
   } finally {
     clearTimeout(timeoutId);
   }
