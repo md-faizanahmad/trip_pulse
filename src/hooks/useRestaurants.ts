@@ -3,11 +3,15 @@
 import { useCallback, useEffect, useState } from "react";
 
 type Restaurant = {
-  name: string;
-  cuisine: string | null;
-  latitude: number;
-  longitude: number;
-  mapsUrl: string;
+  type: "node" | "way" | "relation";
+  id: number;
+  lat?: number;
+  lon?: number;
+  center?: {
+    lat: number;
+    lon: number;
+  };
+  tags?: Record<string, string>;
 };
 
 type RestaurantsStatus = "idle" | "loading" | "success" | "error";
@@ -26,36 +30,12 @@ export function useRestaurants(
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [status, setStatus] = useState<RestaurantsStatus>("idle");
   const [error, setError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
-  const fetchRestaurantsData = useCallback(async () => {
-    if (latitude === null || longitude === null) {
-      return;
-    }
+  const retry = useCallback(() => {
+    setRetryCount((count) => count + 1);
+  }, []);
 
-    setStatus("loading");
-    setError(null);
-
-    try {
-      const response = await fetch(
-        `/api/restaurants?latitude=${latitude}&longitude=${longitude}`,
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error ?? "Failed to fetch restaurants.");
-      }
-
-      setRestaurants(data.restaurants ?? []);
-      setStatus("success");
-    } catch (error) {
-      setRestaurants([]);
-      setError(
-        error instanceof Error ? error.message : "Failed to fetch restaurants.",
-      );
-      setStatus("error");
-    }
-  }, [latitude, longitude]);
   useEffect(() => {
     if (latitude === null || longitude === null) {
       return;
@@ -99,12 +79,12 @@ export function useRestaurants(
     void loadRestaurants();
 
     return () => controller.abort();
-  }, [latitude, longitude]);
+  }, [latitude, longitude, retryCount]);
 
   return {
     restaurants,
     status,
     error,
-    retry: fetchRestaurantsData,
+    retry,
   };
 }
