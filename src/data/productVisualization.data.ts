@@ -11,7 +11,6 @@ export type DestinationPinData = {
   position: string;
   size: "sm" | "md" | "lg";
   color: string;
-  background: string;
   href: string;
 };
 
@@ -30,7 +29,6 @@ export const destinations: DestinationPinData[] = [
     position: "left-[10%] top-[34%]",
     size: "md",
     color: "text-sky-600",
-    background: "bg-sky-50",
   },
   {
     name: "London",
@@ -38,7 +36,6 @@ export const destinations: DestinationPinData[] = [
     position: "left-[40%] top-[27%]",
     size: "sm",
     color: "text-emerald-600",
-    background: "bg-emerald-50",
   },
   {
     name: "New York",
@@ -46,7 +43,6 @@ export const destinations: DestinationPinData[] = [
     position: "right-[14%] top-[29%]",
     size: "lg",
     color: "text-violet-600",
-    background: "bg-violet-50",
   },
   {
     name: "Delhi",
@@ -54,7 +50,6 @@ export const destinations: DestinationPinData[] = [
     position: "right-[14%] bottom-[33%]",
     size: "md",
     color: "text-rose-600",
-    background: "bg-rose-50",
   },
   {
     name: "Singapore",
@@ -62,7 +57,6 @@ export const destinations: DestinationPinData[] = [
     position: "left-[20%] bottom-[27%]",
     size: "sm",
     color: "text-amber-600",
-    background: "bg-amber-50",
   },
 ];
 export const productInfoCards: ProductInfoCardData[] = [
