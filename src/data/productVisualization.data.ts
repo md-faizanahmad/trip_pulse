@@ -12,6 +12,7 @@ export type DestinationPinData = {
   size: "sm" | "md" | "lg";
   color: string;
   background: string;
+  href: string;
 };
 
 export type ProductInfoCardData = {
@@ -25,6 +26,7 @@ export type ProductInfoCardData = {
 export const destinations: DestinationPinData[] = [
   {
     name: "Paris",
+    href: "/destinations/paris?osmType=relation&osmId=71525",
     position: "left-[10%] top-[34%]",
     size: "md",
     color: "text-sky-600",
@@ -32,6 +34,7 @@ export const destinations: DestinationPinData[] = [
   },
   {
     name: "London",
+    href: "/destinations/greater%20london?osmType=relation&osmId=175342",
     position: "left-[40%] top-[27%]",
     size: "sm",
     color: "text-emerald-600",
@@ -39,13 +42,15 @@ export const destinations: DestinationPinData[] = [
   },
   {
     name: "New York",
+    href: "/destinations/new%20york?osmType=relation&osmId=175905",
     position: "right-[14%] top-[29%]",
     size: "lg",
     color: "text-violet-600",
     background: "bg-violet-50",
   },
   {
-    name: "Tokyo",
+    name: "Delhi",
+    href: "/destinations/delhi?osmType=relation&osmId=1942586",
     position: "right-[14%] bottom-[33%]",
     size: "md",
     color: "text-rose-600",
@@ -53,13 +58,13 @@ export const destinations: DestinationPinData[] = [
   },
   {
     name: "Singapore",
+    href: "/destinations/singapore?osmType=relation&osmId=17140517",
     position: "left-[20%] bottom-[27%]",
     size: "sm",
     color: "text-amber-600",
     background: "bg-amber-50",
   },
 ];
-
 export const productInfoCards: ProductInfoCardData[] = [
   {
     label: "Places",
