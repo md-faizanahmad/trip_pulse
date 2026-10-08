@@ -33,7 +33,7 @@ export const destinations: DestinationPinData[] = [
   {
     name: "London",
     href: "/destinations/greater%20london?osmType=relation&osmId=175342",
-    position: "left-[40%] top-[27%]",
+    position: "left-[40%] top-[25%]",
     size: "sm",
     color: "text-emerald-600",
   },
