@@ -25,21 +25,21 @@ export type ProductInfoCardData = {
 export const destinations: DestinationPinData[] = [
   {
     name: "Paris",
-    position: "left-[12%] top-[32%]",
+    position: "left-[10%] top-[34%]",
     size: "md",
     color: "text-sky-600",
     background: "bg-sky-50",
   },
   {
     name: "London",
-    position: "left-[40%] top-[25%]",
+    position: "left-[40%] top-[27%]",
     size: "sm",
     color: "text-emerald-600",
     background: "bg-emerald-50",
   },
   {
     name: "New York",
-    position: "right-[10%] top-[29%]",
+    position: "right-[14%] top-[29%]",
     size: "lg",
     color: "text-violet-600",
     background: "bg-violet-50",
