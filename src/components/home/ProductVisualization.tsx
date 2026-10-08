@@ -32,9 +32,9 @@ export default function ProductVisualization() {
       {/* Active destination */}
       <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
         <div className="relative flex h-15 w-15 items-center justify-center">
-          <span className="absolute -inset-1.5 animate-ping rounded-full border border-(--destination-primary)/15" />
+          <span className="absolute inset-1 animate-ping rounded-full border border-(--destination-primary)/10" />
 
-          <div className="relative flex h-11 w-11 items-center justify-center ">
+          <div className="relative flex h-11 w-11 items-center justify-center">
             <DestinationPinIcon />
           </div>
         </div>
