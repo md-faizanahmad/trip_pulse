@@ -1,4 +1,5 @@
 import { getWeatherCondition, getWeatherIcon } from "@/utils/weather";
+import { Thermometer } from "lucide-react";
 
 type WeatherStatusProps = {
   weatherCode: number | null;
@@ -13,8 +14,8 @@ export default function WeatherStatus({
     <div className="flex flex-1 flex-col justify-between">
       <div>
         <div className="flex items-center gap-2">
-          <span
-            className="h-2 w-2 bg-(--destination-primary)"
+          <Thermometer
+            className="h-10 w-10 text-(--destination-primary)"
             aria-hidden="true"
           />
 
