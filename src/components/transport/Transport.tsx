@@ -5,6 +5,7 @@ import { useTransport } from "@/hooks/useTransport";
 import type { TransportStatus } from "@/types/transport";
 import ErrorState from "../common/ErrorState";
 import { transportConfig, transportModes } from "./transportConfig";
+import SectionTitle from "../common/SectionTitle";
 
 type TransportProps = {
   latitude: number;
@@ -29,30 +30,16 @@ export default function Transport({ latitude, longitude }: TransportProps) {
     <section className="w-full bg-(--destination-background) p-5 sm:p-6">
       {/* Section header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-(--destination-primary)">
-            <BusFront
-              className="h-5 w-5"
-              strokeWidth={1.8}
-              aria-hidden="true"
-            />
-          </div>
-
-          <div>
-            <h2 className="text-base font-semibold text-(--destination-text) sm:text-lg">
-              Transit Infrastructure
-            </h2>
-
-            {status === "success" && transport && (
-              <p className="mt-0.5 text-sm text-(--destination-secondary)">
-                <span className="font-medium text-(--destination-text)">
-                  {availableModes}
-                </span>{" "}
-                of {transportModes.length} modes verified
-              </p>
-            )}
-          </div>
-        </div>
+        <SectionTitle
+          icon={BusFront}
+          iconVariant="circle"
+          title="Transit Infrastructure"
+          description={
+            status === "success" && transport
+              ? `${availableModes} of ${transportModes.length} modes verified`
+              : undefined
+          }
+        />
       </div>
 
       {/* Loading state */}
