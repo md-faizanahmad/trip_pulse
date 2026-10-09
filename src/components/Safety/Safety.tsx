@@ -2,6 +2,7 @@
 
 import { useSafety } from "@/hooks/useSafety";
 import { Ambulance, Flame, Phone, ShieldAlert, Siren } from "lucide-react";
+import SectionTitle from "../common/SectionTitle";
 
 type SafetyProps = {
   countryCode: string | null;
@@ -36,30 +37,21 @@ export default function Safety({ countryCode }: SafetyProps) {
   return (
     <section className="w-full bg-(--destination-background) p-5 sm:p-6">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-(--destination-primary)">
-            <Siren className="h-5 w-5" aria-hidden="true" />
-          </div>
 
-          <div>
-            <h2 className="text-base font-semibold text-(--destination-text) sm:text-lg">
-              Emergency Contacts
-            </h2>
-
-            <div className="mt-1 flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--destination-primary) opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-(--destination-primary)" />
-              </span>
-
-              <span className="text-xs font-medium uppercase tracking-wider text-(--destination-secondary)">
-                Active 24/7
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SectionTitle
+        icon={Siren}
+        iconVariant="circle"
+        title="Emergency Contacts"
+        description={
+          <span className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--destination-primary) opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-(--destination-primary)" />
+            </span>
+            Active 24/7
+          </span>
+        }
+      />
 
       {/* Loading Skeleton */}
       {status === "loading" && (
