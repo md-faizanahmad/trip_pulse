@@ -7,6 +7,7 @@ import { useDestinationPhotos } from "@/hooks/useDestinationPhotos";
 import PhotoCard from "@/components/gallery/PhotoCard";
 import PhotoCardSkeleton from "@/components/gallery/PhotoCardSkeleton";
 import MobilePhotoCarousel from "@/components/gallery/MobilePhotoCarousel";
+import SectionTitle from "../common/SectionTitle";
 
 type DestinationGalleryProps = {
   destination: string;
@@ -34,20 +35,11 @@ export default function DestinationGallery({
       className="mt-10 sm:mt-12"
     >
       <div className="mb-6 sm:mb-8">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-(--destination-secondary)">
-          Visual inspiration
-        </p>
-
-        <h2
-          id="destination-gallery-heading"
-          className="text-2xl font-semibold tracking-tight text-(--destination-primary) sm:text-3xl"
-        >
-          Moments in {destination}
-        </h2>
-
-        <p className="mt-2 max-w-md text-sm leading-6 text-zinc-500">
-          A glimpse of the places, streets, and scenery waiting to be explored.
-        </p>
+        <SectionTitle
+          eyebrow="Visual inspiration"
+          title={`Moments in ${destination}`}
+          description="A glimpse of the places, streets, and scenery waiting to be explored."
+        />
       </div>
 
       {gallery.status === "loading" && (
