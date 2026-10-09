@@ -3,6 +3,7 @@
 import { ExternalLink, Utensils } from "lucide-react";
 import ErrorState from "@/components/common/ErrorState";
 import { useRestaurants } from "@/hooks/useRestaurants";
+import SectionTitle from "../common/SectionTitle";
 
 type RestaurantsProps = {
   latitude: number;
@@ -17,21 +18,12 @@ export default function Restaurants({ latitude, longitude }: RestaurantsProps) {
 
   return (
     <section className="border-t border-zinc-200 py-8">
-      <div className="flex items-center gap-3">
-        <Utensils
-          className="h-5 w-5 text-(--destination-primary)"
-          strokeWidth={1.8}
-        />
-
-        <div>
-          <h2 className="text-lg font-semibold text-(--destination-text)">
-            Restaurants
-          </h2>
-          <p className="text-sm text-(--destination-secondary)">
-            Places to eat in this destination
-          </p>
-        </div>
-      </div>
+      <SectionTitle
+        icon={Utensils}
+        iconVariant="circle"
+        title="Restaurants"
+        description="Places to eat in this destination"
+      />
 
       {status === "loading" && (
         <div className="mt-5 space-y-3">
