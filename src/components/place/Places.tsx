@@ -6,6 +6,7 @@ import type { PlaceCategory } from "@/types/places";
 import PlacesList from "./PlacesList";
 import ErrorState from "../common/ErrorState";
 import { Map } from "lucide-react";
+import SectionTitle from "../common/SectionTitle";
 
 type PlacesProps = {
   latitude: number;
@@ -62,21 +63,15 @@ export default function Places({ latitude, longitude }: PlacesProps) {
     <section className="w-full  p-5  sm:p-6">
       {/* Header */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex cursor-pointer h-10 w-10 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-(--destination-primary)">
-            <Map />
-          </div>
-          <div>
-            <h2 className="text-base font-semibold text-zinc-900 sm:text-lg">
-              Attractions & Highlights
-            </h2>
-            {status === "success" && (
-              <p className="mt-0.5 text-sm text-zinc-500">
-                {filteredPlaces.length} locations nearby
-              </p>
-            )}
-          </div>
-        </div>
+        <SectionTitle
+          icon={Map}
+          title="Attractions & Highlights"
+          description={
+            status === "success"
+              ? `${filteredPlaces.length} locations nearby`
+              : undefined
+          }
+        />
       </div>
 
       {/* Category Filters */}
