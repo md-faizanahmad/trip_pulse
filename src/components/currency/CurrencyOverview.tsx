@@ -1,4 +1,5 @@
 import React from "react";
+import SectionTitle from "../common/SectionTitle";
 
 type CurrencyOverviewProps = {
   currencyName: string;
@@ -20,21 +21,17 @@ export default function CurrencyOverview({
   return (
     <section className="w-full  p-5  sm:p-6">
       {/* Identity Section */}
-      <div className="flex items-center gap-4">
-        {/* Branded Currency Symbol */}
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-(--destination-primary)/30 bg-(--destination-primary)/5 text-xl font-medium text-(--destination-primary)">
-          {currencySymbol}
-        </div>
 
-        <div className="flex flex-col">
-          <h2 className="text-base font-semibold text-zinc-900 sm:text-lg">
-            {currencyName}
-          </h2>
-          <p className="text-sm text-zinc-500">
-            Local Currency • {currencyCode}
-          </p>
-        </div>
-      </div>
+      <SectionTitle
+        iconContent={
+          <span className="text-xl font-medium" aria-hidden="true">
+            {currencySymbol}
+          </span>
+        }
+        iconVariant="circle"
+        title={currencyName}
+        description={`Local Currency · ${currencyCode}`}
+      />
 
       {/* Exchange Rate Card */}
       <div className="mt-6  p-4 sm:p-5 hover:bg-(--destination-primary)/5 cursor-pointer">
