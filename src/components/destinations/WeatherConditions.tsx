@@ -1,4 +1,5 @@
-import { Droplets, Thermometer, Wind } from "lucide-react";
+import { Droplets, Thermometer, Waves, Wind } from "lucide-react";
+import SectionTitle from "../common/SectionTitle";
 
 type WeatherConditionsProps = {
   feelsLike: number | null;
@@ -13,16 +14,7 @@ export default function WeatherConditions({
 }: WeatherConditionsProps) {
   return (
     <div className="flex shrink-0 flex-col md:w-80">
-      <div className="mb-4 flex items-center gap-2">
-        <span
-          className="h-1.5 w-1.5 bg-(--destination-primary)"
-          aria-hidden="true"
-        />
-
-        <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-900">
-          Conditions
-        </h2>
-      </div>
+      <SectionTitle icon={Waves} title="Current Condition" className="mb-4" />
 
       <div className="grid grid-cols-3 divide-x divide-zinc-200 border-y border-zinc-200">
         <div className="flex min-w-0 flex-col gap-2 py-3 pr-3">
