@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useCurrency } from "@/hooks/useCurrency";
 import { availableCurrencies } from "@/utils/currency";
 import { CurrencyRate } from "@/types/currency";
+import SectionTitle from "../common/SectionTitle";
 
 type CurrencyConverterProps = {
   defaultFromCurrency: string;
@@ -38,13 +39,12 @@ export default function CurrencyConverter({
   return (
     <section className="w-full  p-5  sm:p-6">
       {/* Header */}
+
       <div className="mb-6">
-        <h2 className="text-base font-semibold text-zinc-900 sm:text-lg">
-          Currency Converter
-        </h2>
-        <p className="mt-1 text-sm text-zinc-500">
-          Convert an amount between local and global currencies.
-        </p>
+        <SectionTitle
+          title="Currency Converter"
+          description="Convert an amount between local and global currencies."
+        />
       </div>
 
       {/* Input / Control Grid */}
