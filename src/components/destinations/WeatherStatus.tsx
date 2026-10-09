@@ -1,5 +1,6 @@
 import { getWeatherCondition, getWeatherIcon } from "@/utils/weather";
 import { Thermometer } from "lucide-react";
+import SectionTitle from "../common/SectionTitle";
 
 type WeatherStatusProps = {
   weatherCode: number | null;
@@ -13,16 +14,7 @@ export default function WeatherStatus({
   return (
     <div className="flex flex-1 flex-col justify-between">
       <div>
-        <div className="flex items-center gap-2">
-          <Thermometer
-            className="h-10 w-10 text-(--destination-primary)"
-            aria-hidden="true"
-          />
-
-          <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-950">
-            Current Weather
-          </h2>
-        </div>
+        <SectionTitle icon={Thermometer} title="Current Weather" />
 
         <div className="mt-4 flex items-center gap-4">
           <span
