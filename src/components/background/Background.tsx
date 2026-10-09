@@ -16,8 +16,8 @@ export default function Background({
         src="/mobile-bg.png"
         alt=""
         fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         priority
-        sizes="100vw"
         className="object-cover md:hidden"
         aria-hidden="true"
       />
