@@ -110,9 +110,12 @@ export default async function DestinationPage({
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-8">
         <Breadcrumb destination={selectedDestination.name} />
 
+        {/* Destination overview */}
         <div className="mt-6 sm:mt-8">
           <DestinationPlace destination={selectedDestination} />
         </div>
+
+        {/* Weather and travel timing */}
         <div className="mt-6 sm:mt-8">
           <DestinationWeather
             latitude={selectedDestination.latitude}
@@ -120,6 +123,15 @@ export default async function DestinationPage({
           />
         </div>
 
+        {/* Explore the destination */}
+        <Places
+          latitude={selectedDestination.latitude}
+          longitude={selectedDestination.longitude}
+        />
+
+        <DestinationGallery destination={selectedDestination.name} />
+
+        {/* Practical travel information */}
         {destinationCurrency && (
           <div className="mt-8 sm:mt-10">
             <Currency
@@ -131,19 +143,16 @@ export default async function DestinationPage({
           </div>
         )}
 
-        <Places
-          latitude={selectedDestination.latitude}
-          longitude={selectedDestination.longitude}
-        />
-        <DestinationGallery destination={selectedDestination.name} />
         <Transport
           latitude={selectedDestination.latitude}
           longitude={selectedDestination.longitude}
         />
+
         <Restaurants
           latitude={selectedDestination.latitude}
           longitude={selectedDestination.longitude}
         />
+
         <Safety countryCode={selectedDestination.countryCode} />
       </div>
     </main>
