@@ -6,7 +6,7 @@ type SectionTitleProps = {
   iconContent?: ReactNode;
   eyebrow?: string;
   title: string;
-  description?: string;
+  description?: ReactNode;
   className?: string;
   iconVariant?: "default" | "circle";
 };
@@ -50,9 +50,9 @@ export default function SectionTitle({
           </h2>
 
           {description && (
-            <p className="mt-0.5 text-sm text-(--destination-secondary)">
+            <div className="mt-1 text-sm text-(--destination-secondary)">
               {description}
-            </p>
+            </div>
           )}
         </div>
       </div>
