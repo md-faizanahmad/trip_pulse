@@ -35,7 +35,7 @@ export default function ErrorState({ message, onRetry }: ErrorStateProps) {
   return (
     <div
       role="alert"
-      className="mt-6 flex flex-col items-center justify-center gap-4 bg-red-50 p-6 text-center"
+      className="mt-6 flex flex-col items-center justify-center gap-4  p-6 text-center"
     >
       <p className="text-sm font-medium text-red-700">{message}</p>
 
