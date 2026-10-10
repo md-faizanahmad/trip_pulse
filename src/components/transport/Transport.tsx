@@ -68,10 +68,10 @@ export default function Transport({ latitude, longitude }: TransportProps) {
             return (
               <div
                 key={mode}
-                className={`relative flex min-w-30 snap-start flex-col items-center justify-center p-5 transition-all duration-300 sm:min-w-0 ${
+                className={`relative  flex min-w-30 snap-start flex-col items-center justify-center p-5 transition-all duration-300 sm:min-w-0 ${
                   isAvailable
-                    ? "bg-(--destination-primary)/5 hover:-translate-y-1"
-                    : "bg-(--destination-background) opacity-70 grayscale-30"
+                    ? "bg-(--destination-background) cursor-pointer hover:-translate-y-1"
+                    : "bg-(--destination-primary)/5 cursor-not-allowed opacity-70 grayscale-30"
                 }`}
               >
                 {/* Availability indicator */}
@@ -88,8 +88,8 @@ export default function Transport({ latitude, longitude }: TransportProps) {
                 <Icon
                   className={`h-9 w-9 transition-transform duration-300 sm:h-10 sm:w-10 ${
                     isAvailable
-                      ? "text-(--destination-primary) group-hover:scale-105"
-                      : "text-(--destination-secondary) opacity-70"
+                      ? "text-(--destination-secondary) group-hover:scale-105"
+                      : "text-(--destination-primary) opacity-70"
                   }`}
                   strokeWidth={1.6}
                   aria-hidden="true"
@@ -99,8 +99,8 @@ export default function Transport({ latitude, longitude }: TransportProps) {
                 <span
                   className={`mt-3 text-sm font-semibold tracking-tight ${
                     isAvailable
-                      ? "text-(--destination-text)"
-                      : "text-(--destination-secondary)"
+                      ? "text-(--destination-secondary)"
+                      : "text-(--destination-primary)"
                   }`}
                 >
                   {label}
@@ -110,8 +110,8 @@ export default function Transport({ latitude, longitude }: TransportProps) {
                 <span
                   className={`mt-0.5 text-[10px] font-medium uppercase tracking-wider ${
                     isAvailable
-                      ? "text-(--destination-primary)"
-                      : "text-(--destination-secondary)/70"
+                      ? "text-(--destination-secondary)"
+                      : "text-(--destination-primary)/70"
                   }`}
                 >
                   {getStatusLabel(currentStatus)}
