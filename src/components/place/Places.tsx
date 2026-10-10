@@ -124,8 +124,8 @@ export default function Places({ latitude, longitude }: PlacesProps) {
       {/* Error State */}
       {status === "error" && <ErrorState message={error} onRetry={retry} />}
       {status === "success" && filteredPlaces.length === 0 && (
-        <div className="flex min-h-30 items-center justify-center rounded-xl border border-dashed border-zinc-200 bg-zinc-50 p-6">
-          <p className="text-sm font-medium text-zinc-500">
+        <div className="flex min-h-30 items-center justify-center  p-6">
+          <p className="text-sm font-bold text-red-500">
             No nearby attractions were found in this category.
           </p>
         </div>
