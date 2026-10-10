@@ -45,8 +45,8 @@ export default function Safety({ countryCode }: SafetyProps) {
         description={
           <span className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--destination-primary) opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-(--destination-primary)" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--destination-secondary) opacity-65" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-(--destination-secondary)" />
             </span>
             Active 24/7
           </span>
