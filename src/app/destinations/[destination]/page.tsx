@@ -1,6 +1,7 @@
 import Currency from "@/components/currency/Currency";
 import DestinationPlace from "@/components/destinations/DestinationPlace";
 import DestinationWeather from "@/components/destinations/DestinationWeather";
+import TravelEssentials from "@/components/essentials/TravelEssentials";
 import DestinationGallery from "@/components/gallery/DestinationGallery";
 import Places from "@/components/place/Places";
 import Restaurants from "@/components/restaurants/Restaurants";
@@ -152,7 +153,10 @@ export default async function DestinationPage({
           latitude={selectedDestination.latitude}
           longitude={selectedDestination.longitude}
         />
-
+        <TravelEssentials
+          latitude={selectedDestination.latitude}
+          longitude={selectedDestination.longitude}
+        />
         <Safety countryCode={selectedDestination.countryCode} />
       </div>
     </main>
