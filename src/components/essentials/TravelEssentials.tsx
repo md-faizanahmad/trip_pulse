@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import ErrorState from "@/components/common/ErrorState";
 import { useTravelEssentials } from "@/hooks/useTravelEssentials";
+import SectionTitle from "../common/SectionTitle";
 
 type TravelEssentialsProps = {
   latitude: number;
@@ -32,14 +33,10 @@ export default function TravelEssentials({
 
   return (
     <section className="border-t border-zinc-200 py-8">
-      <div>
-        <h2 className="text-lg font-semibold text-(--destination-text)">
-          Travel Essentials
-        </h2>
-        <p className="mt-1 text-sm text-(--destination-secondary)">
-          Useful places around your destination
-        </p>
-      </div>
+      <SectionTitle
+        title="Travel Essentials"
+        description="Useful places around your destination"
+      />
 
       {status === "loading" && (
         <div className="mt-5 space-y-3">
