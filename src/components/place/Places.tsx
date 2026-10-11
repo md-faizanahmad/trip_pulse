@@ -1,11 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ChevronDown, Map } from "lucide-react";
 import { usePlaces } from "@/hooks/usePlaces";
 import type { PlaceCategory } from "@/types/places";
+import {
+  getCategoryCount,
+  getGoogleMapsUrl,
+  getVisiblePlaces,
+  hasMorePlaces,
+} from "@/utils/place";
 import PlacesList from "./PlacesList";
 import ErrorState from "../common/ErrorState";
-import { Map } from "lucide-react";
 import SectionTitle from "../common/SectionTitle";
 
 type PlacesProps = {
@@ -14,6 +20,7 @@ type PlacesProps = {
 };
 
 type CategoryFilter = "all" | PlaceCategory;
+
 const INITIAL_PLACE_COUNT = 6;
 
 const CATEGORY_FILTERS: {
@@ -44,15 +51,13 @@ export default function Places({ latitude, longitude }: PlacesProps) {
     return places.filter((place) => place.category === selectedCategory);
   }, [places, selectedCategory]);
 
-  const visiblePlaces = showAll
-    ? filteredPlaces
-    : filteredPlaces.slice(0, INITIAL_PLACE_COUNT);
+  const visiblePlaces = getVisiblePlaces(
+    filteredPlaces,
+    showAll,
+    INITIAL_PLACE_COUNT,
+  );
 
-  const hasMorePlaces = filteredPlaces.length > INITIAL_PLACE_COUNT;
-
-  function getGoogleMapsUrl(latitude: number, longitude: number) {
-    return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-  }
+  const hasMore = hasMorePlaces(filteredPlaces.length, INITIAL_PLACE_COUNT);
 
   function handleCategoryChange(category: CategoryFilter) {
     setSelectedCategory(category);
@@ -60,8 +65,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
   }
 
   return (
-    <section className="w-full  p-5  sm:p-6">
-      {/* Header */}
+    <section className="w-full p-5 sm:p-6">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <SectionTitle
           icon={Map}
@@ -74,16 +78,11 @@ export default function Places({ latitude, longitude }: PlacesProps) {
         />
       </div>
 
-      {/* Category Filters */}
       {status === "success" && places.length > 0 && (
         <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
           {CATEGORY_FILTERS.map((category) => {
             const isActive = selectedCategory === category.value;
-            const categoryCount =
-              category.value === "all"
-                ? places.length
-                : places.filter((place) => place.category === category.value)
-                    .length;
+            const categoryCount = getCategoryCount(places, category.value);
 
             if (category.value !== "all" && categoryCount === 0) {
               return null;
@@ -94,7 +93,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
                 key={category.value}
                 type="button"
                 onClick={() => handleCategoryChange(category.value)}
-                className={`shrink-0 rounded-sm px-4 py-2 text-sm font-medium transition-all ${
+                className={`shrink-0 rounded-sm px-4 py-2 text-sm font-medium transition-colors ${
                   isActive
                     ? "bg-(--destination-primary) text-white shadow-sm"
                     : "bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
@@ -109,29 +108,36 @@ export default function Places({ latitude, longitude }: PlacesProps) {
         </div>
       )}
 
-      {/* Loading Skeleton */}
       {status === "loading" && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          aria-label="Loading attractions"
+          aria-busy="true"
+        >
           {[1, 2, 3, 4, 5, 6].map((item) => (
             <div
               key={item}
-              className="h-24 rounded-xl bg-zinc-100/80 animate-pulse"
+              className="h-24 animate-pulse rounded-xl bg-zinc-100/80"
             />
           ))}
         </div>
       )}
 
-      {/* Error State */}
-      {status === "error" && <ErrorState message={error} onRetry={retry} />}
+      {status === "error" && (
+        <ErrorState
+          message={error ?? "Failed to load attractions."}
+          onRetry={retry}
+        />
+      )}
+
       {status === "success" && filteredPlaces.length === 0 && (
-        <div className="flex min-h-30 items-center justify-center  p-6">
-          <p className="text-sm font-bold text-red-500">
+        <div className="flex min-h-30 items-center justify-center p-6">
+          <p className="text-center text-sm text-(--destination-secondary)">
             No nearby attractions were found in this category.
           </p>
         </div>
       )}
 
-      {/* Places List */}
       {status === "success" && filteredPlaces.length > 0 && (
         <div className="animate-in fade-in duration-300">
           <PlacesList
@@ -139,8 +145,7 @@ export default function Places({ latitude, longitude }: PlacesProps) {
             getGoogleMapsUrl={getGoogleMapsUrl}
           />
 
-          {/* Show All / Show Less */}
-          {hasMorePlaces && (
+          {hasMore && (
             <div className="mt-6 flex justify-center sm:justify-start">
               <button
                 type="button"
@@ -152,21 +157,13 @@ export default function Places({ latitude, longitude }: PlacesProps) {
                     ? "Show Less"
                     : `Show All (${filteredPlaces.length})`}
                 </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+
+                <ChevronDown
                   className={`h-4 w-4 transition-transform duration-300 ${
                     showAll ? "rotate-180" : ""
                   }`}
                   aria-hidden="true"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
+                />
               </button>
             </div>
           )}
