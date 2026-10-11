@@ -144,6 +144,158 @@ select {
   --destination-secondary: #ffb81c;
   --destination-surface: #f4faf7;
 }
+.theme-sg {
+  --destination-primary: #ef3340;
+  --destination-secondary: #b91c2b;
+  --destination-surface: #fff5f5;
+}
+
+/* China */
+.theme-cn {
+  --destination-primary: #de2910;
+  --destination-secondary: #ffde00;
+  --destination-surface: #fff8ed;
+}
+
+/* Thailand */
+.theme-th {
+  --destination-primary: #2d2a70;
+  --destination-secondary: #ed1c24;
+  --destination-surface: #f5f4fc;
+}
+
+/* Indonesia */
+.theme-id {
+  --destination-primary: #ce1126;
+  --destination-secondary: #a30d1e;
+  --destination-surface: #fff5f5;
+}
+
+/* Malaysia */
+.theme-my {
+  --destination-primary: #010066;
+  --destination-secondary: #cc0000;
+  --destination-surface: #f3f5fc;
+}
+
+/* South Korea */
+.theme-kr {
+  --destination-primary: #0047a0;
+  --destination-secondary: #cd2e3a;
+  --destination-surface: #f3f7fc;
+}
+
+/* Vietnam */
+.theme-vn {
+  --destination-primary: #da251d;
+  --destination-secondary: #ffcd00;
+  --destination-surface: #fff7e6;
+}
+
+/* Switzerland */
+.theme-ch {
+  --destination-primary: #da291c;
+  --destination-secondary: #b51f16;
+  --destination-surface: #fff5f4;
+}
+
+/* Netherlands */
+.theme-nl {
+  --destination-primary: #21468b;
+  --destination-secondary: #ae1c28;
+  --destination-surface: #f3f6fc;
+}
+
+/* Portugal */
+.theme-pt {
+  --destination-primary: #006600;
+  --destination-secondary: #ff0000;
+  --destination-surface: #f2faf4;
+}
+
+/* Austria */
+.theme-at {
+  --destination-primary: #ed2939;
+  --destination-secondary: #c41e2c;
+  --destination-surface: #fff4f5;
+}
+
+/* Ireland */
+.theme-ie {
+  --destination-primary: #169b62;
+  --destination-secondary: #ff883e;
+  --destination-surface: #f2faf5;
+}
+
+/* Egypt */
+.theme-eg {
+  --destination-primary: #ce1126;
+  --destination-secondary: #c09300;
+  --destination-surface: #fff8ec;
+}
+
+/* Morocco */
+.theme-ma {
+  --destination-primary: #c1272d;
+  --destination-secondary: #006233;
+  --destination-surface: #fff5f5;
+}
+
+/* Saudi Arabia */
+.theme-sa {
+  --destination-primary: #006c35;
+  --destination-secondary: #00552a;
+  --destination-surface: #f1faf4;
+}
+
+/* Argentina */
+.theme-ar {
+  --destination-primary: #74acdf;
+  --destination-secondary: #e4a900;
+  --destination-surface: #f2f8fd;
+}
+
+/* Colombia */
+.theme-co {
+  --destination-primary: #003893;
+  --destination-secondary: #ce1126;
+  --destination-surface: #f3f6fc;
+}
+
+/* Peru */
+.theme-pe {
+  --destination-primary: #d91023;
+  --destination-secondary: #b20d1d;
+  --destination-surface: #fff5f5;
+}
+
+/* New Zealand */
+.theme-nz {
+  --destination-primary: #00247d;
+  --destination-secondary: #cc142b;
+  --destination-surface: #f3f6fc;
+}
+
+/* Kenya */
+.theme-ke {
+  --destination-primary: #006600;
+  --destination-secondary: #bb0000;
+  --destination-surface: #f3faf4;
+}
+
+/* Tanzania */
+.theme-tz {
+  --destination-primary: #1eb53a;
+  --destination-secondary: #00a3dd;
+  --destination-surface: #f2faf6;
+}
+
+/* Mauritius */
+.theme-mu {
+  --destination-primary: #ea2839;
+  --destination-secondary: #1a206d;
+  --destination-surface: #f5f5fc;
+}
 
 /* Destination gradient text */
 .destination-gradient-text {
@@ -181,4 +333,25 @@ select {
 
 .gallery-scroll::-webkit-scrollbar {
   display: none;
+}
+
+.section-icon-shine svg {
+  animation: icon-shine 3s ease-in-out infinite;
+}
+
+@keyframes icon-shine {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 transparent);
+  }
+
+  50% {
+    filter: drop-shadow(0 0 4px currentColor);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-icon-shine svg {
+    animation: none;
+  }
 }
