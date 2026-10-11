@@ -2,8 +2,9 @@
 
 import { ExternalLink, Utensils } from "lucide-react";
 import ErrorState from "@/components/common/ErrorState";
+import SectionTitle from "@/components/common/SectionTitle";
 import { useRestaurants } from "@/hooks/useRestaurants";
-import SectionTitle from "../common/SectionTitle";
+import { normalizeRestaurant } from "@/utils/restaurant";
 
 type RestaurantsProps = {
   latitude: number;
@@ -49,42 +50,31 @@ export default function Restaurants({ latitude, longitude }: RestaurantsProps) {
       {status === "success" && restaurants.length > 0 && (
         <div className="mt-5 divide-y divide-zinc-200 border-y border-zinc-200">
           {restaurants.map((restaurant) => {
-            const name = restaurant.tags?.name ?? "Unnamed restaurant";
-
-            const cuisine = restaurant.tags?.cuisine ?? null;
-
-            const latitude = restaurant.lat ?? restaurant.center?.lat;
-
-            const longitude = restaurant.lon ?? restaurant.center?.lon;
-
-            const mapsUrl =
-              latitude !== undefined && longitude !== undefined
-                ? `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
-                : null;
+            const item = normalizeRestaurant(restaurant);
 
             return (
               <div
-                key={`${restaurant.type}-${restaurant.id}`}
+                key={`${item.type}-${item.id}`}
                 className="flex items-center justify-between gap-4 py-4"
               >
                 <div className="min-w-0">
                   <h3 className="truncate text-sm font-semibold text-(--destination-text)">
-                    {name}
+                    {item.name}
                   </h3>
 
-                  {cuisine && (
+                  {item.cuisine && (
                     <p className="mt-1 text-xs capitalize text-(--destination-secondary)">
-                      {cuisine.replace(/;/g, " · ")}
+                      {item.cuisine.replace(/;/g, " · ")}
                     </p>
                   )}
                 </div>
 
-                {mapsUrl && (
+                {item.mapsUrl && (
                   <a
-                    href={mapsUrl}
+                    href={item.mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Open ${name} in Google Maps`}
+                    aria-label={`Open ${item.name} in Google Maps`}
                     className="flex h-9 w-9 shrink-0 items-center justify-center text-(--destination-secondary) transition-colors hover:text-(--destination-primary)"
                   >
                     <ExternalLink className="h-4 w-4" strokeWidth={1.8} />
