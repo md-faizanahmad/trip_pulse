@@ -1,5 +1,8 @@
-import Image from "next/image";
+"use client";
 
+import Image from "next/image";
+import { useState } from "react";
+import { Phone, X } from "lucide-react";
 import { getCountryCallingCode } from "@/utils/country";
 
 type CountryInfoProps = {
@@ -11,50 +14,92 @@ export default function CountryInfo({
   country,
   countryCode,
 }: CountryInfoProps) {
+  const [isFlagOpen, setIsFlagOpen] = useState(false);
   const callingCode = getCountryCallingCode(countryCode);
+  const normalizedCode = countryCode?.toLowerCase();
 
   if (!country && !countryCode) {
     return null;
   }
 
+  const flagUrl = normalizedCode
+    ? `https://flagcdn.com/${normalizedCode}.svg`
+    : null;
+
   return (
-    <div className="flex items-center gap-2 text-sm text-zinc-600">
-      {countryCode && (
-        <Image
-          src={`https://flagcdn.com/${countryCode.toLowerCase()}.svg`}
-          alt=""
-          width={24}
-          height={16}
-          className="h-4 w-6 object-cover"
-          aria-hidden="true"
-        />
-      )}
-
-      {country && <span>{country}</span>}
-
-      {countryCode && (
-        <span className="text-zinc-400">· {countryCode.toUpperCase()}</span>
-      )}
-
-      {callingCode && (
-        <span className="inline-flex items-center gap-1 font-medium text-zinc-600">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-3 w-3"
-            aria-hidden="true"
+    <>
+      <div className="flex flex-wrap items-center gap-2 text-sm text-zinc-600">
+        {flagUrl && (
+          <button
+            type="button"
+            onClick={() => setIsFlagOpen(true)}
+            aria-label={`View ${country ?? countryCode} flag`}
+            className="shrink-0 rounded border border-zinc-300 bg-white p-0.5 transition hover:border-zinc-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-500"
           >
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.63a2 2 0 0 1-.45 2.11L8 9.73a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.85.29 1.73.5 2.63.62A2 2 0 0 1 22 16.92Z" />
-          </svg>
+            <Image
+              src={flagUrl}
+              alt=""
+              width={32}
+              height={22}
+              className="h-[22px] w-8 object-contain"
+              aria-hidden="true"
+            />
+          </button>
+        )}
 
-          <span>{callingCode}</span>
-        </span>
+        {country && <span>{country}</span>}
+
+        {countryCode && (
+          <span className="text-zinc-400">· {countryCode.toUpperCase()}</span>
+        )}
+
+        {callingCode && (
+          <span className="inline-flex items-center gap-1 font-medium text-zinc-600">
+            <Phone className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>{callingCode}</span>
+          </span>
+        )}
+      </div>
+
+      {isFlagOpen && flagUrl && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          onClick={() => setIsFlagOpen(false)}
+          role="presentation"
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${country ?? countryCode} flag preview`}
+            className="relative w-full max-w-sm rounded-xl border border-zinc-200 bg-white p-5 shadow-xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setIsFlagOpen(false)}
+              aria-label="Close flag preview"
+              className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full text-zinc-600 transition hover:bg-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-500"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <p className="mb-5 pr-10 text-sm font-semibold text-zinc-800">
+              {country ?? countryCode} Flag
+            </p>
+
+            <div className="flex min-h-36 items-center justify-center rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+              <Image
+                src={flagUrl}
+                alt={`${country ?? countryCode} flag`}
+                width={240}
+                height={160}
+                className="h-auto max-h-40 w-full max-w-60 object-contain"
+                aria-hidden="true"
+              />
+            </div>
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 }
