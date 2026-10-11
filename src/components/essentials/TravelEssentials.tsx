@@ -1,15 +1,10 @@
 "use client";
 
-import {
-  ChevronDown,
-  ExternalLink,
-  Fuel,
-  Landmark,
-  MapPin,
-} from "lucide-react";
+import Image from "next/image";
+import { ChevronDown, Fuel, Landmark, MapPin } from "lucide-react";
 import ErrorState from "@/components/common/ErrorState";
+import SectionTitle from "@/components/common/SectionTitle";
 import { useTravelEssentials } from "@/hooks/useTravelEssentials";
-import SectionTitle from "../common/SectionTitle";
 
 type TravelEssentialsProps = {
   latitude: number;
@@ -32,10 +27,12 @@ export default function TravelEssentials({
   );
 
   return (
-    <section className="border-t border-zinc-200 py-8">
+    <section className="px-4 py-8 sm:px-6 sm:py-10">
       <SectionTitle
         title="Travel Essentials"
         description="Useful places around your destination"
+        icon={Landmark}
+        iconVariant="circle"
       />
 
       {status === "loading" && (
@@ -53,7 +50,7 @@ export default function TravelEssentials({
       )}
 
       {status === "success" && (
-        <div className="mt-5 divide-y divide-zinc-200 border-y border-zinc-200">
+        <div className="mt-5 divide-y divide-zinc-200 sm:mx-12">
           {categories.map(({ key, label, icon: Icon }) => {
             const places = essentials[key];
 
@@ -63,7 +60,7 @@ export default function TravelEssentials({
               <details key={key} className="group">
                 <summary className="flex min-h-14 cursor-pointer list-none items-center gap-3 py-3 [&::-webkit-details-marker]:hidden">
                   <Icon
-                    className="h-5 w-5 shrink-0 text-(--destination-primary)"
+                    className="h-5 w-5 shrink-0 text-(--destination-secondary)"
                     strokeWidth={1.8}
                   />
 
@@ -99,9 +96,17 @@ export default function TravelEssentials({
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={`Open ${place.name} in Google Maps`}
-                          className="flex h-9 w-9 shrink-0 items-center justify-center text-(--destination-secondary) transition-colors hover:text-(--destination-primary) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--destination-primary)"
+                          title="Open in Google Maps"
+                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-zinc-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--destination-primary)"
                         >
-                          <ExternalLink className="h-4 w-4" strokeWidth={1.8} />
+                          <Image
+                            src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Maps_icon_%282015-2020%29.svg"
+                            alt=""
+                            width={16}
+                            height={16}
+                            className="h-4 w-4"
+                            aria-hidden="true"
+                          />
                         </a>
                       </div>
                     );
