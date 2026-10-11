@@ -41,7 +41,7 @@ export default function CountryInfo({
               alt=""
               width={32}
               height={22}
-              className="h-[22px] w-8 object-contain"
+              className="h-5.5 w-8 object-contain"
               aria-hidden="true"
             />
           </button>
