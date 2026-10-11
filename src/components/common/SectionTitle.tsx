@@ -33,11 +33,11 @@ export default function SectionTitle({
       <div className="flex min-w-0 items-center gap-3">
         {hasIcon && (
           <div
-            className={
+            className={`section-icon-shine shrink-0 text-(--destination-primary) ${
               iconVariant === "circle"
-                ? "flex h-10 w-10 shrink-0 items-center justify-center  text-(--destination-primary)"
-                : "flex shrink-0 items-center justify-center text-(--destination-primary)"
-            }
+                ? "flex h-10 w-10 items-center justify-center"
+                : "flex items-center justify-center"
+            }`}
           >
             {iconContent ??
               (Icon && <Icon className="h-5 w-5" aria-hidden="true" />)}
@@ -45,7 +45,7 @@ export default function SectionTitle({
         )}
 
         <div className="min-w-0">
-          <h2 className="text-base font-semibold text-(--destination-text) sm:text-lg">
+          <h2 className="animate-section-title text-base font-semibold text-(--destination-text) motion-reduce:animate-none sm:text-lg">
             {title}
           </h2>
 
