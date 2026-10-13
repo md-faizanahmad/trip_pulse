@@ -25,7 +25,6 @@ export default function WeatherForecast({ forecast }: WeatherForecastProps) {
           A quick look at the weather ahead.
         </p>
       </div>
-
       <div className="flex snap-x snap-mandatory cursor-pointer gap-3 overflow-x-auto pb-3 [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4 xl:grid-cols-7">
         {forecast.map((day, index) => (
           <div
@@ -71,6 +70,9 @@ export default function WeatherForecast({ forecast }: WeatherForecastProps) {
           </div>
         ))}
       </div>
+      <p className="text-sm text-center text-(--destination-primary) ">
+        Swipe for More
+      </p>
     </section>
   );
 }
