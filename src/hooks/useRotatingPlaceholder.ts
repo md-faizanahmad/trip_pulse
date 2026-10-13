@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 const POPULAR_DESTINATIONS = [
+  "Delhi",
   "Dubai",
   "New York",
   "London",
@@ -18,15 +19,12 @@ export function useRotatingPlaceholder(enabled: boolean) {
   useEffect(() => {
     if (!enabled) return;
 
-    const fullText = `Try searching "${POPULAR_DESTINATIONS[placeholderIndex]}"`;
-
+    const fullText = `Search Destination ${POPULAR_DESTINATIONS[placeholderIndex]}`;
     const isComplete = currentPlaceholder === fullText;
-
     const timer = setTimeout(
       () => {
         if (!isDeleting) {
           const nextText = fullText.slice(0, currentPlaceholder.length + 1);
-
           setCurrentPlaceholder(nextText);
 
           if (nextText === fullText) {
@@ -34,7 +32,6 @@ export function useRotatingPlaceholder(enabled: boolean) {
           }
         } else {
           const nextText = currentPlaceholder.slice(0, -1);
-
           setCurrentPlaceholder(nextText);
 
           if (nextText.length === 0) {
