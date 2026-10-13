@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { useLazyLoad } from "@/hooks/useLazyLoad";
 import { useWeather } from "@/hooks/useWeather";
 
 import WeatherForecast from "@/components/Weather/WeatherForecast";
@@ -16,52 +18,52 @@ export default function DestinationWeather({
   latitude,
   longitude,
 }: DestinationWeatherProps) {
-  const { weather, status, error } = useWeather(latitude, longitude);
+  const { ref, isVisible } = useLazyLoad();
+  const { weather, status, error, fetchWeather } = useWeather(
+    latitude,
+    longitude,
+    false,
+  );
 
-  if (status === "loading") {
-    return <WeatherSkeleton />;
-  }
+  useEffect(() => {
+    if (isVisible) {
+      fetchWeather();
+    }
+  }, [isVisible, fetchWeather]);
 
-  if (status === "error") {
-    return (
-      <section className="w-full border-b border-zinc-200 bg-white p-4 sm:p-6">
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 bg-red-600" aria-hidden="true" />
-
+  return (
+    <div ref={ref} className="min-h-40">
+      {!isVisible || status === "idle" || status === "loading" ? (
+        <WeatherSkeleton />
+      ) : status === "error" ? (
+        <section
+          role="alert"
+          className="w-full border-b border-zinc-200 bg-white p-4 sm:p-6"
+        >
           <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-950">
             Current Weather
           </h2>
-        </div>
+          <p className="mt-2 text-sm font-medium text-red-600">{error}</p>
+        </section>
+      ) : !weather?.current ? null : (
+        <section className="w-full border-b border-zinc-200 bg-white p-4 sm:p-6">
+          <div className="flex flex-col gap-6 md:flex-row md:items-stretch md:justify-between">
+            <WeatherStatus
+              weatherCode={weather.current.weatherCode}
+              temperature={weather.current.temperature}
+            />
+            <WeatherConditions
+              feelsLike={weather.current.feelsLike}
+              humidity={weather.current.humidity}
+              windSpeed={weather.current.windSpeed}
+            />
+          </div>
 
-        <p className="mt-2 text-sm font-medium text-red-600">{error}</p>
-      </section>
-    );
-  }
-
-  if (!weather?.current) {
-    return null;
-  }
-
-  const { current, forecast = [] } = weather;
-
-  return (
-    <section className="w-full border-b border-zinc-200 bg-white p-4  sm:p-6">
-      <div className="flex flex-col gap-6 md:flex-row md:items-stretch md:justify-between">
-        <WeatherStatus
-          weatherCode={current.weatherCode}
-          temperature={current.temperature}
-        />
-
-        <WeatherConditions
-          feelsLike={current.feelsLike}
-          humidity={current.humidity}
-          windSpeed={current.windSpeed}
-        />
-      </div>
-
-      <div className="mt-6 pt-6">
-        <WeatherForecast forecast={forecast} />
-      </div>
-    </section>
+          <div className="mt-6 pt-6">
+            <WeatherForecast forecast={weather.forecast ?? []} />
+          </div>
+        </section>
+      )}
+    </div>
   );
 }
