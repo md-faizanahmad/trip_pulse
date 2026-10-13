@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 import type { WeatherResponse } from "@/types/weather";
 
 type WeatherStatus = "idle" | "loading" | "success" | "error";
@@ -29,25 +29,13 @@ function weatherReducer(
 ): WeatherState {
   switch (action.type) {
     case "FETCH_STARTED":
-      return {
-        data: null,
-        status: "loading",
-        error: "",
-      };
+      return { data: null, status: "loading", error: "" };
 
     case "FETCH_SUCCESS":
-      return {
-        data: action.data,
-        status: "success",
-        error: "",
-      };
+      return { data: action.data, status: "success", error: "" };
 
     case "FETCH_ERROR":
-      return {
-        data: null,
-        status: "error",
-        error: action.error,
-      };
+      return { data: null, status: "error", error: action.error };
 
     case "FETCH_RESET":
       return initialState;
@@ -57,61 +45,62 @@ function weatherReducer(
   }
 }
 
-export function useWeather(latitude: number | null, longitude: number | null) {
+export function useWeather(
+  latitude: number | null,
+  longitude: number | null,
+  autoFetch = true,
+) {
   const [state, dispatch] = useReducer(weatherReducer, initialState);
 
-  useEffect(() => {
+  const fetchWeather = useCallback(async () => {
     if (latitude === null || longitude === null) {
       dispatch({ type: "FETCH_RESET" });
       return;
     }
 
     const controller = new AbortController();
+    dispatch({ type: "FETCH_STARTED" });
 
-    async function fetchWeather() {
-      dispatch({ type: "FETCH_STARTED" });
+    try {
+      const response = await fetch(
+        `/api/weather?latitude=${latitude}&longitude=${longitude}`,
+        { signal: controller.signal },
+      );
 
-      try {
-        const response = await fetch(
-          `/api/weather?latitude=${latitude}&longitude=${longitude}`,
-          {
-            signal: controller.signal,
-          },
-        );
+      const data: WeatherResponse = await response.json();
 
-        const data: WeatherResponse = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error ?? "Failed to fetch weather.");
-        }
-
-        dispatch({
-          type: "FETCH_SUCCESS",
-          data,
-        });
-      } catch (error) {
-        if (error instanceof DOMException && error.name === "AbortError") {
-          return;
-        }
-
-        dispatch({
-          type: "FETCH_ERROR",
-          error:
-            error instanceof Error ? error.message : "Failed to fetch weather.",
-        });
+      if (!response.ok) {
+        throw new Error(data.error ?? "Failed to fetch weather.");
       }
+
+      dispatch({ type: "FETCH_SUCCESS", data });
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        return;
+      }
+
+      dispatch({
+        type: "FETCH_ERROR",
+        error:
+          error instanceof Error ? error.message : "Failed to fetch weather.",
+      });
+    }
+  }, [latitude, longitude]);
+
+  useEffect(() => {
+    if (autoFetch) {
+      void fetchWeather();
     }
 
-    fetchWeather();
-
     return () => {
-      controller.abort();
+      dispatch({ type: "FETCH_RESET" });
     };
-  }, [latitude, longitude]);
+  }, [autoFetch, fetchWeather]);
 
   return {
     weather: state.data,
     status: state.status,
     error: state.error,
+    fetchWeather,
   };
 }
