@@ -8,6 +8,7 @@ import DestinationSearchResults from "@/components/destinations/DestinationSearc
 import { validateDestinationQuery } from "@/validation/validation";
 import SearchSkeleton from "./SearchSkeleton";
 import { Mic, X } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function DestinationSearch() {
   const [query, setQuery] = useState("");
@@ -52,6 +53,7 @@ export default function DestinationSearch() {
     startListening();
   }
 
+  const { user } = useAuth();
   return (
     <section
       className={
@@ -61,7 +63,7 @@ export default function DestinationSearch() {
       <div className="mx-auto w-full max-w-3xl px-4 py-25 sm:px-6 sm:py-30">
         <div className="text-center">
           <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-            Where to?
+            {user?.name ? `Where to, ${user.name.split(" ")[0]}?` : "Where to?"}
           </h2>
 
           <p className="mt-2 text-sm text-white">
