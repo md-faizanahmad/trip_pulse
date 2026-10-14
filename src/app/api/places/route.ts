@@ -43,13 +43,13 @@ export async function GET(request: NextRequest) {
     }
     const places = await fetchNearbyPlaces(latitude, longitude);
 
-    try {
-      await saveCachedPlaces(cacheKey, places);
-    } catch (error) {
-      // Cache failures must not prevent successful API results.
-      console.error("Failed to cache nearby places:", error);
+    if (places.length > 0) {
+      try {
+        await saveCachedPlaces(cacheKey, places);
+      } catch (error) {
+        console.error("Failed to cache nearby places:", error);
+      }
     }
-
     return NextResponse.json({ places, source: "api" });
   } catch (error) {
     try {
