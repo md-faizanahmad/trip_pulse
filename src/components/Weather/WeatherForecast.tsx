@@ -70,7 +70,7 @@ export default function WeatherForecast({ forecast }: WeatherForecastProps) {
           </div>
         ))}
       </div>
-      <p className="text-sm text-center text-(--destination-primary) ">
+      <p className="text-sm text-center hidden text-(--destination-primary) ">
         Swipe for More
       </p>
     </section>

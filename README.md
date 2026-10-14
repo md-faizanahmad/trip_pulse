@@ -6,8 +6,6 @@
 
 # Trip Pulse
 
-
-
 </div>
 
 <p>
@@ -30,7 +28,6 @@
   <li>📱 Responsive design for mobile and desktop and Web App</li>
 </ul>
 
-
 ## Future Features
 
 <ul>
@@ -39,3 +36,9 @@
   <li>🍽️ Restaurants and local food</li>
   <li>❤️ Save favourite destinations</li>
 </ul>
+
+<!-- Generate migration -->
+<!-- npx drizzle-kit generate -->
+
+<!-- Apply migration to Neon -->
+<!-- npx drizzle-kit migrate -->
