@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchNearbyPlaces } from "@/services/places.service";
 import {
   getCachedPlaces,
+  getStaleCachedPlaces,
   saveCachedPlaces,
 } from "@/services/places-cache.service";
 
@@ -46,6 +47,19 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ places, source: "api" });
   } catch (error) {
+    try {
+      const stalePlaces = await getStaleCachedPlaces(cacheKey);
+
+      if (stalePlaces !== null) {
+        return NextResponse.json({
+          places: stalePlaces,
+          source: "stale-cache",
+        });
+      }
+    } catch (cacheError) {
+      console.error("Failed to retrieve stale places:", cacheError);
+    }
+
     if (error instanceof DOMException && error.name === "AbortError") {
       return NextResponse.json(
         { error: "Places service timed out." },

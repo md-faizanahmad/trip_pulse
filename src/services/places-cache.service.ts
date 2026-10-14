@@ -44,3 +44,17 @@ export async function saveCachedPlaces(
       },
     });
 }
+
+export async function getStaleCachedPlaces(
+  cacheKey: string,
+): Promise<Place[] | null> {
+  const [cached] = await db
+    .select({
+      places: placesCache.places,
+    })
+    .from(placesCache)
+    .where(eq(placesCache.cacheKey, cacheKey))
+    .limit(1);
+
+  return cached?.places ?? null;
+}
