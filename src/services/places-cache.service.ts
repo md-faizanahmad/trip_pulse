@@ -26,8 +26,9 @@ export async function saveCachedPlaces(
   cacheKey: string,
   places: Place[],
 ): Promise<void> {
-  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  // const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
+  const expiresAt = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000);
   await db
     .insert(placesCache)
     .values({
