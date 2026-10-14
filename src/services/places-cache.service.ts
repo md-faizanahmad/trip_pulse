@@ -21,3 +21,26 @@ export async function getCachedPlaces(
 
   return cached.places;
 }
+
+export async function saveCachedPlaces(
+  cacheKey: string,
+  places: Place[],
+): Promise<void> {
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+  await db
+    .insert(placesCache)
+    .values({
+      cacheKey,
+      places,
+      expiresAt,
+    })
+    .onConflictDoUpdate({
+      target: placesCache.cacheKey,
+      set: {
+        places,
+        expiresAt,
+        createdAt: new Date(),
+      },
+    });
+}
