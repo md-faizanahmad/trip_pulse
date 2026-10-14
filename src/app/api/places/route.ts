@@ -27,7 +27,13 @@ export async function GET(request: NextRequest) {
   const cacheKey = `nearby:${latitude.toFixed(2)}:${longitude.toFixed(2)}`;
 
   try {
-    const cachedPlaces = await getCachedPlaces(cacheKey);
+    let cachedPlaces: Awaited<ReturnType<typeof getCachedPlaces>> = null;
+
+    try {
+      cachedPlaces = await getCachedPlaces(cacheKey);
+    } catch (error) {
+      console.error("Places cache lookup failed:", error);
+    }
 
     if (cachedPlaces !== null) {
       return NextResponse.json({
@@ -35,7 +41,6 @@ export async function GET(request: NextRequest) {
         source: "cache",
       });
     }
-
     const places = await fetchNearbyPlaces(latitude, longitude);
 
     try {
