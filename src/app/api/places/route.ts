@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchNearbyPlaces } from "@/services/places.service";
+import {
+  getCachedPlaces,
+  saveCachedPlaces,
+} from "@/services/places-cache.service";
 
 export async function GET(request: NextRequest) {
   const latitude = Number(request.nextUrl.searchParams.get("latitude"));
@@ -19,10 +23,28 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const cacheKey = `nearby:${latitude.toFixed(2)}:${longitude.toFixed(2)}`;
+
   try {
+    const cachedPlaces = await getCachedPlaces(cacheKey);
+
+    if (cachedPlaces !== null) {
+      return NextResponse.json({
+        places: cachedPlaces,
+        source: "cache",
+      });
+    }
+
     const places = await fetchNearbyPlaces(latitude, longitude);
 
-    return NextResponse.json({ places });
+    try {
+      await saveCachedPlaces(cacheKey, places);
+    } catch (error) {
+      // Cache failures must not prevent successful API results.
+      console.error("Failed to cache nearby places:", error);
+    }
+
+    return NextResponse.json({ places, source: "api" });
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") {
       return NextResponse.json(
