@@ -150,3 +150,17 @@ export const placesCache = pgTable("places_cache", {
     .defaultNow()
     .notNull(),
 });
+
+export const destinationCache = pgTable("destination_cache", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  cacheKey: varchar("cache_key", { length: 150 }).notNull().unique(),
+  data: jsonb("data").notNull(),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+  }).notNull(),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+  })
+    .defaultNow()
+    .notNull(),
+});
