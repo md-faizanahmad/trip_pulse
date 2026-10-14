@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchTravelEssentials } from "@/services/essentials.service";
+import {
+  getDestinationCache,
+  saveDestinationCache,
+} from "@/services/destination-cache.service";
+import { CACHE_TTL } from "@/utils/cache";
 
 export async function GET(request: NextRequest) {
   const latitude = Number(request.nextUrl.searchParams.get("latitude"));
@@ -20,9 +25,39 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const essentials = await fetchTravelEssentials(latitude, longitude);
+    const cacheKey = `essentials:${latitude.toFixed(2)}:${longitude.toFixed(2)}`;
 
-    return NextResponse.json({ essentials });
+    let essentials: Awaited<ReturnType<typeof fetchTravelEssentials>> | null =
+      null;
+
+    try {
+      essentials =
+        await getDestinationCache<
+          Awaited<ReturnType<typeof fetchTravelEssentials>>
+        >(cacheKey);
+    } catch (error) {
+      console.error("Travel essentials cache read failed:", error);
+    }
+
+    if (essentials !== null) {
+      return NextResponse.json({ essentials, source: "cache" });
+    }
+
+    essentials = await fetchTravelEssentials(latitude, longitude);
+
+    const hasResults = Object.values(essentials).some(
+      (category) => category.length > 0,
+    );
+
+    if (hasResults) {
+      try {
+        await saveDestinationCache(cacheKey, essentials, CACHE_TTL.SEVEN_DAYS);
+      } catch (error) {
+        console.error("Travel essentials cache write failed:", error);
+      }
+    }
+
+    return NextResponse.json({ essentials, source: "api" });
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") {
       return NextResponse.json(
