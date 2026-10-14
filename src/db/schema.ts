@@ -1,3 +1,4 @@
+import { Place } from "@/types/places";
 import {
   pgTable,
   timestamp,
@@ -5,6 +6,7 @@ import {
   uuid,
   varchar,
   doublePrecision,
+  jsonb,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -134,3 +136,17 @@ export const attractionPins = pgTable(
     ),
   ],
 );
+
+export const placesCache = pgTable("places_cache", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  cacheKey: varchar("cache_key", { length: 100 }).notNull().unique(),
+  places: jsonb("places").$type<Place[]>().notNull(),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+  }).notNull(),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+  })
+    .defaultNow()
+    .notNull(),
+});
