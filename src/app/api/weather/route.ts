@@ -1,29 +1,5 @@
+import { getWeather } from "@/services/weather.service";
 import { NextRequest, NextResponse } from "next/server";
-
-type OpenMeteoResponse = {
-  current?: {
-    temperature_2m?: number;
-    relative_humidity_2m?: number;
-    apparent_temperature?: number;
-    weather_code?: number;
-    wind_speed_10m?: number;
-  };
-  daily?: {
-    time?: string[];
-    weather_code?: number[];
-    temperature_2m_max?: number[];
-    temperature_2m_min?: number[];
-    sunrise?: string[];
-    sunset?: string[];
-  };
-};
-
-type WeatherForecast = {
-  date: string;
-  weatherCode: number | null;
-  temperatureMax: number | null;
-  temperatureMin: number | null;
-};
 
 export async function GET(request: NextRequest) {
   const latitude = request.nextUrl.searchParams.get("latitude");
@@ -53,76 +29,31 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const url = new URL("https://api.open-meteo.com/v1/forecast");
-
-  url.searchParams.set("latitude", latitudeNumber.toString());
-  url.searchParams.set("longitude", longitudeNumber.toString());
-  url.searchParams.set(
-    "current",
-    [
-      "temperature_2m",
-      "relative_humidity_2m",
-      "apparent_temperature",
-      "weather_code",
-      "wind_speed_10m",
-    ].join(","),
-  );
-  url.searchParams.set(
-    "daily",
-    [
-      "weather_code",
-      "temperature_2m_max",
-      "temperature_2m_min",
-      "sunrise",
-      "sunset",
-    ].join(","),
-  );
-  url.searchParams.set("forecast_days", "7");
-  url.searchParams.set("timezone", "auto");
-
   try {
-    const response = await fetch(url);
+    const weather = await getWeather(latitudeNumber, longitudeNumber);
 
-    if (!response.ok) {
+    return NextResponse.json(weather);
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === "WEATHER_SERVICE_UNAVAILABLE"
+    ) {
       return NextResponse.json(
         { error: "Weather service is currently unavailable." },
         { status: 502 },
       );
     }
 
-    const data: OpenMeteoResponse = await response.json();
-
-    if (!data.current || !data.daily) {
+    if (
+      error instanceof Error &&
+      error.message === "WEATHER_DATA_UNAVAILABLE"
+    ) {
       return NextResponse.json(
         { error: "Weather data is unavailable." },
         { status: 502 },
       );
     }
 
-    const forecast: WeatherForecast[] = (data.daily.time ?? []).map(
-      (date, index) => ({
-        date,
-        weatherCode: data.daily?.weather_code?.[index] ?? null,
-        temperatureMax: data.daily?.temperature_2m_max?.[index] ?? null,
-        temperatureMin: data.daily?.temperature_2m_min?.[index] ?? null,
-      }),
-    );
-
-    return NextResponse.json({
-      current: {
-        temperature: data.current.temperature_2m ?? null,
-        feelsLike: data.current.apparent_temperature ?? null,
-        humidity: data.current.relative_humidity_2m ?? null,
-        windSpeed: data.current.wind_speed_10m ?? null,
-        weatherCode: data.current.weather_code ?? null,
-      },
-      sunTimes: {
-        sunrise: data.daily.sunrise?.[0] ?? null,
-        sunset: data.daily.sunset?.[0] ?? null,
-      },
-      forecast,
-    });
-  } catch {
     return NextResponse.json(
       { error: "Failed to fetch weather data." },
       { status: 502 },
