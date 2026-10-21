@@ -23,12 +23,12 @@ vi.mock("@/hooks/useAuth", () => ({
 
 describe("useLogin", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mocks.refreshUser.mockResolvedValue(undefined);
   });
 
   it("authenticates successfully and redirects home", async () => {
-    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
       new Response(
         JSON.stringify({
           user: {
@@ -57,7 +57,7 @@ describe("useLogin", () => {
     });
 
     expect(success).toBe(true);
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetch).toHaveBeenCalledWith(
       "/api/auth/authenticate",
       expect.objectContaining({
         method: "POST",
@@ -72,32 +72,32 @@ describe("useLogin", () => {
     expect(mocks.refreshUser).toHaveBeenCalledOnce();
     expect(mocks.push).toHaveBeenCalledWith("/");
     expect(mocks.refresh).toHaveBeenCalledOnce();
-
-    fetchMock.mockRestore();
   });
-});
 
-it("shows an error when credentials are incorrect", async () => {
-  vi.spyOn(globalThis, "fetch").mockResolvedValue(
-    new Response(JSON.stringify({ error: "Invalid email or password." }), {
-      status: 401,
-      headers: { "Content-Type": "application/json" },
-    }),
-  );
-
-  const { result } = renderHook(() => useLogin());
-
-  let success: boolean | undefined;
-
-  await act(async () => {
-    success = await result.current.login(
-      "Ahmad Khan",
-      "ahmad@example.com",
-      "WrongPassword!",
+  it("shows an error when credentials are incorrect", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response(JSON.stringify({ error: "Invalid email or password." }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      }),
     );
-  });
 
-  expect(success).toBe(false);
-  expect(result.current.error).toBe("Invalid email or password.");
-  expect(mocks.push).not.toHaveBeenCalled();
+    const { result } = renderHook(() => useLogin());
+
+    let success: boolean | undefined;
+
+    await act(async () => {
+      success = await result.current.login(
+        "Ahmad Khan",
+        "ahmad@example.com",
+        "WrongPassword!",
+      );
+    });
+
+    expect(success).toBe(false);
+    expect(result.current.error).toBe("Invalid email or password.");
+    expect(mocks.push).not.toHaveBeenCalled();
+    expect(mocks.refresh).not.toHaveBeenCalled();
+    expect(mocks.refreshUser).not.toHaveBeenCalled();
+  });
 });
